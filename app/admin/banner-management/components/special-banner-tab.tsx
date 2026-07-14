@@ -9,8 +9,10 @@ import { Label } from '@/components/ui/label'
 import { BannerEntity, EBannerStatus, EBannerType } from '@/entities/banner/banner.entity'
 import { useBanner } from '@/hooks/use-banner/banner.hook'
 import { UpdateBannerDto } from '@/hooks/use-banner/banner.dto'
+import { useTranslation } from 'react-i18next'
 
 export function SpecialBannerTab() {
+  const { t } = useTranslation()
   const { getBannersByType, updateBanner, updateBannerImageById } = useBanner()
   const [banner, setBanner] = useState<BannerEntity | null>(null)
   const [loading, setLoading] = useState(false)
@@ -109,7 +111,7 @@ export function SpecialBannerTab() {
       <div className="flex items-center gap-2">
         <ImageIcon className="h-5 w-5 text-foreground" />
         <h2 className="text-base font-medium text-foreground">
-          Set this week's special offer top banner
+          {t('setThisWeeksSpecialOfferTopBanner', 'Set this week\'s special offer top banner')}
         </h2>
       </div>
 
@@ -119,11 +121,10 @@ export function SpecialBannerTab() {
           <Info className="mt-0.5 h-5 w-5 shrink-0 text-blue-600" />
           <div className="space-y-1">
             <p className="text-sm font-medium text-blue-900">
-              Recommended size: 1200×300px
+              {t('recommendedSize1200300px', 'Recommended size: 1200×300px')}
             </p>
             <p className="text-sm text-blue-700">
-              This is the banner image displayed at the top of the special price page this
-              week.
+              {t('thisIsTheBannerImageDisplayedAtTheTopOfTheSpecialPricePageThisWeek', 'This is the banner image displayed at the top of the special price page this\n              week.')}
             </p>
           </div>
         </div>
@@ -132,7 +133,7 @@ export function SpecialBannerTab() {
       {/* Form and Preview Grid */}
       {loading ? (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">Loading banner...</p>
+          <p className="text-muted-foreground">{t('loadingBanner', 'Loading banner...')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
@@ -140,7 +141,7 @@ export function SpecialBannerTab() {
           <div className="space-y-6">
             {/* Upload Background */}
             <div className="space-y-2">
-              <Label className="text-sm font-medium">Upload a background image</Label>
+              <Label className="text-sm font-medium">{t('uploadABackgroundImage', 'Upload a background image')}</Label>
               <input
                 type="file"
                 id="image-upload"
@@ -160,7 +161,7 @@ export function SpecialBannerTab() {
                     <div className="relative w-full">
                       <img
                         src={getImageUrl()}
-                        alt="Banner preview"
+                        alt={t('bannerPreview', 'Banner preview')}
                         className="h-48 w-full rounded-lg object-cover"
                       />
                       <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 hover:opacity-100 transition-opacity rounded-lg">
@@ -171,23 +172,21 @@ export function SpecialBannerTab() {
                     <>
                       <Upload className="h-8 w-8 text-muted-foreground" />
                       <p className="text-sm text-muted-foreground">
-                        Click to upload or drag and drop
+                        {t('clickToUploadOrDragAndDrop', 'Click to upload or drag and drop')}
                       </p>
                     </>
                   )}
                 </div>
               </label>
               {selectedImage && (
-                <p className="text-xs text-muted-foreground">
-                  Selected: {selectedImage.name}
-                </p>
+                <p className="text-xs text-muted-foreground">{t('selectedName', 'Selected: {{name}}', { name: selectedImage.name })}</p>
               )}
             </div>
 
             {/* Title Text */}
             <div className="space-y-2">
               <Label htmlFor="special-title" className="text-sm font-medium">
-                Title text
+                {t('titleText', 'Title text')}
               </Label>
               <Input
                 id="special-title"
@@ -200,7 +199,7 @@ export function SpecialBannerTab() {
             {/* Subtitle Text */}
             <div className="space-y-2">
               <Label htmlFor="special-subtitle" className="text-sm font-medium">
-                Subtitle text
+                {t('subtitleText', 'Subtitle text')}
               </Label>
               <Input
                 id="special-subtitle"
@@ -213,13 +212,13 @@ export function SpecialBannerTab() {
 
           {/* Right Side - Preview */}
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Preview</Label>
+            <Label className="text-sm font-medium">{t('preview', 'Preview')}</Label>
             <div className="rounded-lg border border-border bg-gradient-to-br from-gray-50 to-gray-100 p-6">
               <div className="overflow-hidden rounded-lg shadow-lg">
                 <div className="relative aspect-[4/1]">
                   <img
                     src={getImageUrl()}
-                    alt="Special price banner"
+                    alt={t('specialPriceBanner', 'Special price banner')}
                     className="h-full w-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent" />

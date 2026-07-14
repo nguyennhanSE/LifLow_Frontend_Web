@@ -33,6 +33,7 @@ import { OrderPaymentMethod } from "./components/order-paymentMethod"
 import { OrderDeliveryAddress } from "./components/order-deliveryAddress"
 import { useTossPayments } from "@/hooks/use-toss-payment/toss-payment.hook"
 import { PostalCodeButton } from "@/components/common/PostalCodeButton"
+import { useTranslation } from 'react-i18next'
 
 interface OrderItem {
   cartItemId?: string
@@ -55,6 +56,7 @@ const formatCurrency = (value: number) => {
 }
 
 export default function OrderCreatePage() {
+  const { t } = useTranslation()
   const router = useRouter()
   const { getMyCart } = useCart()
   const { getMyPoints, getMyInformation, addMyDeliveryAddress, getMyCoupons } = useUser()
@@ -312,23 +314,23 @@ export default function OrderCreatePage() {
 
   const handleAddAddress = async () => {
     if (!addAddressFormData.deliveryAddress.trim()) {
-      toast({ title: "오류", description: "배송지명을 입력해주세요", variant: "destructive" })
+      toast({ title: "오류", description: t('key172', '배송지명을 입력해주세요'), variant: "destructive" })
       return
     }
     if (!addAddressFormData.recipientName.trim()) {
-      toast({ title: "오류", description: "받는 사람 이름을 입력해주세요", variant: "destructive" })
+      toast({ title: "오류", description: t('key173', '받는 사람 이름을 입력해주세요'), variant: "destructive" })
       return
     }
     if (!addAddressFormData.phoneNumber.trim()) {
-      toast({ title: "오류", description: "연락처를 입력해주세요", variant: "destructive" })
+      toast({ title: "오류", description: t('key174', '연락처를 입력해주세요'), variant: "destructive" })
       return
     }
     if (!addAddressFormData.postalCode.trim()) {
-      toast({ title: "오류", description: "우편번호를 입력해주세요", variant: "destructive" })
+      toast({ title: "오류", description: t('key175', '우편번호를 입력해주세요'), variant: "destructive" })
       return
     }
     if (!addAddressFormData.address.trim()) {
-      toast({ title: "오류", description: "주소를 입력해주세요", variant: "destructive" })
+      toast({ title: "오류", description: t('key176', '주소를 입력해주세요'), variant: "destructive" })
       return
     }
     try {
@@ -343,7 +345,7 @@ export default function OrderCreatePage() {
         setAsDefault: addAddressFormData.setAsDefault,
       }
       await addMyDeliveryAddress(dto)
-      toast({ title: "성공", description: "배송지 주소가 성공적으로 추가되었습니다" })
+      toast({ title: "성공", description: t('key177', '배송지 주소가 성공적으로 추가되었습니다') })
       setIsAddAddressDialogOpen(false)
       setAddAddressFormData({
         deliveryAddress: "",
@@ -359,7 +361,7 @@ export default function OrderCreatePage() {
       console.error("Error adding address:", error)
       toast({
         title: "오류",
-        description: error?.response?.data?.message || "배송지 주소 추가에 실패했습니다",
+        description: error?.response?.data?.message || t('key178', '배송지 주소 추가에 실패했습니다'),
         variant: "destructive",
       })
     } finally {
@@ -466,12 +468,12 @@ export default function OrderCreatePage() {
       <div className="min-h-screen bg-background">
         <div className="bg-white py-4 px-4">
           <div className="max-w-7xl mx-auto">
-            <h1 className="text-lg font-medium">주문/결제</h1>
+            <h1 className="text-lg font-medium">{t('key179', '주문/결제')}</h1>
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="text-center py-12">
-            <p className="text-muted-foreground">주문 정보를 불러오는 중...</p>
+            <p className="text-muted-foreground">{t('key180', '주문 정보를 불러오는 중...')}</p>
           </div>
         </div>
       </div>
@@ -483,12 +485,12 @@ export default function OrderCreatePage() {
       <div className="min-h-screen bg-background">
         <div className="bg-white py-4 px-4">
           <div className="max-w-7xl mx-auto">
-            <h1 className="text-lg font-medium">주문/결제</h1>
+            <h1 className="text-lg font-medium">{t('key179', '주문/결제')}</h1>
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="text-center py-12">
-            <p className="text-muted-foreground">주문할 상품이 없습니다. 장바구니로 이동합니다...</p>
+            <p className="text-muted-foreground">{t('key181', '주문할 상품이 없습니다. 장바구니로 이동합니다...')}</p>
           </div>
         </div>
       </div>
@@ -500,7 +502,7 @@ export default function OrderCreatePage() {
       {/* Page Title */}
       <div className="bg-white py-4 px-4">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-lg font-medium">주문/결제</h1>
+          <h1 className="text-lg font-medium">{t('key179', '주문/결제')}</h1>
         </div>
       </div>
 
@@ -511,7 +513,7 @@ export default function OrderCreatePage() {
           <div className="lg:col-span-2 space-y-6">
             {/* Order Product */}
             <div className="border rounded-lg p-6">
-              <h2 className="text-lg font-semibold mb-4">주문 상품</h2>
+              <h2 className="text-lg font-semibold mb-4">{t('key182', '주문 상품')}</h2>
               <div className="space-y-4">
                 {orderItems.map((item, index) => {
                   const itemTotal = item.salePrice * item.quantity
@@ -527,9 +529,9 @@ export default function OrderCreatePage() {
                       </div>
                       <div className="flex-1">
                         <h3 className="font-medium mb-1">{item.product.productName}</h3>
-                        <p className="text-sm text-muted-foreground mb-1">옵션:</p>
+                        <p className="text-sm text-muted-foreground mb-1">{t('key183', '옵션:')}</p>
                         <p className="text-sm text-muted-foreground">{item.product.productCode}</p>
-                        <p className="text-sm text-muted-foreground mt-1">수량: {item.quantity}</p>
+                        <p className="text-sm text-muted-foreground mt-1">{t('quantity', '수량: {{quantity}}', { quantity: item.quantity })}</p>
                       </div>
                       <div className="text-right">
                         <p className="font-semibold">{formatCurrency(itemTotal)} <span className="text-sm text-muted-foreground">원</span></p>
@@ -542,18 +544,18 @@ export default function OrderCreatePage() {
 
             {/* Orderer Information */}
             <div className="border rounded-lg p-6">
-              <h2 className="text-lg font-semibold mb-4">주문자 정보</h2>
+              <h2 className="text-lg font-semibold mb-4">{t('key184', '주문자 정보')}</h2>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <Label className="text-sm text-muted-foreground mb-1">이름</Label>
+                  <Label className="text-sm text-muted-foreground mb-1">{t('key79', '이름')}</Label>
                   <Input value={userInfo?.name || ''} readOnly className="bg-muted/50" />
                 </div>
                 <div>
-                  <Label className="text-sm text-muted-foreground mb-1">이메일</Label>
+                  <Label className="text-sm text-muted-foreground mb-1">{t('key80', '이메일')}</Label>
                   <Input value={userInfo?.email || ''} readOnly className="bg-muted/50" />
                 </div>
                 <div className="md:col-span-2">
-                  <Label className="text-sm text-muted-foreground mb-1">전화번호</Label>
+                  <Label className="text-sm text-muted-foreground mb-1">{t('key185', '전화번호')}</Label>
                   <Input value={userInfo?.phoneNumber || ''} readOnly className="bg-muted/50" />
                 </div>
               </div>
@@ -568,7 +570,7 @@ export default function OrderCreatePage() {
 
             {/* Redeem Points */}
             <div className="border rounded-lg p-6">
-              <h2 className="text-lg font-semibold mb-4">포인트 사용</h2>
+              <h2 className="text-lg font-semibold mb-4">{t('key186', '포인트 사용')}</h2>
               <div className="flex gap-2 mb-2">
                 <Input 
                   type="number" 
@@ -595,10 +597,10 @@ export default function OrderCreatePage() {
                     setPointsToUse(Math.min(points, maxPointsUsable))
                   }
                 >
-                  전액 사용
+                  {t('key187', '전액 사용')}
                 </Button>
               </div>
-              <p className="text-sm text-muted-foreground">보유 포인트:</p>
+              <p className="text-sm text-muted-foreground">{t('key188', '보유 포인트:')}</p>
               <p className="text-sm font-medium">{formatCurrency(points)}P</p>
             </div>
 
@@ -634,7 +636,7 @@ export default function OrderCreatePage() {
                 htmlFor="terms"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
-                주문 내용을 확인하였으며, 결제에 동의합니다
+                {t('key189', '주문 내용을 확인하였으며, 결제에 동의합니다')}
               </label>
             </div>
           </div>
@@ -642,23 +644,23 @@ export default function OrderCreatePage() {
           {/* Right Column - Payment Summary */}
           <div className="lg:col-span-1">
             <div className="border rounded-lg p-6 sticky top-4">
-              <h2 className="text-lg font-semibold mb-4">최종 결제 금액</h2>
+              <h2 className="text-lg font-semibold mb-4">{t('key190', '최종 결제 금액')}</h2>
               <div className="space-y-3 mb-4">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">상품 금액</span>
+                  <span className="text-muted-foreground">{t('key191', '상품 금액')}</span>
                   <div className="text-right">
                     <p className="font-medium">{formatCurrency(productAmount)} <span className="text-muted-foreground">원</span></p>
                   </div>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">배송비</span>
+                  <span className="text-muted-foreground">{t('key192', '배송비')}</span>
                   <div className="text-right">
                     <p className="font-medium">{formatCurrency(shippingCost)} <span className="text-muted-foreground">원</span></p>
                   </div>
                 </div>
                 {couponDiscountBreakdown.productDiscount > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">쿠폰 할인</span>
+                    <span className="text-muted-foreground">{t('key193', '쿠폰 할인')}</span>
                     <div className="text-right">
                       <p className="font-medium text-[#FF6B5A]">-{formatCurrency(couponDiscountBreakdown.productDiscount)} <span className="text-muted-foreground">원</span></p>
                     </div>
@@ -666,7 +668,7 @@ export default function OrderCreatePage() {
                 )}
                 {couponDiscountBreakdown.shippingDiscount > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">무료 배송 할인</span>
+                    <span className="text-muted-foreground">{t('key194', '무료 배송 할인')}</span>
                     <div className="text-right">
                       <p className="font-medium text-[#FF6B5A]">-{formatCurrency(couponDiscountBreakdown.shippingDiscount)} <span className="text-muted-foreground">원</span></p>
                     </div>
@@ -674,7 +676,7 @@ export default function OrderCreatePage() {
                 )}
                 {effectivePointsToUse > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">포인트 사용</span>
+                    <span className="text-muted-foreground">{t('key186', '포인트 사용')}</span>
                     <div className="text-right">
                       <p className="font-medium text-[#FF6B5A]">-{formatCurrency(effectivePointsToUse)} <span className="text-muted-foreground">원</span></p>
                     </div>
@@ -682,7 +684,7 @@ export default function OrderCreatePage() {
                 )}
                 <div className="pt-3 border-t">
                   <div className="flex justify-between font-semibold mb-1">
-                    <span>총 결제 금액</span>
+                    <span>{t('key195', '총 결제 금액')}</span>
                     <div className="text-right">
                       <p className="text-[#FF6B5A]">{formatCurrency(totalOrderAmount)} <span className="text-[#FF6B5A] text-sm">원</span></p>
                     </div>
@@ -694,11 +696,11 @@ export default function OrderCreatePage() {
                 className="w-full bg-[#FF6B5A] hover:bg-[#FF6B5A]/90 text-white"
                 disabled={isTossLoading || isProcessingPayment || !!tossError}
               >
-                {isTossLoading ? '결제 시스템 로딩 중...' : isProcessingPayment ? '처리 중...' : '결제하기'}
+                {isTossLoading ? t('key196', '결제 시스템 로딩 중...') : isProcessingPayment ? t('key197', '처리 중...') : '결제하기'}
               </Button>
               {tossError && (
                 <p className="text-sm text-red-500 mt-2">
-                  결제 시스템 오류가 발생했습니다. 페이지를 새로고침해주세요.
+                  {t('key198', '결제 시스템 오류가 발생했습니다. 페이지를 새로고침해주세요.')}
                 </p>
               )}
             </div>
@@ -710,19 +712,19 @@ export default function OrderCreatePage() {
       <Dialog open={isAddAddressDialogOpen} onOpenChange={setIsAddAddressDialogOpen}>
         <DialogContent className="sm:max-w-[900px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-semibold">새 배송지 추가</DialogTitle>
+            <DialogTitle className="text-2xl font-semibold">{t('key199', '새 배송지 추가')}</DialogTitle>
             <DialogDescription className="text-gray-500">
-              새로운 배송지를 추가합니다.
+              {t('key200', '새로운 배송지를 추가합니다.')}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-6 py-4">
             <div className="grid gap-2">
               <Label htmlFor="deliveryAddress" className="text-base font-normal">
-                배송지명
+                {t('key201', '배송지명')}
               </Label>
               <Input
                 id="deliveryAddress"
-                placeholder="예: 집, 회사"
+                placeholder={t('key202', '예: 집, 회사')}
                 className="bg-gray-50"
                 value={addAddressFormData.deliveryAddress}
                 onChange={(e) =>
@@ -732,11 +734,11 @@ export default function OrderCreatePage() {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="recipientName" className="text-base font-normal">
-                받는 사람
+                {t('key203', '받는 사람')}
               </Label>
               <Input
                 id="recipientName"
-                placeholder="받는 사람 이름"
+                placeholder={t('key204', '받는 사람 이름')}
                 className="bg-gray-50"
                 value={addAddressFormData.recipientName}
                 onChange={(e) =>
@@ -746,7 +748,7 @@ export default function OrderCreatePage() {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="phoneNumber" className="text-base font-normal">
-                연락처
+                {t('key205', '연락처')}
               </Label>
               <Input
                 id="phoneNumber"
@@ -760,7 +762,7 @@ export default function OrderCreatePage() {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="postalCode" className="text-base font-normal">
-                우편번호
+                {t('key206', '우편번호')}
               </Label>
               <div className="flex gap-2 items-stretch [&_button]:h-9 [&_button]:flex [&_button]:items-center [&_button]:py-0 [&_button]:shrink-0">
                 <Input
@@ -786,7 +788,7 @@ export default function OrderCreatePage() {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="address" className="text-base font-normal">
-                주소
+                {t('key207', '주소')}
               </Label>
               <Input
                 id="address"
@@ -801,11 +803,11 @@ export default function OrderCreatePage() {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="addressFull" className="text-base font-normal">
-                상세 주소
+                {t('key208', '상세 주소')}
               </Label>
               <Input
                 id="addressFull"
-                placeholder="상세 주소 (동/호수 등)"
+                placeholder={t('key209', '상세 주소 (동/호수 등)')}
                 className="bg-gray-50"
                 value={addAddressFormData.addressFull}
                 onChange={(e) =>
@@ -817,7 +819,7 @@ export default function OrderCreatePage() {
               <input
                 type="checkbox"
                 id="setAsDefault"
-                aria-label="기본 배송지로 설정"
+                aria-label={t('key210', '기본 배송지로 설정')}
                 className="w-5 h-5 rounded border-gray-300"
                 checked={addAddressFormData.setAsDefault}
                 onChange={(e) =>
@@ -825,7 +827,7 @@ export default function OrderCreatePage() {
                 }
               />
               <Label htmlFor="setAsDefault" className="text-base font-normal cursor-pointer">
-                기본 배송지로 설정
+                {t('key210', '기본 배송지로 설정')}
               </Label>
             </div>
           </div>
@@ -836,7 +838,7 @@ export default function OrderCreatePage() {
               onClick={handleAddAddress}
               disabled={isAddingAddress}
             >
-              {isAddingAddress ? "추가 중..." : "추가"}
+              {isAddingAddress ? t('key211', '추가 중...') : "추가"}
             </Button>
             <Button
               type="button"
@@ -845,7 +847,7 @@ export default function OrderCreatePage() {
               onClick={() => setIsAddAddressDialogOpen(false)}
               disabled={isAddingAddress}
             >
-              취소
+              {t('key212', '취소')}
             </Button>
           </DialogFooter>
         </DialogContent>

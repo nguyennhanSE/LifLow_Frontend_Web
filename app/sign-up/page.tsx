@@ -12,11 +12,13 @@ import { PostalCodeButton } from "@/components/common/PostalCodeButton"
 import { validateEmail } from "@/helper/function"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { POLICY_TERMS, POLICY_PRIVACY, POLICY_OPTIONAL } from "@/data/policy-content"
+import { useTranslation, Trans } from 'react-i18next'
+import i18next from 'i18next'
 
 /** Password: 10–16 chars, at least 2 of: uppercase / lowercase / digit / special */
 function validatePassword(password: string): { valid: boolean; message?: string } {
   if (password.length < 10 || password.length > 16) {
-    return { valid: false, message: "비밀번호는 10자~16자로 입력해주세요." }
+    return { valid: false, message: i18next.t('1016', '비밀번호는 10자~16자로 입력해주세요.') }
   }
   const hasUpper = /[A-Z]/.test(password)
   const hasLower = /[a-z]/.test(password)
@@ -26,13 +28,14 @@ function validatePassword(password: string): { valid: boolean; message?: string 
   if (count < 2) {
     return {
       valid: false,
-      message: "영문 대소문자/숫자/특수문자 중 2가지 이상 조합해주세요.",
+      message: i18next.t('2', '영문 대소문자/숫자/특수문자 중 2가지 이상 조합해주세요.'),
     }
   }
   return { valid: true }
 }
 
 export default function SignupPage() {
+  const { t } = useTranslation()
   const router = useRouter()
   const { registerUser, checkUserId } = useUser()
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -175,12 +178,12 @@ export default function SignupPage() {
 
     // Combine phone number from mobileCarrier (휴대전화)
     const phoneNumber = formData.mobileCarrier && formData.mobileMiddle?.trim() && formData.mobileLast?.trim()
-      ? `${formData.mobileCarrier}-${formData.mobileMiddle}-${formData.mobileLast}`
+      ? t('mobilecarriermobilemiddlemobilelast', '{{mobileCarrier}}-{{mobileMiddle}}-{{mobileLast}}', { mobileCarrier: formData.mobileCarrier, mobileMiddle: formData.mobileMiddle, mobileLast: formData.mobileLast })
       : undefined
 
     // Combine mobile phone number from phoneAreaCode (일반전화)
     const mobilePhoneNumber = formData.phoneAreaCode && formData.phoneMiddle?.trim() && formData.phoneLast?.trim()
-      ? `${formData.phoneAreaCode}-${formData.phoneMiddle}-${formData.phoneLast}`
+      ? t('phoneareacodephonemiddlephonelast', '{{phoneAreaCode}}-{{phoneMiddle}}-{{phoneLast}}', { phoneAreaCode: formData.phoneAreaCode, phoneMiddle: formData.phoneMiddle, phoneLast: formData.phoneLast })
       : undefined
 
     // Debug log
@@ -201,12 +204,12 @@ export default function SignupPage() {
 
     // Combine birth date
     const dateOfBirth = formData.birthYear && formData.birthMonth && formData.birthDay
-      ? `${formData.birthYear}-${formData.birthMonth.padStart(2, "0")}-${formData.birthDay.padStart(2, "0")}`
+      ? t('birthyearvalval2', '{{birthYear}}-{{val}}-{{val2}}', { birthYear: formData.birthYear, val: formData.birthMonth.padStart(2, "0"), val2: formData.birthDay.padStart(2, "0") })
       : undefined
 
     // Combine address
     const addressFull = formData.addressName && formData.addressDetail
-      ? `${formData.addressName} ${formData.addressDetail}`
+      ? t('addressnameAddressdetail', '{{addressName}} {{addressDetail}}', { addressName: formData.addressName, addressDetail: formData.addressDetail })
       : formData.addressName || formData.addressDetail
 
     const userDto: CreateUserDto = {
@@ -263,27 +266,25 @@ export default function SignupPage() {
               </svg>
             </div>
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold">쭈왕몰</h1>
-          <h2 className="text-lg sm:text-xl font-semibold mt-4">회원가입</h2>
+          <h1 className="text-xl sm:text-2xl font-bold">{t('key4', '쭈왕몰')}</h1>
+          <h2 className="text-lg sm:text-xl font-semibold mt-4">{t('key6', '회원가입')}</h2>
         </div>
 
         {/* Registration Form */}
         <form className="bg-white rounded-lg shadow-sm p-4 sm:p-6 space-y-6 min-w-0">
           {/* Basic Information */}
           <div>
-            <h3 className="font-semibold mb-4">기본 정보</h3>
+            <h3 className="font-semibold mb-4">{t('key7', '기본 정보')}</h3>
 
             {/* ID Field */}
             <div className="mb-4">
-              <label className="block mb-2">
-                아이디 <span className="text-red-500">*</span>
-              </label>
+              <label className="block mb-2"><Trans i18nKey="spanClassnametextred500span">아이디 <span className="text-red-500">*</span></Trans></label>
               <div className="flex flex-col sm:flex-row gap-2">
                 <input
                   type="text"
                   value={formData.id}
                   onChange={(e) => handleInputChange("id", e.target.value)}
-                  placeholder="영문소문자/숫자, 4-16자"
+                  placeholder={t('416', '영문소문자/숫자, 4-16자')}
                   className={`flex-1 min-w-0 px-4 py-3 bg-[#f3f3f5] rounded border-none focus:outline-none focus:ring-2 focus:ring-[#ff5833] ${
                     isIdAvailable === true ? "ring-2 ring-green-500" : ""
                   } ${isIdAvailable === false ? "ring-2 ring-red-500" : ""}`}
@@ -295,28 +296,26 @@ export default function SignupPage() {
                   disabled={isCheckingId || !formData.id}
                   className="sm:shrink-0 px-4 py-3 bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
                 >
-                  {isCheckingId ? "확인 중..." : "중복 확인"}
+                  {isCheckingId ? t('key8', '확인 중...') : "중복 확인"}
                 </button>
               </div>
-              <p className="text-sm text-[#717182] mt-1">영문소문자/숫자, 4-16자</p>
+              <p className="text-sm text-[#717182] mt-1">{t('416', '영문소문자/숫자, 4-16자')}</p>
               {isIdAvailable === true && (
-                <p className="text-sm text-green-600 mt-1">✓ 사용 가능한 아이디입니다</p>
+                <p className="text-sm text-green-600 mt-1">{t('key9', '✓ 사용 가능한 아이디입니다')}</p>
               )}
               {isIdAvailable === false && (
-                <p className="text-sm text-red-600 mt-1">✗ 이미 사용 중인 아이디입니다</p>
+                <p className="text-sm text-red-600 mt-1">{t('key10', '✗ 이미 사용 중인 아이디입니다')}</p>
               )}
             </div>
 
             {/* Password Field */}
             <div className="mb-4">
-              <label className="block mb-2">
-                비밀번호 <span className="text-red-500">*</span>
-              </label>
+              <label className="block mb-2"><Trans i18nKey="spanClassnametextred500span2">비밀번호 <span className="text-red-500">*</span></Trans></label>
               <input
                 type="password"
                 value={formData.password}
                 onChange={(e) => handleInputChange("password", e.target.value)}
-                placeholder="비밀번호를 입력하세요"
+                placeholder={t('key11', '비밀번호를 입력하세요')}
                 className={`w-full px-4 py-3 bg-[#f3f3f5] rounded border-none focus:outline-none focus:ring-2 focus:ring-[#ff5833] ${
                   formData.password && !validatePassword(formData.password).valid ? "ring-2 ring-red-500" : ""
                 }`}
@@ -324,7 +323,7 @@ export default function SignupPage() {
                 minLength={10}
                 maxLength={16}
               />
-              <p className="text-sm text-[#717182] mt-1">영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 10자~16자</p>
+              <p className="text-sm text-[#717182] mt-1">{t('21016', '영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 10자~16자')}</p>
               {formData.password && !validatePassword(formData.password).valid && (
                 <p className="text-sm text-red-600 mt-1">{validatePassword(formData.password).message}</p>
               )}
@@ -332,14 +331,12 @@ export default function SignupPage() {
 
             {/* Password Confirmation */}
             <div className="mb-4">
-              <label className="block mb-2">
-                비밀번호 확인 <span className="text-red-500">*</span>
-              </label>
+              <label className="block mb-2"><Trans i18nKey="spanClassnametextred500span3">비밀번호 확인 <span className="text-red-500">*</span></Trans></label>
               <input
                 type="password"
                 value={formData.passwordConfirm}
                 onChange={(e) => handleInputChange("passwordConfirm", e.target.value)}
-                placeholder="비밀번호를 다시 입력하세요"
+                placeholder={t('key12', '비밀번호를 다시 입력하세요')}
                 className="w-full px-4 py-3 bg-[#f3f3f5] rounded border-none focus:outline-none focus:ring-2 focus:ring-[#ff5833]"
                 required
               />
@@ -347,14 +344,12 @@ export default function SignupPage() {
 
             {/* Name Field */}
             <div className="mb-4">
-              <label className="block mb-2">
-                이름 <span className="text-red-500">*</span>
-              </label>
+              <label className="block mb-2"><Trans i18nKey="spanClassnametextred500span4">이름 <span className="text-red-500">*</span></Trans></label>
               <input
                 type="text"
                 value={formData.name}
                 onChange={(e) => handleInputChange("name", e.target.value)}
-                placeholder="이름을 입력하세요"
+                placeholder={t('key13', '이름을 입력하세요')}
                 className="w-full px-4 py-3 bg-[#f3f3f5] rounded border-none focus:outline-none focus:ring-2 focus:ring-[#ff5833]"
                 required
               />
@@ -362,13 +357,13 @@ export default function SignupPage() {
 
             {/* General Phone */}
             <div className="mb-4">
-              <label className="block mb-2">일반전화</label>
+              <label className="block mb-2">{t('key14', '일반전화')}</label>
               <div className="flex flex-wrap gap-2 min-w-0">
                 <select
                   value={formData.phoneAreaCode}
                   onChange={(e) => handleInputChange("phoneAreaCode", e.target.value)}
                   className="shrink-0 px-3 sm:px-4 py-3 bg-[#f3f3f5] rounded border-none focus:outline-none focus:ring-2 focus:ring-[#ff5833] min-w-0"
-                  aria-label="일반전화 지역번호"
+                  aria-label={t('key15', '일반전화 지역번호')}
                 >
                   <option value="02">02</option>
                   <option value="031">031</option>
@@ -412,15 +407,13 @@ export default function SignupPage() {
 
             {/* Mobile Phone */}
             <div className="mb-4">
-              <label className="block mb-2">
-                휴대전화 <span className="text-red-500">*</span>
-              </label>
+              <label className="block mb-2"><Trans i18nKey="spanClassnametextred500span5">휴대전화 <span className="text-red-500">*</span></Trans></label>
               <div className="flex flex-wrap gap-2 mb-2 min-w-0">
                 <select
                   value={formData.mobileCarrier}
                   onChange={(e) => handleInputChange("mobileCarrier", e.target.value)}
                   className="shrink-0 px-3 sm:px-4 py-3 bg-[#f3f3f5] rounded border-none focus:outline-none focus:ring-2 focus:ring-[#ff5833] min-w-0"
-                  aria-label="휴대전화 통신사"
+                  aria-label={t('key16', '휴대전화 통신사')}
                   required
                 >
                   <option value="010">010</option>
@@ -463,14 +456,12 @@ export default function SignupPage() {
 
             {/* Email Field */}
             <div className="mb-4">
-              <label className="block mb-2">
-                이메일 <span className="text-red-500">*</span>
-              </label>
+              <label className="block mb-2"><Trans i18nKey="spanClassnametextred500span6">이메일 <span className="text-red-500">*</span></Trans></label>
               <input
                 type="email"
                 value={formData.email}
                 onChange={(e) => handleInputChange("email", e.target.value)}
-                placeholder="이메일을 입력하세요"
+                placeholder={t('key17', '이메일을 입력하세요')}
                 className="w-full px-4 py-3 bg-[#f3f3f5] rounded border-none focus:outline-none focus:ring-2 focus:ring-[#ff5833]"
                 required
               />
@@ -478,9 +469,7 @@ export default function SignupPage() {
 
             {/* Address Field */}
             <div className="mb-4">
-              <label className="block mb-2">
-                주소 <span className="text-red-500">*</span>
-              </label>
+              <label className="block mb-2"><Trans i18nKey="spanClassnametextred500span7">주소 <span className="text-red-500">*</span></Trans></label>
               <div className="flex flex-col sm:flex-row gap-2 mb-2 min-w-0">
                 <input
                   type="text"
@@ -494,7 +483,7 @@ export default function SignupPage() {
                 <PostalCodeButton
                   onComplete={(data) => {
                     handleInputChange("zipCode", data.zipCode);
-                    handleInputChange("addressName", data.addressName);
+                    handleInputChange(t('addressname', 'addressName'), data.addressName);
                   }}
                 />
               </div>
@@ -511,22 +500,20 @@ export default function SignupPage() {
                 type="text"
                 value={formData.addressDetail}
                 onChange={(e) => handleInputChange("addressDetail", e.target.value)}
-                placeholder="나머지 주소(선택 입력 가능)"
+                placeholder={t('key18', '나머지 주소(선택 입력 가능)')}
                 className="w-full px-4 py-3 bg-[#f3f3f5] rounded border-none focus:outline-none focus:ring-2 focus:ring-[#ff5833]"
               />
             </div>
 
             {/* Birth Date */}
             <div className="mb-4">
-              <label className="block mb-2">
-                생년월일 <span className="text-red-500">*</span>
-              </label>
+              <label className="block mb-2"><Trans i18nKey="spanClassnametextred500span8">생년월일 <span className="text-red-500">*</span></Trans></label>
               <div className="flex flex-wrap gap-2 mb-3 min-w-0">
                 <input
                   type="text"
                   value={formData.birthYear}
                   onChange={(e) => handleInputChange("birthYear", e.target.value)}
-                  placeholder="년 (4자리)"
+                  placeholder={t('4', '년 (4자리)')}
                   className="flex-1 min-w-0 px-4 py-3 bg-[#f3f3f5] rounded border-none focus:outline-none focus:ring-2 focus:ring-[#ff5833]"
                   maxLength={4}
                   required
@@ -560,7 +547,7 @@ export default function SignupPage() {
                     onChange={(e) => handleInputChange("gender", e.target.value)}
                     className="w-4 h-4 text-[#ff5833]"
                   />
-                  <span>남성</span>
+                  <span>{t('key19', '남성')}</span>
                 </label>
                 <label className="flex items-center gap-2">
                   <input
@@ -571,20 +558,20 @@ export default function SignupPage() {
                     onChange={(e) => handleInputChange("gender", e.target.value)}
                     className="w-4 h-4 text-[#ff5833]"
                   />
-                  <span>여성</span>
+                  <span>{t('key20', '여성')}</span>
                 </label>
               </div>
             </div>
 
             {/* Additional ID */}
             <div>
-              <label htmlFor="referralId" className="block mb-2">추천인 아이디</label>
+              <label htmlFor="referralId" className="block mb-2">{t('key21', '추천인 아이디')}</label>
               <input
                 id="referralId"
                 type="text"
                 value={formData.referralId}
                 onChange={(e) => handleInputChange("referralId", e.target.value)}
-                placeholder="추천인 아이디를 입력하세요"
+                placeholder={t('key22', '추천인 아이디를 입력하세요')}
                 className="w-full px-4 py-3 bg-[#f3f3f5] rounded border-none focus:outline-none focus:ring-2 focus:ring-[#ff5833]"
               />
             </div>
@@ -592,12 +579,12 @@ export default function SignupPage() {
 
           {/* Profile Information */}
           <div>
-            <h3 className="font-semibold mb-2">프로필 정보</h3>
-            <p className="text-sm text-[#717182] mb-4">나중에 마이페이지에서 수정 가능해요</p>
+            <h3 className="font-semibold mb-2">{t('key23', '프로필 정보')}</h3>
+            <p className="text-sm text-[#717182] mb-4">{t('key24', '나중에 마이페이지에서 수정 가능해요')}</p>
 
             {/* Profile Image */}
             <div className="mb-4">
-              <label className="block mb-2">프로필 이미지</label>
+              <label className="block mb-2">{t('key25', '프로필 이미지')}</label>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <div className="w-20 h-20 bg-[#f3f3f5] rounded-full flex items-center justify-center overflow-hidden">
                   {avatarPreview ? (
@@ -612,44 +599,44 @@ export default function SignupPage() {
                   accept="image/*"
                   onChange={handleAvatarChange}
                   className="hidden"
-                  aria-label="프로필 이미지 업로드"
+                  aria-label={t('key26', '프로필 이미지 업로드')}
                 />
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
                   className="px-4 py-2 bg-white border border-gray-300 rounded hover:bg-gray-50"
                 >
-                  이미지 선택
+                  {t('key27', '이미지 선택')}
                 </button>
               </div>
             </div>
 
             {/* Nickname */}
             <div className="mb-4">
-              <label className="block mb-2">닉네임</label>
+              <label className="block mb-2">{t('key28', '닉네임')}</label>
               <input
                 type="text"
                 value={formData.nickName}
                 onChange={(e) => handleInputChange("nickName", e.target.value.trim().slice(0, 10))}
-                placeholder="닉네임을 입력하세요"
+                placeholder={t('key29', '닉네임을 입력하세요')}
                 maxLength={10}
                 className="w-full px-4 py-3 bg-[#f3f3f5] rounded border-none focus:outline-none focus:ring-2 focus:ring-[#ff5833]"
               />
-              <p className="text-sm text-[#717182] mt-1">10자 이내(한글/영문/숫자 가능)</p>
+              <p className="text-sm text-[#717182] mt-1">{t('10', '10자 이내(한글/영문/숫자 가능)')}</p>
             </div>
 
             {/* Simple Introduction */}
             <div>
-              <label className="block mb-2">간단한 소개</label>
+              <label className="block mb-2">{t('key30', '간단한 소개')}</label>
               <textarea
                 value={formData.statusMessage}
                 onChange={(e) => handleInputChange("statusMessage", e.target.value)}
-                placeholder="간단한 소개를 입력하세요"
+                placeholder={t('key31', '간단한 소개를 입력하세요')}
                 rows={3}
                 className="w-full px-4 py-3 bg-[#f3f3f5] rounded border-none focus:outline-none focus:ring-2 focus:ring-[#ff5833] resize-none"
                 maxLength={65}
               />
-              <p className="text-sm text-[#717182] mt-1">공백 포함 65자 이내</p>
+              <p className="text-sm text-[#717182] mt-1">{t('65', '공백 포함 65자 이내')}</p>
             </div>
           </div>
 
@@ -669,12 +656,12 @@ export default function SignupPage() {
                   })
                 }}
                 className="mt-0.5 w-4 h-4 shrink-0"
-                aria-label="전체 동의"
+                aria-label={t('key32', '전체 동의')}
               />
               <div>
-                <p className="font-semibold mb-1">전체 동의</p>
+                <p className="font-semibold mb-1">{t('key32', '전체 동의')}</p>
                 <p className="text-sm text-[#717182]">
-                  이용약관 및 개인정보수집 및 이용, 소식받기 동의(선택)에 모두 동의합니다.
+                  {t('key33', '이용약관 및 개인정보수집 및 이용, 소식받기 동의(선택)에 모두 동의합니다.')}
                 </p>
               </div>
             </div>
@@ -687,11 +674,11 @@ export default function SignupPage() {
                   checked={consents.terms}
                   onChange={(e) => setConsents((prev) => ({ ...prev, terms: e.target.checked }))}
                   className="mt-1 w-4 h-4 shrink-0"
-                  aria-label="이용약관 동의"
+                  aria-label={t('key34', '이용약관 동의')}
                 />
                 <Collapsible className="flex-1 min-w-0 rounded-lg border border-[#e5e5e5] overflow-hidden bg-white">
                   <CollapsibleTrigger className="flex w-full items-center justify-between gap-2 p-3 text-left hover:bg-[#ebebeb] transition-colors">
-                    <span className="text-sm truncate">[필수] 이용약관 동의</span>
+                    <span className="text-sm truncate">{t('key35', '[필수] 이용약관 동의')}</span>
                     <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200 data-[state=open]:rotate-180" />
                   </CollapsibleTrigger>
                   <CollapsibleContent>
@@ -709,11 +696,11 @@ export default function SignupPage() {
                   checked={consents.privacy}
                   onChange={(e) => setConsents((prev) => ({ ...prev, privacy: e.target.checked }))}
                   className="mt-1 w-4 h-4 shrink-0"
-                  aria-label="개인정보처리방침 동의"
+                  aria-label={t('key36', '개인정보처리방침 동의')}
                 />
                 <Collapsible className="flex-1 min-w-0 rounded-lg border border-[#e5e5e5] overflow-hidden bg-white">
                   <CollapsibleTrigger className="flex w-full items-center justify-between gap-2 p-3 text-left hover:bg-[#ebebeb] transition-colors">
-                    <span className="text-sm truncate">[필수] 개인정보처리방침 동의</span>
+                    <span className="text-sm truncate">{t('key37', '[필수] 개인정보처리방침 동의')}</span>
                     <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200 data-[state=open]:rotate-180" />
                   </CollapsibleTrigger>
                   <CollapsibleContent>
@@ -731,11 +718,11 @@ export default function SignupPage() {
                   checked={consents.sms}
                   onChange={(e) => setConsents((prev) => ({ ...prev, sms: e.target.checked }))}
                   className="mt-1 w-4 h-4 shrink-0"
-                  aria-label="SMS 수신 동의"
+                  aria-label={t('sms', 'SMS 수신 동의')}
                 />
                 <Collapsible className="flex-1 min-w-0 rounded-lg border border-[#e5e5e5] overflow-hidden bg-white">
                   <CollapsibleTrigger className="flex w-full items-center justify-between gap-2 p-3 text-left hover:bg-[#ebebeb] transition-colors">
-                    <span className="text-sm truncate">[선택] SMS 수신 동의</span>
+                    <span className="text-sm truncate">{t('sms2', '[선택] SMS 수신 동의')}</span>
                     <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200 data-[state=open]:rotate-180" />
                   </CollapsibleTrigger>
                   {/* <CollapsibleContent>
@@ -753,11 +740,11 @@ export default function SignupPage() {
                   checked={consents.email}
                   onChange={(e) => setConsents((prev) => ({ ...prev, email: e.target.checked }))}
                   className="mt-1 w-4 h-4 shrink-0"
-                  aria-label="이메일 수신 동의"
+                  aria-label={t('key38', '이메일 수신 동의')}
                 />
                 <Collapsible className="flex-1 min-w-0 rounded-lg border border-[#e5e5e5] overflow-hidden bg-white">
                   <CollapsibleTrigger className="flex w-full items-center justify-between gap-2 p-3 text-left hover:bg-[#ebebeb] transition-colors">
-                    <span className="text-sm truncate">[선택] 이메일 수신 동의</span>
+                    <span className="text-sm truncate">{t('key39', '[선택] 이메일 수신 동의')}</span>
                     <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200 data-[state=open]:rotate-180" />
                   </CollapsibleTrigger>
                   <CollapsibleContent>
@@ -777,14 +764,14 @@ export default function SignupPage() {
             onClick={handleSubmit}
             className="w-full bg-[#ff5833] text-white py-4 rounded font-semibold hover:bg-[#e54d2c] transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation min-h-[48px]"
           >
-            {isLoading ? "가입 중..." : "회원가입"}
+            {isLoading ? t('key40', '가입 중...') : "회원가입"}
           </button>
 
           {/* Login Link */}
           <p className="text-center text-sm text-[#717182]">
-            이미 계정이 있으신가요?{" "}
+            {t('key41', '이미 계정이 있으신가요?')}{" "}
             <Link href="/sign-in" className="text-[#ff5833] font-semibold">
-              로그인
+              {t('key42', '로그인')}
             </Link>
           </p>
         </form>

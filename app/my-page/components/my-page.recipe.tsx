@@ -7,10 +7,12 @@ import { useCallback, useEffect, useState } from "react"
 import { useUser } from "@/hooks/use-user/user.hook"
 import { useRecipe } from "@/hooks/use-recipe/recipt.hook"
 import { Recipe } from "@/entities/recipes/recipe.entity"
+import { useTranslation } from 'react-i18next'
 
 type FilterType = "all" | "active" | "hidden"
 
 export default function MyPageRecipe() {
+  const { t } = useTranslation()
   const { getMyRecipe } = useUser()
   const { updateRecipeIsActive } = useRecipe()
   const [recipes, setRecipes] = useState<Recipe[]>([])
@@ -115,7 +117,7 @@ export default function MyPageRecipe() {
   if (loading) {
     return (
       <div className="flex h-64 w-full items-center justify-center">
-        <p className="text-gray-500">레시피 불러오는 중...</p>
+        <p className="text-gray-500">{t('key233', '레시피 불러오는 중...')}</p>
       </div>
     )
   }
@@ -124,28 +126,28 @@ export default function MyPageRecipe() {
     <div className="w-full max-w-none">
       {/* Header */}
       <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-2xl font-normal">내가 쓴 레시피</h1>
+        <h1 className="text-2xl font-normal">{t('key229', '내가 쓴 레시피')}</h1>
         <Link
           href="/community/create"
           className="flex items-center gap-2 rounded-md bg-[#ff5833] px-6 py-3 text-white transition-colors hover:bg-[#e64d2e]"
         >
           <Plus className="h-5 w-5" />
-          레시피 작성
+          {t('key234', '레시피 작성')}
         </Link>
       </div>
 
       {/* Stats Cards */}
       <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="rounded-lg border border-gray-200 bg-white p-6">
-          <p className="mb-2 text-sm text-gray-500">전체 레시피</p>
+          <p className="mb-2 text-sm text-gray-500">{t('key235', '전체 레시피')}</p>
           <p className="text-4xl font-normal">{totalRecipes}</p>
         </div>
         <div className="rounded-lg border border-gray-200 bg-white p-6">
-          <p className="mb-2 text-sm text-gray-500">활성</p>
+          <p className="mb-2 text-sm text-gray-500">{t('key236', '활성')}</p>
           <p className="text-4xl font-normal text-[#00a63e]">{activeRecipes}</p>
         </div>
         <div className="rounded-lg border border-gray-200 bg-white p-6">
-          <p className="mb-2 text-sm text-gray-500">숨김</p>
+          <p className="mb-2 text-sm text-gray-500">{t('key237', '숨김')}</p>
           <p className="text-4xl font-normal text-gray-400">{hiddenRecipes}</p>
         </div>
       </div>
@@ -158,33 +160,27 @@ export default function MyPageRecipe() {
           className={`border-r border-gray-200 px-6 py-4 text-center font-medium transition-colors ${
             filter === "all" ? "bg-gray-50 hover:bg-gray-100" : "bg-white hover:bg-gray-50"
           }`}
-        >
-          전체 ({totalRecipes})
-        </button>
+        >{t('totalrecipes', '전체 ({{totalRecipes}})', { totalRecipes })}</button>
         <button
           type="button"
           onClick={() => setFilter("active")}
           className={`border-r border-gray-200 px-6 py-4 text-center font-medium transition-colors ${
             filter === "active" ? "bg-gray-50 hover:bg-gray-100" : "bg-white hover:bg-gray-50"
           }`}
-        >
-          활성 ({activeRecipes})
-        </button>
+        >{t('activerecipes', '활성 ({{activeRecipes}})', { activeRecipes })}</button>
         <button
           type="button"
           onClick={() => setFilter("hidden")}
           className={`px-6 py-4 text-center font-medium transition-colors ${
             filter === "hidden" ? "bg-gray-50 hover:bg-gray-100" : "bg-white hover:bg-gray-50"
           }`}
-        >
-          숨김 ({hiddenRecipes})
-        </button>
+        >{t('hiddenrecipes', '숨김 ({{hiddenRecipes}})', { hiddenRecipes })}</button>
       </div>
 
       {/* Recipe Cards */}
       {filteredRecipes.length === 0 ? (
         <div className="flex h-64 items-center justify-center rounded-lg border border-gray-200 bg-white">
-          <p className="text-gray-500">레시피가 없습니다</p>
+          <p className="text-gray-500">{t('key238', '레시피가 없습니다')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -225,7 +221,7 @@ export default function MyPageRecipe() {
 
                   {recipe.ingredients && recipe.ingredients.length > 0 && (
                     <div className="mb-4 text-sm text-gray-600">
-                      <span className="font-medium">재료: </span>
+                      <span className="font-medium">{t('key239', '재료:')} </span>
                       {recipe.ingredients.join(", ")}
                     </div>
                   )}

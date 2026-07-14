@@ -16,6 +16,7 @@ import type {
   ProductInquiryAnswerEntity,
   ProductInquiryEntity,
 } from '@/entities/product-inquiry/product-inquiry.entity'
+import { useTranslation, Trans } from 'react-i18next'
 
 type ProductInquiryByIdResponse = ProductInquiryEntity & {
   status?: 'pending' | 'completed'
@@ -50,6 +51,7 @@ function AnswerItem({
   onSaveEdit: () => void
   isSaving: boolean
 }) {
+  const { t } = useTranslation()
   const [answerAvatarLoading, setAnswerAvatarLoading] = useState(false)
   const [answerAvatarLoaded, setAnswerAvatarLoaded] = useState(false)
 
@@ -88,11 +90,11 @@ function AnswerItem({
           <div className="mb-2 flex items-start justify-between gap-2">
             <p className="text-xs text-muted-foreground">
               {answer.user?.name ?? '관리자'}
-              {answeredAt ? ` · ${format(answeredAt, 'yyyy-MM-dd HH:mm')}` : ''}
+              {answeredAt ? t('val3', '· {{val}}', { val: format(answeredAt, 'yyyy-MM-dd HH:mm') }) : ''}
             </p>
             {!isEditing ? (
               <Button variant="ghost" size="sm" onClick={onStartEdit} className="h-7 px-2 text-xs">
-                수정
+                {t('key288', '수정')}
               </Button>
             ) : null}
           </div>
@@ -105,17 +107,17 @@ function AnswerItem({
                 value={editValue}
                 onChange={(e) => onChangeEditValue(e.target.value)}
                 className="min-h-24 bg-white"
-                placeholder="답변 내용을 입력하세요"
+                placeholder={t('key673', '답변 내용을 입력하세요')}
               />
               <div className="flex items-center justify-end gap-2">
                 <Button variant="outline" size="sm" onClick={onCancelEdit} disabled={isSaving}>
-                  취소
+                  {t('key212', '취소')}
                 </Button>
                 <Button size="sm" onClick={onSaveEdit} disabled={isSaving}>
                   {isSaving ? (
                     <span className="flex items-center gap-2">
                       <Spinner className="h-4 w-4" />
-                      저장 중...
+                      {t('key582', '저장 중...')}
                     </span>
                   ) : (
                     '저장'
@@ -135,6 +137,7 @@ export default function AdminProductInquiryDetailPage({
 }: {
   params: Promise<{ id: string }>
 }) {
+  const { t } = useTranslation()
   const resolvedParams = use(params)
   const inquiryId = resolvedParams.id
 
@@ -218,7 +221,7 @@ export default function AdminProductInquiryDetailPage({
     onSuccess: async () => {
       toast({
         title: '저장 완료',
-        description: '답변이 등록되었습니다.',
+        description: t('key674', '답변이 등록되었습니다.'),
       })
       setAnswerText('')
       await queryClient.invalidateQueries({ queryKey: ['product-inquiry', inquiryId] })
@@ -229,14 +232,14 @@ export default function AdminProductInquiryDetailPage({
       if (err instanceof Error && err.message === 'EMPTY_ANSWER') {
         toast({
           variant: 'destructive',
-          title: '답변 내용을 입력해주세요.',
+          title: t('key675', '답변 내용을 입력해주세요.'),
         })
         return
       }
       toast({
         variant: 'destructive',
-        title: '저장 실패',
-        description: '잠시 후 다시 시도해주세요.',
+        title: t('key571', '저장 실패'),
+        description: t('key354', '잠시 후 다시 시도해주세요.'),
       })
     },
   })
@@ -249,7 +252,7 @@ export default function AdminProductInquiryDetailPage({
     onSuccess: async () => {
       toast({
         title: '저장 완료',
-        description: '답변이 수정되었습니다.',
+        description: t('key676', '답변이 수정되었습니다.'),
       })
       setEditingAnswerId(null)
       setEditingAnswerText('')
@@ -261,14 +264,14 @@ export default function AdminProductInquiryDetailPage({
       if (err instanceof Error && err.message === 'EMPTY_ANSWER') {
         toast({
           variant: 'destructive',
-          title: '답변 내용을 입력해주세요.',
+          title: t('key675', '답변 내용을 입력해주세요.'),
         })
         return
       }
       toast({
         variant: 'destructive',
-        title: '저장 실패',
-        description: '잠시 후 다시 시도해주세요.',
+        title: t('key571', '저장 실패'),
+        description: t('key354', '잠시 후 다시 시도해주세요.'),
       })
     },
   })
@@ -284,13 +287,11 @@ export default function AdminProductInquiryDetailPage({
             <Link
               href="/admin/product-inquiries"
               className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm"
-            >
-              <span aria-hidden>←</span>
-              목록으로
-            </Link>
+            ><Trans i18nKey="spanAriahiddenspan"><span aria-hidden>←</span>
+              목록으로</Trans></Link>
           </div>
-          <h1 className="mt-2 text-xl font-semibold text-foreground">상품문의 상세</h1>
-          <p className="mt-1 text-sm text-muted-foreground">고객 문의와 답변을 확인/등록합니다.</p>
+          <h1 className="mt-2 text-xl font-semibold text-foreground">{t('key677', '상품문의 상세')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('key678', '고객 문의와 답변을 확인/등록합니다.')}</p>
         </div>
 
         <div className="flex items-center gap-2">
@@ -309,15 +310,15 @@ export default function AdminProductInquiryDetailPage({
         <section className="bg-card border-border rounded-lg border p-8">
           <div className="flex items-center justify-center gap-2 text-muted-foreground">
             <Spinner className="h-4 w-4" />
-            <span>로딩 중...</span>
+            <span>{t('key74', '로딩 중...')}</span>
           </div>
         </section>
       ) : inquiryQuery.isError || !inquiry ? (
         <section className="bg-card border-border rounded-lg border p-8">
-          <p className="text-center text-sm text-red-500">상품문의를 불러오지 못했습니다.</p>
+          <p className="text-center text-sm text-red-500">{t('key679', '상품문의를 불러오지 못했습니다.')}</p>
           <div className="mt-4 flex justify-center">
             <Button variant="outline" onClick={() => router.back()}>
-              돌아가기
+              {t('key680', '돌아가기')}
             </Button>
           </div>
         </section>
@@ -346,7 +347,7 @@ export default function AdminProductInquiryDetailPage({
                   </div>
                 ) : (
                   <div className="bg-muted flex h-14 w-14 items-center justify-center rounded-md border border-border text-xs text-muted-foreground">
-                    No Image
+                    {t('noImage', 'No Image')}
                   </div>
                 )}
 
@@ -386,8 +387,8 @@ export default function AdminProductInquiryDetailPage({
                     )}
                     <p className="text-muted-foreground text-sm">
                       {inquiry.user?.name ?? inquiry.authorId}
-                      {inquiry.user?.email ? ` · ${inquiry.user.email}` : ''}
-                      {createdAt ? ` · ${format(createdAt, 'yyyy-MM-dd HH:mm')}` : ''}
+                      {inquiry.user?.email ? t('email', '· {{email}}', { email: inquiry.user.email }) : ''}
+                      {createdAt ? t('val3', '· {{val}}', { val: format(createdAt, 'yyyy-MM-dd HH:mm') }) : ''}
                     </p>
                   </div>
                 </div>
@@ -396,7 +397,7 @@ export default function AdminProductInquiryDetailPage({
 
             <div className="mt-6 space-y-4">
               <div className="rounded-lg border border-border bg-muted/20 p-4">
-                <p className="text-foreground font-semibold">Q. {inquiry.title}</p>
+                <p className="text-foreground font-semibold">{t('qTitle', 'Q. {{title}}', { title: inquiry.title })}</p>
                 <p className="mt-2 text-sm text-foreground">{inquiry.content}</p>
               </div>
 
@@ -429,7 +430,7 @@ export default function AdminProductInquiryDetailPage({
                 })
               ) : (
                 <div className="rounded-lg border border-dashed border-border p-4 text-sm text-muted-foreground">
-                  등록된 답변이 없습니다.
+                  {t('key681', '등록된 답변이 없습니다.')}
                 </div>
               )}
             </div>
@@ -437,20 +438,20 @@ export default function AdminProductInquiryDetailPage({
 
           {/* Answer Form */}
           <section className="bg-card border-border rounded-lg border p-6">
-            <h2 className="text-base font-semibold text-foreground">답변 내용</h2>
-            <p className="mt-1 text-sm text-muted-foreground">답변을 작성한 뒤 저장을 눌러주세요.</p>
+            <h2 className="text-base font-semibold text-foreground">{t('key682', '답변 내용')}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">{t('key683', '답변을 작성한 뒤 저장을 눌러주세요.')}</p>
 
             <div className="mt-4 space-y-4">
               <Textarea
                 value={answerText}
                 onChange={(e) => setAnswerText(e.target.value)}
-                placeholder="답변 내용을 입력하세요"
+                placeholder={t('key673', '답변 내용을 입력하세요')}
                 className="min-h-28"
               />
 
               <div className="flex items-center justify-end gap-2">
                 <Button variant="outline" onClick={() => router.back()}>
-                  취소
+                  {t('key212', '취소')}
                 </Button>
                 <Button
                   onClick={() => createAnswerMutation.mutate()}
@@ -459,7 +460,7 @@ export default function AdminProductInquiryDetailPage({
                   {createAnswerMutation.isPending ? (
                     <span className="flex items-center gap-2">
                       <Spinner className="h-4 w-4" />
-                      저장 중...
+                      {t('key582', '저장 중...')}
                     </span>
                   ) : (
                     '저장'

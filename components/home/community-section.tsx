@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useBanner } from "@/hooks/use-banner/banner.hook"
 import { EBannerType } from "@/entities/banner/banner.entity"
 import { Loader2 } from "lucide-react"
+import { useTranslation } from 'react-i18next'
 
 interface Banner {
   id: string
@@ -12,6 +13,7 @@ interface Banner {
 }
 
 export function CommunitySection() {
+  const { t } = useTranslation()
   const [banners, setBanners] = useState<Banner[]>([])
   const [loading, setLoading] = useState(true)
   const { getBannersByType } = useBanner()
@@ -66,14 +68,14 @@ export function CommunitySection() {
                   >
                     <img
                       src={banners[0].imageUrl}
-                      alt="Banner 1"
+                      alt={t('banner1', 'Banner 1')}
                       className="w-full h-full object-cover"
                     />
                   </a>
                 ) : (
                   <img
                     src={banners[0].imageUrl}
-                    alt="Banner 1"
+                    alt={t('banner1', 'Banner 1')}
                     className="w-full h-full object-cover"
                   />
                 )}
@@ -90,14 +92,14 @@ export function CommunitySection() {
                   >
                     <img
                       src={banners[1].imageUrl}
-                      alt="Banner 2"
+                      alt={t('banner2', 'Banner 2')}
                       className="w-full h-full object-cover"
                     />
                   </a>
                 ) : (
                   <img
                     src={banners[1].imageUrl}
-                    alt="Banner 2"
+                    alt={t('banner2', 'Banner 2')}
                     className="w-full h-full object-cover"
                   />
                 )}
@@ -117,14 +119,14 @@ export function CommunitySection() {
                 >
                   <img
                     src={banners[2].imageUrl}
-                    alt="Banner 3"
+                    alt={t('banner3', 'Banner 3')}
                     className="w-full h-full object-cover"
                   />
                 </a>
               ) : (
                 <img
                   src={banners[2].imageUrl}
-                  alt="Banner 3"
+                  alt={t('banner3', 'Banner 3')}
                   className="w-full h-full object-cover"
                 />
               )}

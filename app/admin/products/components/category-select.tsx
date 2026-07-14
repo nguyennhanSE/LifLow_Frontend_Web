@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Spinner } from "@/components/ui/spinner"
 import { useCategory } from "@/hooks/use-category/category.hook"
 import { ProductCategoryEntity } from "@/entities/product-category/product-category.entity"
+import { useTranslation } from 'react-i18next'
 
 interface CategorySelectProps {
   label: string
@@ -25,6 +26,7 @@ export function CategorySelect({
   required = false,
   isMounted,
 }: CategorySelectProps) {
+  const { t } = useTranslation()
   const { getCategories } = useCategory()
   const [isClientMounted, setIsClientMounted] = useState(false)
 
@@ -107,12 +109,12 @@ export function CategorySelect({
               {allCategories.length > 0 ? (
                 allCategories.map((category) => (
                   <SelectItem key={category.productCategoryNumber} value={String(category.productCategoryNumber)}>
-                    {category.name || category.description || `Category ${category.productCategoryNumber}`}
+                    {category.name || category.description || t('categoryProductcategorynumber', 'Category {{productCategoryNumber}}', { productCategoryNumber: category.productCategoryNumber })}
                   </SelectItem>
                 ))
               ) : (
                 <div className="p-4 text-center text-sm text-muted-foreground">
-                  카테고리가 없습니다
+                  {t('key662', '카테고리가 없습니다')}
                 </div>
               )}
             </>

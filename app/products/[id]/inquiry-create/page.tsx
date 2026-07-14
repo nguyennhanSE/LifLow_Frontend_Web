@@ -15,8 +15,10 @@ import { CreateProductInquiryDto } from "@/hooks/use-product-inquiry/product-inq
 import { ProductEntity } from "@/entities/products/product.entity"
 import { Spinner } from "@/components/ui/spinner"
 import { useToast } from "@/hooks/use-toast"
+import { useTranslation } from 'react-i18next'
 
 export default function InquiryCreatePage() {
+  const { t } = useTranslation()
   const params = useParams()
   const router = useRouter()
   const productId = params?.id as string
@@ -71,7 +73,7 @@ export default function InquiryCreatePage() {
     if (!inquiryTitle.trim()) {
       toast({
         title: "제목 필수",
-        description: "문의 제목을 입력해주세요.",
+        description: t('key526', '문의 제목을 입력해주세요.'),
         variant: "destructive",
       })
       return
@@ -80,7 +82,7 @@ export default function InquiryCreatePage() {
     if (!inquiryContent.trim()) {
       toast({
         title: "내용 필수",
-        description: "제출하기 전에 문의 내용을 작성해주세요.",
+        description: t('key527', '제출하기 전에 문의 내용을 작성해주세요.'),
         variant: "destructive",
       })
       return
@@ -99,7 +101,7 @@ export default function InquiryCreatePage() {
       
       toast({
         title: "문의 등록 완료",
-        description: "문의가 성공적으로 등록되었습니다.",
+        description: t('key528', '문의가 성공적으로 등록되었습니다.'),
       })
 
       // Navigate back to product detail page
@@ -111,7 +113,7 @@ export default function InquiryCreatePage() {
     } catch (error: any) {
       toast({
         title: "오류",
-        description: error?.message || "문의 제출에 실패했습니다. 다시 시도해주세요.",
+        description: error?.message || t('key529', '문의 제출에 실패했습니다. 다시 시도해주세요.'),
         variant: "destructive",
       })
     } finally {
@@ -136,8 +138,8 @@ export default function InquiryCreatePage() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">상품을 찾을 수 없습니다</h2>
-          <p className="text-muted-foreground">상품 정보를 불러올 수 없습니다.</p>
+          <h2 className="text-2xl font-bold mb-2">{t('key530', '상품을 찾을 수 없습니다')}</h2>
+          <p className="text-muted-foreground">{t('key531', '상품 정보를 불러올 수 없습니다.')}</p>
         </div>
       </div>
     )
@@ -151,13 +153,13 @@ export default function InquiryCreatePage() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Page Title */}
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold">글 작성</h1>
+          <h1 className="text-2xl font-bold">{t('key532', '글 작성')}</h1>
         </div>
 
         <div className="space-y-6">
           {/* Product Selection Section */}
           <div className="space-y-2">
-            <Label className="text-base font-medium">제품 선택</Label>
+            <Label className="text-base font-medium">{t('key533', '제품 선택')}</Label>
             <div className="border rounded-lg p-4 bg-white">
               <div className="flex items-center gap-4">
                 <div className="relative w-20 h-20 rounded-md overflow-hidden shrink-0 bg-gray-100 flex items-center justify-center">
@@ -173,7 +175,7 @@ export default function InquiryCreatePage() {
                     />
                   ) : (
                     <div className="w-full h-full bg-gray-200 flex items-center justify-center text-xs text-gray-400">
-                      No Image
+                      {t('noImage', 'No Image')}
                     </div>
                   )}
                 </div>
@@ -191,7 +193,7 @@ export default function InquiryCreatePage() {
                       href={`/products/${productId}`}
                       className="text-muted-foreground hover:text-[#FF6B4A] underline"
                     >
-                      상품 상세 보기
+                      {t('key534', '상품 상세 보기')}
                     </Link>
                     {/* <span className="text-muted-foreground hover:text-[#FF6B4A] underline cursor-pointer">
                       상품정보고시 선택
@@ -204,10 +206,10 @@ export default function InquiryCreatePage() {
 
           {/* Title Input */}
           <div className="space-y-2">
-            <Label htmlFor="inquiry-title" className="text-base font-medium">제목</Label>
+            <Label htmlFor="inquiry-title" className="text-base font-medium">{t('key502', '제목')}</Label>
             <Input
               id="inquiry-title"
-              placeholder="제목을 입력해주세요"
+              placeholder={t('key535', '제목을 입력해주세요')}
               value={inquiryTitle}
               onChange={(e) => setInquiryTitle(e.target.value)}
               className="h-12"
@@ -216,19 +218,17 @@ export default function InquiryCreatePage() {
 
           {/* Content Textarea with Character Counter */}
           <div className="space-y-2">
-            <Label htmlFor="inquiry-content" className="text-base font-medium">내용</Label>
+            <Label htmlFor="inquiry-content" className="text-base font-medium">{t('key536', '내용')}</Label>
             <div className="relative">
               <Textarea
                 id="inquiry-content"
-                placeholder="문의 내용을 입력하세요"
+                placeholder={t('key537', '문의 내용을 입력하세요')}
                 value={inquiryContent}
                 onChange={(e) => setInquiryContent(e.target.value)}
                 rows={12}
                 className="resize-none pr-20"
               />
-              <div className="absolute bottom-3 right-3 text-sm text-muted-foreground">
-                문자: {inquiryContent.length}
-              </div>
+              <div className="absolute bottom-3 right-3 text-sm text-muted-foreground">{t('length4', '문자: {{length}}', { length: inquiryContent.length })}</div>
             </div>
           </div>
 
@@ -240,7 +240,7 @@ export default function InquiryCreatePage() {
               disabled={isSubmitting}
               className="min-w-[100px] bg-gray-100 hover:bg-gray-200"
             >
-              취소
+              {t('key212', '취소')}
             </Button>
             <Button
               onClick={handleSubmitInquiry}
@@ -250,7 +250,7 @@ export default function InquiryCreatePage() {
               {isSubmitting ? (
                 <>
                   <Spinner className="w-4 h-4 mr-2" />
-                  제출 중...
+                  {t('key538', '제출 중...')}
                 </>
               ) : (
                 "등록"

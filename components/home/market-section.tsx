@@ -16,6 +16,7 @@ import { useCategory } from "@/hooks/use-category/category.hook"
 import { useBanner } from "@/hooks/use-banner/banner.hook"
 import { createProductNavigationHandler } from "@/lib/utils"
 import { BannerEntity } from "@/entities/banner/banner.entity"
+import { useTranslation } from 'react-i18next'
 
 const BLUR_DATA_URL =
   "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTVlN2ViIi8+PC9zdmc+"
@@ -48,6 +49,7 @@ const ProductCard = memo(function ProductCard({
   cardRef?: React.Ref<HTMLDivElement>
   onClick: () => void
 }) {
+  const { t } = useTranslation()
   return (
     <Card
       ref={cardRef}
@@ -56,20 +58,20 @@ const ProductCard = memo(function ProductCard({
     >
       <div className="relative h-[150px] md:h-[220px] bg-muted">
         {product.productSpecialOffer?.status && (
-          <Badge className="absolute top-3 left-3 bg-[#FF5833] text-white border-0 z-10">🔥 이번주 특가</Badge>
+          <Badge className="absolute top-3 left-3 bg-[#FF5833] text-white border-0 z-10">{t('key44', '🔥 이번주 특가')}</Badge>
         )}
         {product.productBadges && (
           <div className="absolute bottom-3 left-3 flex flex-wrap gap-2 z-10">
             {typeof product.productBadges === 'object' && !Array.isArray(product.productBadges) && (
               <>
                 {product.productBadges.isHotDeal && (
-                  <Badge className="bg-orange-100 text-orange-500 border border-orange-500">핫딜</Badge>
+                  <Badge className="bg-orange-100 text-orange-500 border border-orange-500">{t('key45', '핫딜')}</Badge>
                 )}
                 {product.productBadges.isNewProduct && (
-                  <Badge className="bg-blue-100 text-blue-500 border border-blue-500">신상품</Badge>
+                  <Badge className="bg-blue-100 text-blue-500 border border-blue-500">{t('key46', '신상품')}</Badge>
                 )}
                 {product.productBadges.isBestSeller && (
-                  <Badge className="bg-purple-100 text-purple-500 border border-purple-500">BEST</Badge>
+                  <Badge className="bg-purple-100 text-purple-500 border border-purple-500">{t('best', 'BEST')}</Badge>
                 )}
               </>
             )}
@@ -123,7 +125,7 @@ const ProductCard = memo(function ProductCard({
                 const discountAmount = product.productSpecialOffer?.discountAmount || 0
                 const discountPct = originalPrice > 0 ? Math.round((discountAmount / originalPrice) * 100) : 0
                 return discountPct > 0 ? (
-                  <Badge className="bg-[#FF5833] text-white text-xs border-0">{discountPct}%</Badge>
+                  <Badge className="bg-[#FF5833] text-white text-xs border-0">{t('discountpct', '{{discountPct}}%', { discountPct })}</Badge>
                 ) : null
               })()}
               <span className="text-xl font-bold text-[#FF5833]">
@@ -147,6 +149,7 @@ const ProductCard = memo(function ProductCard({
 })
 
 export function MarketSection() {
+  const { t } = useTranslation()
   const router = useRouter()
   const [activeCategoryNumber, setActiveCategoryNumber] = useState<string | null>(null)
   const [categories, setCategories] = useState<ProductCategoryEntity[]>([])
@@ -272,8 +275,8 @@ export function MarketSection() {
     <section className="bg-background py-12">
       <div className="container mx-auto px-4">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-foreground mb-4">🛒 마켓</h2>
-          <p className="text-sm text-muted-foreground mb-4">자신있게 소개하는 쭈왕몰 제품들을 확인해보세요</p>
+          <h2 className="text-2xl font-bold text-foreground mb-4">{t('key101', '🛒 마켓')}</h2>
+          <p className="text-sm text-muted-foreground mb-4">{t('key102', '자신있게 소개하는 쭈왕몰 제품들을 확인해보세요')}</p>
 
           <div className="flex gap-2 mb-4 flex-wrap">
             <Button
@@ -281,10 +284,10 @@ export function MarketSection() {
               className={activeCategoryNumber === null ? "bg-[#FF5833] hover:bg-[#E64A2E] text-white" : ""}
               onClick={() => setActiveCategoryNumber(null)}
             >
-              전체
+              {t('key15', '전체')}
             </Button>
             {categoriesLoading ? (
-              <Button variant="outline" disabled>카테고리 불러오는 중...</Button>
+              <Button variant="outline" disabled>{t('key103', '카테고리 불러오는 중...')}</Button>
             ) : (
               categories.map((category) => (
                 <Button
@@ -300,7 +303,7 @@ export function MarketSection() {
             <div className="relative w-full sm:min-w-[20rem] sm:w-auto">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input 
-                placeholder="상품명, 브랜드 검색..." 
+                placeholder={t('key104', '상품명, 브랜드 검색...')} 
                 className="pl-10 w-full"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -318,7 +321,7 @@ export function MarketSection() {
               >
                 <Image
                   src={banner.imageUrl}
-                  alt="Category banner"
+                  alt={t('categoryBanner', 'Category banner')}
                   fill
                   sizes="(max-width: 1024px) 100vw, 33vw"
                   priority
@@ -364,11 +367,11 @@ export function MarketSection() {
           <div className={banner?.imageUrl ? "lg:col-span-8" : "lg:col-span-12"}>
             {loading ? (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">상품 불러오는 중...</p>
+                <p className="text-muted-foreground">{t('key105', '상품 불러오는 중...')}</p>
               </div>
             ) : products.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">상품이 없습니다.</p>
+                <p className="text-muted-foreground">{t('key106', '상품이 없습니다.')}</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -391,7 +394,7 @@ export function MarketSection() {
             className="text-red-500"
             onClick={() => router.push('/market')}
           >
-            상품 페이지에서 더 많은 상품 보기 →
+            {t('key107', '상품 페이지에서 더 많은 상품 보기 →')}
           </Button>
         </div>
       </div>

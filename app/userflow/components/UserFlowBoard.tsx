@@ -6,6 +6,7 @@ import { AnnouncementEntity } from "@/entities/announcements/announcements.entit
 import { EAnnouncementType } from "@/entities/announcements/announcements.entity"
 import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
+import { useTranslation } from 'react-i18next'
 
 const SANITIZE_OPTIONS = {
   ALLOWED_TAGS: ["p", "br", "strong", "em", "u", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "li", "img", "a", "div", "span"],
@@ -42,6 +43,7 @@ function toUserPost(entity: AnnouncementEntity): UserPost {
 }
 
 export default function UserFlowBoard() {
+  const { t } = useTranslation()
   const [posts, setPosts] = useState<UserPost[]>([])
   const [loading, setLoading] = useState(true)
   const [sanitizedContentMap, setSanitizedContentMap] = useState<Record<string, string>>({})
@@ -94,7 +96,7 @@ export default function UserFlowBoard() {
     return (
       <div className="min-h-screen bg-[#f5f5f5] py-8 px-4 md:px-8 flex justify-center">
         <div className="w-full max-w-2xl flex justify-center items-center py-12">
-          <span className="text-muted-foreground">로딩 중...</span>
+          <span className="text-muted-foreground">{t('key74', '로딩 중...')}</span>
         </div>
       </div>
     )
@@ -104,7 +106,7 @@ export default function UserFlowBoard() {
     return (
       <div className="min-h-screen bg-white py-8 px-4 md:px-8 flex justify-center">
         <div className="w-full max-w-2xl flex justify-center items-center py-12">
-          <span className="text-muted-foreground">콘텐츠가 없습니다.</span>
+          <span className="text-muted-foreground">{t('key86', '콘텐츠가 없습니다.')}</span>
         </div>
       </div>
     )
@@ -112,7 +114,7 @@ export default function UserFlowBoard() {
 
   return (
     <div className="min-h-screen bg-white py-8 px-4 md:px-8 flex flex-col items-center gap-10">
-      <span className="text-2xl font-bold mx-auto">쭈왕몰 이용 가이드</span>
+      <span className="text-2xl font-bold mx-auto">{t('key87', '쭈왕몰 이용 가이드')}</span>
       <div className="w-full max-w-2xl mx-auto flex flex-col items-center gap-14">
         {posts.map((post) => (
           <Card key={post.id} className="overflow-hidden w-full max-w-2xl bg-transparent border-none shadow-none">

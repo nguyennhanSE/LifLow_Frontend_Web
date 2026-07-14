@@ -32,8 +32,10 @@ import { CreateRecipeDto } from '@/hooks/use-recipe/recipe.dto'
 import { ERecipeCategory, getRecipeCategoryLabel } from '@/entities/recipes/recipe.entity'
 import { ProductEntity } from '@/entities/products/product.entity'
 import { Plus, X, Check } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 export default function CommunityCreatePage() {
+  const { t } = useTranslation()
   const router = useRouter()
   const queryClient = useQueryClient()
   const { createRecipe } = useRecipe()
@@ -240,26 +242,26 @@ export default function CommunityCreatePage() {
       <main className="flex-1 container py-8">
         <Card className="max-w-4xl mx-auto bg-white">
           <CardHeader>
-            <CardTitle>레시피 작성</CardTitle>
+            <CardTitle>{t('key186', '레시피 작성')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Title field */}
             <div className="space-y-2">
-              <Label htmlFor="title">제목</Label>
+              <Label htmlFor="title">{t('key133', '제목')}</Label>
               <Input
                 id="title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="레시피 제목을 입력하세요"
+                placeholder={t('key187', '레시피 제목을 입력하세요')}
               />
             </div>
 
             {/* Category field */}
             <div className="space-y-2">
-              <Label htmlFor="category">카테고리</Label>
+              <Label htmlFor="category">{t('key111', '카테고리')}</Label>
               <Select value={category} onValueChange={setCategory}>
                 <SelectTrigger id="category" className="w-full">
-                  <SelectValue placeholder="카테고리를 선택하세요" />
+                  <SelectValue placeholder={t('key188', '카테고리를 선택하세요')} />
                 </SelectTrigger>
                 <SelectContent>
                   {categoryOptions.map((cat) => (
@@ -273,19 +275,19 @@ export default function CommunityCreatePage() {
 
             {/* Detail field */}
             <div className="space-y-2">
-              <Label htmlFor="detail">내용</Label>
+              <Label htmlFor="detail">{t('key135', '내용')}</Label>
               <Textarea
                 id="detail"
                 value={detail}
                 onChange={(e) => setDetail(e.target.value)}
-                placeholder="레시피 내용을 입력하세요"
+                placeholder={t('key189', '레시피 내용을 입력하세요')}
                 className="min-h-[200px]"
               />
             </div>
 
             {/* Products used (optional) */}
             <div className="space-y-2">
-              <Label>사용한 상품 (선택사항)</Label>
+              <Label>{t('key190', '사용한 상품 (선택사항)')}</Label>
               <div className="space-y-2">
                 {selectedProduct && (
                   <div className="flex items-center gap-2 p-3 border rounded-lg bg-muted/50">
@@ -299,7 +301,7 @@ export default function CommunityCreatePage() {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">
-                          이미지 없음
+                          {t('key191', '이미지 없음')}
                         </div>
                       )}
                     </div>
@@ -314,8 +316,8 @@ export default function CommunityCreatePage() {
                     <button
                       onClick={handleRemoveProduct}
                       className="ml-1 hover:bg-muted rounded-full p-1"
-                      title="상품 제거"
-                      aria-label="상품 제거"
+                      title={t('key192', '상품 제거')}
+                      aria-label={t('key192', '상품 제거')}
                     >
                       <X className="h-4 w-4" />
                     </button>
@@ -334,7 +336,7 @@ export default function CommunityCreatePage() {
 
             {/* Attach image/video */}
             <div className="space-y-2">
-              <Label htmlFor="thumbnail">이미지/동영상 첨부</Label>
+              <Label htmlFor="thumbnail">{t('key193', '이미지/동영상 첨부')}</Label>
               <Input
                 id="thumbnail"
                 type="file"
@@ -344,23 +346,21 @@ export default function CommunityCreatePage() {
                 className="cursor-pointer"
                 disabled={thumbnails.length >= 5}
               />
-              <p className="text-sm text-muted-foreground">
-                최대 5개 파일 업로드 가능 (파일당 최대 10MB) - {thumbnails.length}/5
-              </p>
+              <p className="text-sm text-muted-foreground">{t('510mbLength5', '최대 5개 파일 업로드 가능 (파일당 최대 10MB) - {{length}}/5', { length: thumbnails.length })}</p>
               {thumbnailPreviews.length > 0 && (
                 <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4">
                   {thumbnailPreviews.map((preview, index) => (
                     <div key={index} className="relative group">
                       <img
                         src={preview}
-                        alt={`미리보기 ${index + 1}`}
+                        alt={t('val2', '미리보기 {{val}}', { val: index + 1 })}
                         className="w-full h-32 object-cover rounded-lg border"
                       />
                       <button
                         onClick={() => handleRemoveThumbnail(index)}
                         className="absolute top-2 right-2 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                        title="이미지 제거"
-                        aria-label="이미지 제거"
+                        title={t('key194', '이미지 제거')}
+                        aria-label={t('key194', '이미지 제거')}
                       >
                         <X className="h-4 w-4" />
                       </button>
@@ -373,13 +373,13 @@ export default function CommunityCreatePage() {
             {/* Recipe Writing Guide */}
             <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 space-y-2">
               <h4 className="font-semibold text-blue-900 dark:text-blue-100">
-                레시피 작성 가이드
+                {t('key195', '레시피 작성 가이드')}
               </h4>
               <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1 list-disc list-inside">
-                <li>레시피는 관리자 승인 후 포인트가 지급됩니다.</li>
-                <li>승인 시 자동으로 500포인트가 지급됩니다</li>
-                <li>부적절한 내용은 거부될 수 있습니다</li>
-                <li>저작권을 침해하지 않는 내용만 게시해주세요.</li>
+                <li>{t('key196', '레시피는 관리자 승인 후 포인트가 지급됩니다.')}</li>
+                <li>{t('5002', '승인 시 자동으로 500포인트가 지급됩니다')}</li>
+                <li>{t('key197', '부적절한 내용은 거부될 수 있습니다')}</li>
+                <li>{t('key198', '저작권을 침해하지 않는 내용만 게시해주세요.')}</li>
               </ul>
             </div>
 
@@ -390,7 +390,7 @@ export default function CommunityCreatePage() {
                 onClick={handleCancel}
                 disabled={createMutation.isPending}
               >
-                취소
+                {t('key199', '취소')}
               </Button>
               <Button 
                 onClick={handleComplete}
@@ -399,7 +399,7 @@ export default function CommunityCreatePage() {
                 {createMutation.isPending ? (
                   <>
                     <Spinner className="mr-2 h-4 w-4" />
-                    작성 중...
+                    {t('key200', '작성 중...')}
                   </>
                 ) : (
                   '작성 완료'
@@ -415,13 +415,13 @@ export default function CommunityCreatePage() {
       <Dialog open={productDialogOpen} onOpenChange={setProductDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[80vh] flex flex-col">
           <DialogHeader>
-            <DialogTitle>상품 선택</DialogTitle>
+            <DialogTitle>{t('key66', '상품 선택')}</DialogTitle>
           </DialogHeader>
           <div className="flex-1 overflow-hidden flex flex-col space-y-4">
             {/* Search */}
             <div className="relative">
               <Input
-                placeholder="상품명으로 검색..."
+                placeholder={t('key201', '상품명으로 검색...')}
                 value={productSearchQuery}
                 onChange={(e) => setProductSearchQuery(e.target.value)}
                 className="w-full"
@@ -436,7 +436,7 @@ export default function CommunityCreatePage() {
                 </div>
               ) : allProducts.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground">
-                  상품이 없습니다.
+                  {t('key106', '상품이 없습니다.')}
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
@@ -463,7 +463,7 @@ export default function CommunityCreatePage() {
                               />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">
-                                이미지 없음
+                                {t('key191', '이미지 없음')}
                               </div>
                             )}
                           </div>
@@ -493,7 +493,7 @@ export default function CommunityCreatePage() {
               {isFetchingNextPage && (
                 <div className="flex flex-col items-center justify-center py-4 gap-2">
                   <Spinner className="h-5 w-5" />
-                  <p className="text-sm text-muted-foreground">다음 페이지를 불러오는 중...</p>
+                  <p className="text-sm text-muted-foreground">{t('key202', '다음 페이지를 불러오는 중...')}</p>
                 </div>
               )}
               {hasNextPage && !isFetchingNextPage && allProducts.length > 0 && (
@@ -504,7 +504,7 @@ export default function CommunityCreatePage() {
                     onClick={() => fetchNextPage()}
                     className="text-xs text-muted-foreground hover:text-foreground"
                   >
-                    더 많은 상품 보기
+                    {t('key203', '더 많은 상품 보기')}
                   </Button>
                 </div>
               )}
@@ -513,7 +513,7 @@ export default function CommunityCreatePage() {
             {/* Selected Product Info */}
             {selectedProduct && (
               <div className="text-sm text-muted-foreground">
-                선택된 상품: {selectedProduct.productName || 'N/A'}
+                {t('key204', '선택된 상품:')} {selectedProduct.productName || 'N/A'}
               </div>
             )}
           </div>
@@ -522,12 +522,12 @@ export default function CommunityCreatePage() {
               variant="outline"
               onClick={() => setProductDialogOpen(false)}
             >
-              취소
+              {t('key199', '취소')}
             </Button>
             <Button
               onClick={() => setProductDialogOpen(false)}
             >
-              확인 {selectedProduct ? '(1)' : '(0)'}
+              {t('key205', '확인')} {selectedProduct ? '(1)' : '(0)'}
             </Button>
           </DialogFooter>
         </DialogContent>

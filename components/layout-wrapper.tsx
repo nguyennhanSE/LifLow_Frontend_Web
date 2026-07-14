@@ -8,6 +8,7 @@ import { PwaInstallPrompt } from "@/components/pwa-install-prompt"
 import { useContext, useEffect, useState } from "react"
 import { NotificationContext, NotificationContextValue, RecipeNotification } from "@/app/providers/globalSSEProvider"
 import { CheckCircle, ChefHat, X, XCircle } from "lucide-react"
+import { useTranslation } from 'react-i18next'
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
@@ -35,6 +36,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
 
 
 function RecipeNotificationModal() {
+  const { t } = useTranslation()
   const pathname = usePathname()
   const router = useRouter()
   const { notifications, status } = useContext(NotificationContext) as NotificationContextValue;
@@ -103,7 +105,7 @@ function RecipeNotificationModal() {
             <div className="flex items-center justify-center gap-2 mb-2">
               <ChefHat size={16} className="text-gray-400" />
               <span className="text-xs font-medium uppercase tracking-widest text-gray-400">
-                Recipe Update
+                {t('recipeUpdate', 'Recipe Update')}
               </span>
             </div>
 
@@ -128,7 +130,7 @@ function RecipeNotificationModal() {
                     : 'bg-red-400 hover:bg-red-500'
                   }`}
               >
-                Refresh Page
+                {t('refreshPage', 'Refresh Page')}
               </button>
             ) : (
               <>
@@ -141,7 +143,7 @@ function RecipeNotificationModal() {
                       : 'bg-red-400 hover:bg-red-500'
                     }`}
                 >
-                  Go to Recipe Page
+                  {t('goToRecipePage', 'Go to Recipe Page')}
                 </button>
 
                 {/* Stay here */}
@@ -150,7 +152,7 @@ function RecipeNotificationModal() {
                   className="w-full rounded-xl py-3 px-4 font-semibold text-gray-500
                     bg-gray-100 hover:bg-gray-200 transition-all active:scale-95"
                 >
-                  Stay Here
+                  {t('stayHere', 'Stay Here')}
                 </button>
               </>
             )}

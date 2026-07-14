@@ -5,8 +5,10 @@ import { useQuery } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { useStaticPage } from '@/hooks/use-static-page/static-page.hook'
+import { useTranslation } from 'react-i18next'
 
 export default function PolicyPage() {
+  const { t } = useTranslation()
   const params = useParams()
   const slug = params.slug as string
   const { getStaticPageBySlug } = useStaticPage()
@@ -30,9 +32,9 @@ export default function PolicyPage() {
   if (isError || !page) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4">
-        <p className="text-gray-500">페이지를 찾을 수 없습니다.</p>
+        <p className="text-gray-500">{t('key170', '페이지를 찾을 수 없습니다.')}</p>
         <Link href="/" className="text-sm text-blue-600 hover:underline">
-          홈으로 돌아가기
+          {t('key171', '홈으로 돌아가기')}
         </Link>
       </div>
     )
@@ -45,9 +47,9 @@ export default function PolicyPage() {
         <div className="container px-4 py-3">
           <nav className="flex items-center gap-2 text-xs text-[#999]">
             <Link href="/" className="hover:text-[#333] transition-colors">
-              Home
+              {t('home', 'Home')}
             </Link>
-            <span>&gt;</span>
+            <span>{t('gt', '&gt;')}</span>
             <span className="font-medium text-[#333]">{page.title}</span>
           </nav>
         </div>

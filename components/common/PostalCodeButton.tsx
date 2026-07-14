@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import Script from "next/script"
 import { Dispatch, SetStateAction } from "react"
+import { useTranslation } from 'react-i18next'
 
 declare global {
   interface DaumPostcodeData {
@@ -35,6 +36,7 @@ interface PostalCodeButtonProps {
 }
 
 export function PostalCodeButton({ onComplete }: PostalCodeButtonProps) {
+  const { t } = useTranslation()
   const [isPostcodeOpen, setIsPostcodeOpen] = useState(false);
   const postcodeEmbedRef = useRef<HTMLDivElement | null>(null);
   const modalOverlayRef = useRef<HTMLDivElement | null>(null);
@@ -127,7 +129,7 @@ export function PostalCodeButton({ onComplete }: PostalCodeButtonProps) {
         onClick={handleFindAddress}
         className="px-4 py-3 bg-white border border-gray-300 rounded whitespace-nowrap hover:bg-gray-50"
       >
-        주소검색
+        {t('key154', '주소검색')}
       </button>
       {isPostcodeOpen ? (
         <div
@@ -141,12 +143,12 @@ export function PostalCodeButton({ onComplete }: PostalCodeButtonProps) {
             style={{ zIndex: 100000 }}
           >
             <button
-              title="Close"
+              title={t('close', 'Close')}
               onClick={() => setIsPostcodeOpen(false)}
               className="absolute top-2 right-2 z-[100001] px-2 py-1 text-sm border border-gray-300 rounded bg-white hover:bg-gray-50"
               style={{ zIndex: 100001 }}
             >
-              Close
+              {t('close', 'Close')}
             </button>
             <div 
               ref={postcodeEmbedRef} 

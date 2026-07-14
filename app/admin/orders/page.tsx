@@ -53,6 +53,8 @@ import {
 import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 import { PaginationButton } from './components/PaginationButton'
+import { useTranslation } from 'react-i18next'
+import i18next from 'i18next'
 
 // Helper function to format order status for display
 function getOrderStatusDisplay(situation: EOrderSituation | null | undefined): {
@@ -63,15 +65,15 @@ function getOrderStatusDisplay(situation: EOrderSituation | null | undefined): {
   
   switch (situation) {
     case EOrderSituation.ORDER_PAYMENT_FAILED:
-      return { label: '결제실패', badge: 'red' }
+      return { label: i18next.t('key386', '결제실패'), badge: 'red' }
     case EOrderSituation.ORDER_PAYMENT_PENDING:
-      return { label: '결제대기', badge: null }
+      return { label: i18next.t('key387', '결제대기'), badge: null }
     case EOrderSituation.ORDER_PAYMENT_COMPLETED:
-      return { label: '결제완료', badge: null }
+      return { label: i18next.t('key388', '결제완료'), badge: null }
     case EOrderSituation.ORDER_BEING_SHIPPED:
-      return { label: '배송중', badge: 'black' }
+      return { label: i18next.t('key57', '배송중'), badge: 'black' }
     case EOrderSituation.ORDER_SHIPPED:
-      return { label: '배송완료', badge: null }
+      return { label: i18next.t('key389', '배송완료'), badge: null }
     case EOrderSituation.ORDER_CANCELLED:
     case EOrderSituation.ORDER_RETURNED:
       return { label: situation === EOrderSituation.ORDER_CANCELLED ? '취소됨' : '반품됨', badge: 'red' }
@@ -86,6 +88,7 @@ function formatCurrency(value: number) {
 }
 
 export default function AdminOrdersPage() {
+  const { t } = useTranslation()
   const [selectedOrders, setSelectedOrders] = useState<string[]>([])
   const [stats, setStats] = useState<{
     paymentPending?: number
@@ -290,13 +293,13 @@ export default function AdminOrdersPage() {
     return [
       { 
         icon: ShoppingCart, 
-        label: '신규주문', 
+        label: t('key390', '신규주문'), 
         count: stats.paymentPending || 0, 
         color: 'bg-blue-100 text-blue-600' 
       },
       { 
         icon: PackageCheck, 
-        label: '결제완료', 
+        label: t('key388', '결제완료'), 
         count: stats.paymentCompleted || 0, 
         color: 'bg-green-100 text-green-600' 
       },
@@ -308,19 +311,19 @@ export default function AdminOrdersPage() {
       // },
       { 
         icon: Truck, 
-        label: '배송중', 
+        label: t('key57', '배송중'), 
         count: stats.inTransit || 0, 
         color: 'bg-purple-100 text-purple-600' 
       },
       { 
         icon: FileText, 
-        label: '송장진송', 
+        label: t('key391', '송장진송'), 
         count: stats.invoiceTransmitted || 0, 
         color: 'bg-indigo-100 text-indigo-600' 
       },
       {
         icon: RefreshCcw,
-        label: '취소/반품/교환',
+        label: t('key392', '취소/반품/교환'),
         count: (stats.cancelled || 0) + (stats.returned || 0),
         color: 'bg-red-100 text-red-600',
       },
@@ -424,9 +427,9 @@ export default function AdminOrdersPage() {
     <div className="space-y-6">
       {/* Header */}
       <section>
-        <h1 className="text-xl font-semibold text-foreground">주문 관리</h1>
+        <h1 className="text-xl font-semibold text-foreground">{t('key393', '주문 관리')}</h1>
         <p className="text-sm text-muted-foreground mt-1">
-        주문 현황을 확인하고 관리할 수 있습니다
+        {t('key394', '주문 현황을 확인하고 관리할 수 있습니다')}
         </p>
       </section>
 
@@ -434,7 +437,7 @@ export default function AdminOrdersPage() {
       <section className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
         {loading ? (
           <div className="col-span-full text-center py-8 text-muted-foreground">
-            통계를 불러오는 중...
+            {t('key395', '통계를 불러오는 중...')}
           </div>
         ) : (
           orderStatuses.map((status, index) => (
@@ -459,12 +462,12 @@ export default function AdminOrdersPage() {
 
       {/* Order Search */}
       <section className="bg-card border-border rounded-lg border p-6">
-        <h2 className="mb-4 text-base font-semibold text-foreground">주문 검색</h2>
+        <h2 className="mb-4 text-base font-semibold text-foreground">{t('key396', '주문 검색')}</h2>
 
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
           {/* Period */}
           <div className="space-y-2 lg:col-span-3">
-            <Label className="text-sm font-medium">기간</Label>
+            <Label className="text-sm font-medium">{t('key397', '기간')}</Label>
             <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
               <PopoverTrigger asChild>
                 <Button
@@ -485,7 +488,7 @@ export default function AdminOrdersPage() {
                       format(dateRange.from, 'LLL dd, y')
                     )
                   ) : (
-                    <span>날짜 선택</span>
+                    <span>{t('key398', '날짜 선택')}</span>
                   )}
                 </Button>
               </PopoverTrigger>
@@ -504,7 +507,7 @@ export default function AdminOrdersPage() {
 
           {/* Quick Select */}
           <div className="space-y-2 lg:col-span-4">
-            <Label className="text-sm font-medium">빠른 선택</Label>
+            <Label className="text-sm font-medium">{t('key399', '빠른 선택')}</Label>
             <div className="flex gap-2">
               <Button
                 variant="outline"
@@ -512,7 +515,7 @@ export default function AdminOrdersPage() {
                 className="bg-transparent flex-1"
                 onClick={() => handleQuickSelect('today')}
               >
-                오늘
+                {t('key400', '오늘')}
               </Button>
               <Button
                 variant="outline"
@@ -520,7 +523,7 @@ export default function AdminOrdersPage() {
                 className="bg-transparent flex-1"
                 onClick={() => handleQuickSelect('7days')}
               >
-                7일
+                {t('74', '7일')}
               </Button>
               <Button
                 variant="outline"
@@ -528,7 +531,7 @@ export default function AdminOrdersPage() {
                 className="bg-transparent flex-1"
                 onClick={() => handleQuickSelect('1month')}
               >
-                1개월
+                {t('127', '1개월')}
               </Button>
               <Button
                 variant="outline"
@@ -536,14 +539,14 @@ export default function AdminOrdersPage() {
                 className="bg-transparent flex-1"
                 onClick={() => handleQuickSelect('entire')}
               >
-                전체
+                {t('key325', '전체')}
               </Button>
             </div>
           </div>
 
           {/* Order Status */}
           <div className="space-y-2 lg:col-span-2">
-            <Label className="text-sm font-medium">주문 상태</Label>
+            <Label className="text-sm font-medium">{t('key401', '주문 상태')}</Label>
             <Select 
               value={selectedOrderStatus} 
               onValueChange={(value) => setSelectedOrderStatus(value as EOrderSituation | 'ALL')}
@@ -553,24 +556,24 @@ export default function AdminOrdersPage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="ALL">전체</SelectItem>
-                <SelectItem value={EOrderSituation.ORDER_PAYMENT_PENDING}>결제대기</SelectItem>
-                <SelectItem value={EOrderSituation.ORDER_PAYMENT_COMPLETED}>결제완료</SelectItem>
-                <SelectItem value={EOrderSituation.ORDER_BEING_SHIPPED}>배송중</SelectItem>
-                <SelectItem value={EOrderSituation.ORDER_SHIPPED}>배송완료</SelectItem>
-                <SelectItem value={EOrderSituation.ORDER_CANCELLED}>취소</SelectItem>
-                <SelectItem value={EOrderSituation.ORDER_RETURNED}>반품</SelectItem>
+                <SelectItem value="ALL">{t('key325', '전체')}</SelectItem>
+                <SelectItem value={EOrderSituation.ORDER_PAYMENT_PENDING}>{t('key387', '결제대기')}</SelectItem>
+                <SelectItem value={EOrderSituation.ORDER_PAYMENT_COMPLETED}>{t('key388', '결제완료')}</SelectItem>
+                <SelectItem value={EOrderSituation.ORDER_BEING_SHIPPED}>{t('key57', '배송중')}</SelectItem>
+                <SelectItem value={EOrderSituation.ORDER_SHIPPED}>{t('key389', '배송완료')}</SelectItem>
+                <SelectItem value={EOrderSituation.ORDER_CANCELLED}>{t('key212', '취소')}</SelectItem>
+                <SelectItem value={EOrderSituation.ORDER_RETURNED}>{t('key60', '반품')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           {/* Search */}
           <div className="space-y-2 lg:col-span-3">
-            <Label className="text-sm font-medium">검색</Label>
+            <Label className="text-sm font-medium">{t('key402', '검색')}</Label>
             <div className="relative">
               <Search className="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
               <Input
-                placeholder="주문번호, 고객명, 상품명"
+                placeholder={t('key403', '주문번호, 고객명, 상품명')}
                 className="pl-9"
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
@@ -582,7 +585,7 @@ export default function AdminOrdersPage() {
         {/* Reset Button */}
         <div className="mt-4 flex justify-center">
           <Button variant="outline" size="sm" onClick={handleReset}>
-            초기화
+            {t('key366', '초기화')}
           </Button>
         </div>
       </section>
@@ -591,28 +594,28 @@ export default function AdminOrdersPage() {
       <section className="bg-card border-border rounded-lg border">
         {/* Table Header Info */}
         <div className="border-border flex items-center justify-between border-b px-6 py-4">
-          <h2 className="text-base font-semibold text-foreground">전체 주문</h2>
+          <h2 className="text-base font-semibold text-foreground">{t('key404', '전체 주문')}</h2>
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
               size="sm"
               onClick={() => handleFilterBySituation(EOrderSituation.ORDER_PAYMENT_COMPLETED)}
             >
-              결제 완료
+              {t('key56', '결제 완료')}
             </Button>
             <Button
               variant="outline"
               size="sm"
               onClick={() => handleFilterBySituation(EOrderSituation.ORDER_BEING_SHIPPED)}
             >
-              출고완료 처리
+              {t('key405', '출고완료 처리')}
             </Button>
             <Button
               variant="outline"
               size="sm"
               onClick={() => handleFilterBySituation(EOrderSituation.ORDER_SHIPPED)}
             >
-              배송완료 처리
+              {t('key406', '배송완료 처리')}
             </Button>
           </div>
         </div>
@@ -628,21 +631,21 @@ export default function AdminOrdersPage() {
                     onCheckedChange={toggleAll}
                   />
                 </th>
-                <th className="p-4 text-left">주문그룹번호</th>
-                <th className="p-4 text-left">상품정보</th>
-                <th className="p-4 text-left">주문자</th>
-                <th className="p-4 text-left">연락처</th>
-                <th className="p-4 text-left">주문일시</th>
-                <th className="p-4 text-left">주문금액</th>
-                <th className="p-4 text-center w-28">상태</th>
-                <th className="p-4 text-left">관리</th>
+                <th className="p-4 text-left">{t('key407', '주문그룹번호')}</th>
+                <th className="p-4 text-left">{t('key408', '상품정보')}</th>
+                <th className="p-4 text-left">{t('key409', '주문자')}</th>
+                <th className="p-4 text-left">{t('key205', '연락처')}</th>
+                <th className="p-4 text-left">{t('key410', '주문일시')}</th>
+                <th className="p-4 text-left">{t('key411', '주문금액')}</th>
+                <th className="p-4 text-center w-28">{t('key336', '상태')}</th>
+                <th className="p-4 text-left">{t('key338', '관리')}</th>
               </tr>
             </thead>
             <tbody className="text-sm">
               {isErrorOrders ? (
                 <tr>
                   <td colSpan={9} className="p-4 text-center text-red-500">
-                    오류가 발생했습니다: {ordersError instanceof Error ? ordersError.message : '알 수 없는 오류'}
+                    {t('key339', '오류가 발생했습니다:')} {ordersError instanceof Error ? ordersError.message : t('key340', '알 수 없는 오류')}
                   </td>
                 </tr>
               ) : isLoadingOrders ? (
@@ -650,20 +653,20 @@ export default function AdminOrdersPage() {
                   <td colSpan={9} className="p-4 text-center text-muted-foreground">
                     <div className="flex items-center justify-center gap-2">
                       <Spinner className="h-4 w-4" />
-                      <span>로딩 중...</span>
+                      <span>{t('key74', '로딩 중...')}</span>
                     </div>
                   </td>
                 </tr>
               ) : allOrderGroups.length === 0 ? (
                 <tr>
                   <td colSpan={9} className="p-4 text-center text-muted-foreground">
-                    데이터가 없습니다.
+                    {t('key341', '데이터가 없습니다.')}
                   </td>
                 </tr>
               ) : (
                 allOrderGroups.map((group, groupIdx) => {
                   // Use index as fallback to ensure unique keys
-                  const groupKey = group.orderGroupNumber ? `${group.orderGroupNumber}-${groupIdx}` : `group-${groupIdx}`
+                  const groupKey = group.orderGroupNumber ? t('ordergroupnumbergroupidx', '{{orderGroupNumber}}-{{groupIdx}}', { orderGroupNumber: group.orderGroupNumber, groupIdx }) : t('groupgroupidx', 'group-{{groupIdx}}', { groupIdx })
                   const groupOrders = group.orders ?? []
                   // Sort orders by product name alphabetically
                   const sortedOrders = [...groupOrders].sort((a, b) => {
@@ -783,13 +786,13 @@ export default function AdminOrdersPage() {
                         <div className="space-y-2 min-w-[120px]">
                           {group.courierCompany && (
                             <div className="text-xs">
-                              <span className="text-muted-foreground">택배사: </span>
+                              <span className="text-muted-foreground">{t('key270', '택배사:')} </span>
                               <span className="text-foreground font-medium">{group.courierCompany}</span>
                             </div>
                           )}
                           {group.invoiceNumber && (
                             <div className="text-xs">
-                              <span className="text-muted-foreground">송장번호: </span>
+                              <span className="text-muted-foreground">{t('key412', '송장번호:')} </span>
                               <span className="text-foreground font-medium">{group.invoiceNumber}</span>
                             </div>
                           )}
@@ -801,7 +804,7 @@ export default function AdminOrdersPage() {
                                 className="w-full bg-black text-white hover:bg-black/90"
                                 onClick={() => handleOpenInvoiceDialog(group)}
                               >
-                                송장입력
+                                {t('key413', '송장입력')}
                               </Button>
                             )}
                             <Button
@@ -810,7 +813,7 @@ export default function AdminOrdersPage() {
                               className="w-full bg-black text-white hover:bg-black/90"
                               onClick={() => router.push(`/admin/orders/${group.orderGroupNumber}`)}
                             >
-                              상세보기
+                              {t('key414', '상세보기')}
                             </Button>
                           </div>
                         </div>
@@ -828,12 +831,12 @@ export default function AdminOrdersPage() {
           <div className="flex flex-wrap items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">
               {paginationMeta?.total != null
-                ? `전체 ${paginationMeta.total}건 (${allOrderGroups.length}건 표시)`
-                : `${allOrderGroups.length}건의 주문그룹`}
+                ? t('totalLength', '전체 {{total}}건 ({{length}}건 표시)', { total: paginationMeta.total, length: allOrderGroups.length })
+                : t('length3', '{{length}}건의 주문그룹', { length: allOrderGroups.length })}
             </p>
             <Button variant="outline" size="sm">
               <Download className="mr-2 h-4 w-4" />
-              CSV 내보내기
+              {t('csv2', 'CSV 내보내기')}
             </Button>
           </div>
           <PaginationButton
@@ -852,7 +855,7 @@ export default function AdminOrdersPage() {
       <Dialog open={selectedOrderGroup !== null} onOpenChange={(open) => !open && handleCloseInvoiceDialog()}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>송장번호 입력</DialogTitle>
+            <DialogTitle>{t('key415', '송장번호 입력')}</DialogTitle>
           </DialogHeader>
           
           {selectedOrderGroup && (
@@ -860,19 +863,19 @@ export default function AdminOrdersPage() {
               {/* Order Group Number */}
               <div>
                 <p className="text-sm font-medium text-foreground mb-1">
-                  주문그룹: {selectedOrderGroup.orderGroupNumber || 'N/A'}
+                  {t('key416', '주문그룹:')} {selectedOrderGroup.orderGroupNumber || 'N/A'}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  송장번호를 입력해주세요 ({selectedOrderGroup.orders?.length || 0}건의 주문)
+                  {t('key417', '송장번호를 입력해주세요 (')}{selectedOrderGroup.orders?.length || 0}{t('key418', '건의 주문)')}
                 </p>
               </div>
 
               {/* Courier */}
               <div className="space-y-2">
-                <Label className="text-sm font-medium">택배사</Label>
+                <Label className="text-sm font-medium">{t('key419', '택배사')}</Label>
                 <Select value={courierCompany} onValueChange={setCourierCompany}>
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="택배사를 선택해주세요" />
+                    <SelectValue placeholder={t('key420', '택배사를 선택해주세요')} />
                   </SelectTrigger>
                   <SelectContent>
                     {courierOptions.map((courier) => (
@@ -886,9 +889,9 @@ export default function AdminOrdersPage() {
 
               {/* Invoice Number */}
               <div className="space-y-2">
-                <Label className="text-sm font-medium">송장번호</Label>
+                <Label className="text-sm font-medium">{t('key421', '송장번호')}</Label>
                 <Input
-                  placeholder="송장번호를 입력해주세요"
+                  placeholder={t('key422', '송장번호를 입력해주세요')}
                   value={invoiceNumber}
                   onChange={(e) => setInvoiceNumber(e.target.value)}
                 />
@@ -897,29 +900,29 @@ export default function AdminOrdersPage() {
               {/* Recipient Information - from first order */}
               {selectedOrderGroup.orders && selectedOrderGroup.orders.length > 0 && (
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium">수령인 정보</Label>
+                  <Label className="text-sm font-medium">{t('key423', '수령인 정보')}</Label>
                   <div className="rounded-md bg-muted p-3 space-y-2 text-sm">
                     {(() => {
                       const firstOrder = selectedOrderGroup.orders[0]
                       return (
                         <>
                           <div>
-                            <span className="text-muted-foreground">이름: </span>
+                            <span className="text-muted-foreground">{t('key424', '이름:')} </span>
                             <span className="text-foreground font-medium">
                               {firstOrder.recipient || firstOrder.ordererName || 'N/A'}
                             </span>
                           </div>
                           <div>
-                            <span className="text-muted-foreground">연락처: </span>
+                            <span className="text-muted-foreground">{t('key425', '연락처:')} </span>
                             <span className="text-foreground font-medium">
                               {firstOrder.recipientMobilePhone || firstOrder.ordererMobilePhone || 'N/A'}
                             </span>
                           </div>
                           <div>
-                            <span className="text-muted-foreground">주소: </span>
+                            <span className="text-muted-foreground">{t('key426', '주소:')} </span>
                             <span className="text-foreground font-medium">
                               {firstOrder.recipientAddressFull 
-                                ? `(${firstOrder.recipientPostalCode || ''}) ${firstOrder.recipientAddressFull}`
+                                ? t('valRecipientaddressfull', '({{val}}) {{recipientAddressFull}}', { val: firstOrder.recipientPostalCode || '', recipientAddressFull: firstOrder.recipientAddressFull })
                                 : 'N/A'}
                             </span>
                           </div>
@@ -938,7 +941,7 @@ export default function AdminOrdersPage() {
               onClick={handleCloseInvoiceDialog}
               disabled={updateInvoiceMutation.isPending}
             >
-              취소
+              {t('key212', '취소')}
             </Button>
             <Button
               onClick={handleSubmitInvoice}
@@ -948,7 +951,7 @@ export default function AdminOrdersPage() {
               {updateInvoiceMutation.isPending && (
                 <Spinner className="mr-2 h-4 w-4" />
               )}
-              등록
+              {t('key427', '등록')}
             </Button>
           </DialogFooter>
         </DialogContent>

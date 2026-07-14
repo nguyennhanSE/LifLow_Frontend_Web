@@ -11,8 +11,10 @@ import { useCoupon } from '@/hooks/use-coupon/coupon.hook'
 import { Coupon } from '@/entities/coupons/coupon.entity'
 import { CreateCouponDialog } from './components/create-coupon-dialog'
 import { UpdateCouponDialog } from './components/update-coupon-dialog'
+import { useTranslation } from 'react-i18next'
 
 export default function AdminBannerPage() {
+  const { t } = useTranslation()
   const [stats, setStats] = useState<{
     totalCoupons: number
     totalAutoIssueCoupons: number
@@ -153,8 +155,8 @@ export default function AdminBannerPage() {
       {/* Header */}
       <section className="flex items-start justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-foreground">쿠폰 관리</h1>
-          <p className="mt-1 text-sm text-muted-foreground">쿠폰을 생성하고 관리합니다</p>
+          <h1 className="text-xl font-semibold text-foreground">{t('key469', '쿠폰 관리')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('key470', '쿠폰을 생성하고 관리합니다')}</p>
         </div>
         <div className="flex items-center gap-3">
           {/* <Button variant="outline" className="bg-transparent gap-2">
@@ -166,7 +168,7 @@ export default function AdminBannerPage() {
             onClick={() => setIsCreateDialogOpen(true)}
           >
             <Plus className="h-4 w-4" />
-            새 쿠폰 만들기
+            {t('key471', '새 쿠폰 만들기')}
           </Button>
         </div>
       </section>
@@ -175,30 +177,30 @@ export default function AdminBannerPage() {
       <section className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {loading ? (
           <div className="col-span-full text-center py-8 text-muted-foreground">
-            통계를 불러오는 중...
+            {t('key395', '통계를 불러오는 중...')}
           </div>
         ) : (
           <>
         <div className="bg-card border-border hover:shadow-sm rounded-lg border p-5 transition-shadow">
-          <p className="mb-2 text-xs text-muted-foreground">전체 쿠폰</p>
+          <p className="mb-2 text-xs text-muted-foreground">{t('key472', '전체 쿠폰')}</p>
               <p className="text-3xl font-semibold text-foreground">{stats?.totalCoupons || 0}</p>
           {/* <p className="mt-1 text-xs text-muted-foreground">개</p> */}
         </div>
 
         <div className="bg-card border-border hover:shadow-sm rounded-lg border p-5 transition-shadow">
-          <p className="mb-2 text-xs text-muted-foreground">활성 쿠폰</p>
+          <p className="mb-2 text-xs text-muted-foreground">{t('key473', '활성 쿠폰')}</p>
               <p className="text-3xl font-semibold text-green-600">{stats?.totalActiveCoupons || 0}</p>
           {/* <p className="mt-1 text-xs text-muted-foreground">개</p> */}
         </div>
 
         <div className="bg-card border-border hover:shadow-sm rounded-lg border p-5 transition-shadow">
-          <p className="mb-2 text-xs text-muted-foreground">자동 발급</p>
+          <p className="mb-2 text-xs text-muted-foreground">{t('key474', '자동 발급')}</p>
               <p className="text-3xl font-semibold text-blue-600">{stats?.totalAutoIssueCoupons || 0}</p>
           {/* <p className="mt-1 text-xs text-muted-foreground">개</p> */}
         </div>
 
         <div className="bg-card border-border hover:shadow-sm rounded-lg border p-5 transition-shadow">
-          <p className="mb-2 text-xs text-muted-foreground">포인트 쿠폰</p>
+          <p className="mb-2 text-xs text-muted-foreground">{t('key475', '포인트 쿠폰')}</p>
               <p className="text-3xl font-semibold text-purple-600">{stats?.totalInactiveCoupons || 0}</p>
           {/* <p className="mt-1 text-xs text-muted-foreground">개</p> */}
         </div>
@@ -208,23 +210,23 @@ export default function AdminBannerPage() {
 
       {/* Coupon List */}
       <section>
-        <h2 className="mb-4 text-base font-semibold text-foreground">쿠폰 목록</h2>
+        <h2 className="mb-4 text-base font-semibold text-foreground">{t('key476', '쿠폰 목록')}</h2>
 
         <div className="space-y-4">
           {isErrorCoupons ? (
             <div className="text-center py-8 text-red-500">
-              오류가 발생했습니다: {couponsError instanceof Error ? couponsError.message : '알 수 없는 오류'}
+              {t('key339', '오류가 발생했습니다:')} {couponsError instanceof Error ? couponsError.message : t('key340', '알 수 없는 오류')}
             </div>
           ) : isLoadingCoupons ? (
             <div className="text-center py-8 text-muted-foreground">
               <div className="flex items-center justify-center gap-2">
                 <Spinner className="h-4 w-4" />
-                <span>로딩 중...</span>
+                <span>{t('key74', '로딩 중...')}</span>
               </div>
             </div>
           ) : allCoupons.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
-              데이터가 없습니다.
+              {t('key341', '데이터가 없습니다.')}
             </div>
           ) : (
             allCoupons.map((coupon) => (
@@ -253,7 +255,7 @@ export default function AdminBannerPage() {
                   </span>
                     {coupon.isAutoIssue && (
                     <span className="inline-flex items-center rounded-md bg-black px-3 py-1 text-xs font-medium text-white">
-                      자동발급
+                      {t('key477', '자동발급')}
                     </span>
                   )}
                   <Button
@@ -273,7 +275,7 @@ export default function AdminBannerPage() {
                     size="icon"
                     className="h-8 w-8 text-muted-foreground hover:text-destructive"
                     disabled={deletingCouponId === coupon.id || coupon.isPermanent === true}
-                    title={coupon.isPermanent ? '상시 쿠폰은 삭제할 수 없습니다' : '삭제'}
+                    title={coupon.isPermanent ? t('key478', '상시 쿠폰은 삭제할 수 없습니다') : '삭제'}
                   >
                     {deletingCouponId === coupon.id ? (
                       <Spinner className="h-4 w-4" />
@@ -286,7 +288,7 @@ export default function AdminBannerPage() {
 
               <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
                 <div>
-                  <p className="mb-1 text-xs text-muted-foreground">코드</p>
+                  <p className="mb-1 text-xs text-muted-foreground">{t('key479', '코드')}</p>
                     <p className="text-sm font-medium text-foreground">{coupon.code || 'N/A'}</p>
                     {/* {coupon.minPurchaseAmount && coupon.type === 'AMOUNT' && (
                     <p className="mt-2 text-xs text-muted-foreground">
@@ -298,15 +300,13 @@ export default function AdminBannerPage() {
                 <div>
                   {coupon.discountRate != null && (
                     <>
-                      <p className="mb-1 text-xs text-muted-foreground">할인율</p>
-                      <p className="text-sm font-medium text-foreground">
-                          {coupon.discountRate}%
-                      </p>
+                      <p className="mb-1 text-xs text-muted-foreground">{t('key480', '할인율')}</p>
+                      <p className="text-sm font-medium text-foreground">{t('discountrate', '{{discountRate}}%', { discountRate: coupon.discountRate })}</p>
                     </>
                   )}
                   {coupon.discountAmount != null && coupon.discountAmount > 0 && (
                     <>
-                      <p className="mb-1 text-xs text-muted-foreground">할인금액</p>
+                      <p className="mb-1 text-xs text-muted-foreground">{t('key347', '할인금액')}</p>
                       <p className="text-sm font-medium text-foreground">
                           {formatCurrency(coupon.discountAmount)}
                       </p>
@@ -314,12 +314,12 @@ export default function AdminBannerPage() {
                   )}
                   {coupon.minPurchaseAmount != null && coupon.minPurchaseAmount > 0 && (
                       <p className="mt-2 text-xs text-muted-foreground">
-                        최소 구매금액: {formatCurrency(coupon.minPurchaseAmount)}
+                        {t('key481', '최소 구매금액:')} {formatCurrency(coupon.minPurchaseAmount)}
                     </p>
                   )}
                   {coupon.maxDiscountAmount && coupon.maxDiscountAmount > 0 && (
                     <p className="mt-2 text-xs text-muted-foreground">
-                        최대 할인: {formatCurrency(coupon.maxDiscountAmount)}
+                        {t('key482', '최대 할인:')} {formatCurrency(coupon.maxDiscountAmount)}
                     </p>
                   )}
                 </div>
@@ -327,10 +327,10 @@ export default function AdminBannerPage() {
                 <div>
                   {coupon.startDate && coupon.endDate && (
                     <>
-                      <p className="mb-1 text-xs text-muted-foreground">유효기간</p>
+                      <p className="mb-1 text-xs text-muted-foreground">{t('key483', '유효기간')}</p>
                       <p className="text-sm font-medium text-foreground min-h-[1.25rem]">
                         {coupon.startDate && format(new Date(coupon.startDate), 'yyyy-MM-dd HH:mm')}
-                        {coupon.startDate && coupon.endDate && ' ~ '}
+                        {coupon.startDate && coupon.endDate && t('key484', ' ~ ')}
                         {coupon.endDate && format(new Date(coupon.endDate), 'yyyy-MM-dd HH:mm')}
                       </p>
                     </>
@@ -340,10 +340,10 @@ export default function AdminBannerPage() {
                 <div>
                     {coupon.targetGrades && coupon.targetGrades.length > 0 && (
                     <>
-                      <p className="mb-1 text-xs text-muted-foreground">발급 대상</p>
+                      <p className="mb-1 text-xs text-muted-foreground">{t('key485', '발급 대상')}</p>
                       <p className="text-sm font-medium text-foreground">
                           {coupon.targetGrades.join(', ')}
-                          {coupon.autoIssueDayOfMonth && ` (매달 ${coupon.autoIssueDayOfMonth}일)`}
+                          {coupon.autoIssueDayOfMonth && t('autoissuedayofmonth', '(매달 {{autoIssueDayOfMonth}}일)', { autoIssueDayOfMonth: coupon.autoIssueDayOfMonth })}
                       </p>
                     </>
                   )}

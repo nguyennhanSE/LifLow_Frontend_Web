@@ -8,6 +8,7 @@ import { Trash2, Plus, Minus } from 'lucide-react'
 import { useCart } from '@/hooks/use-cart/cart.hook'
 import { useToast } from '@/hooks/use-toast'
 import Image from 'next/image'
+import { useTranslation } from 'react-i18next'
 
 interface CartItem {
   id: string
@@ -49,6 +50,7 @@ const formatCurrency = (value: number) => {
 }
 
 export function CartSection() {
+  const { t } = useTranslation()
   const router = useRouter()
   const { getMyCart, deleteItemFromCart, bulkUpdateCartItems, bulkDeleteCartItems } = useCart()
   const { toast } = useToast()
@@ -141,8 +143,8 @@ export function CartSection() {
         })
         
         toast({
-          title: "성공",
-          description: "장바구니에서 상품이 제거되었습니다",
+          title: t('key155', '성공'),
+          description: t('key156', '장바구니에서 상품이 제거되었습니다'),
         })
         
         // Refresh cart data to ensure consistency
@@ -157,8 +159,8 @@ export function CartSection() {
         }
       } else {
         toast({
-          title: "오류",
-          description: "장바구니에서 상품 제거에 실패했습니다",
+          title: t('key157', '오류'),
+          description: t('key158', '장바구니에서 상품 제거에 실패했습니다'),
           variant: "destructive",
         })
       }
@@ -166,7 +168,7 @@ export function CartSection() {
       console.error('Error deleting item:', error)
       toast({
         title: "오류",
-        description: "상품 제거 중 오류가 발생했습니다",
+        description: t('key159', '상품 제거 중 오류가 발생했습니다'),
         variant: "destructive",
       })
     } finally {
@@ -188,8 +190,8 @@ export function CartSection() {
 
       if (result) {
         toast({
-          title: "성공",
-          description: "선택한 상품이 장바구니에서 제거되었습니다",
+          title: t('key155', '성공'),
+          description: t('key160', '선택한 상품이 장바구니에서 제거되었습니다'),
         })
         const refreshedData = await getMyCart()
         if (refreshedData) {
@@ -203,8 +205,8 @@ export function CartSection() {
         }
       } else {
         toast({
-          title: "오류",
-          description: "선택한 상품 제거에 실패했습니다",
+          title: t('key157', '오류'),
+          description: t('key161', '선택한 상품 제거에 실패했습니다'),
           variant: "destructive",
         })
       }
@@ -212,7 +214,7 @@ export function CartSection() {
       console.error("Error bulk deleting items:", error)
       toast({
         title: "오류",
-        description: "상품 제거 중 오류가 발생했습니다",
+        description: t('key159', '상품 제거 중 오류가 발생했습니다'),
         variant: "destructive",
       })
     } finally {
@@ -240,7 +242,7 @@ export function CartSection() {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center py-12">
-          <p className="text-muted-foreground">장바구니 불러오는 중...</p>
+          <p className="text-muted-foreground">{t('key162', '장바구니 불러오는 중...')}</p>
         </div>
       </div>
     )
@@ -249,9 +251,9 @@ export function CartSection() {
   if (!cartData || !cartData.cartItems || cartData.cartItems.length === 0) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-8">장바구니</h1>
+        <h1 className="text-2xl font-bold mb-8">{t('key163', '장바구니')}</h1>
         <div className="text-center py-12">
-          <p className="text-muted-foreground">장바구니가 비어있습니다</p>
+          <p className="text-muted-foreground">{t('key164', '장바구니가 비어있습니다')}</p>
         </div>
       </div>
     )
@@ -259,7 +261,7 @@ export function CartSection() {
 
   return (
     <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
-      <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-8">장바구니</h1>
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-8">{t('key163', '장바구니')}</h1>
 
       <div className="flex flex-col lg:flex-row gap-4 sm:gap-8 justify-center">
         {/* Left Section: Shopping Cart Items */}
@@ -272,7 +274,7 @@ export function CartSection() {
               onCheckedChange={handleSelectAll}
             />
             <label htmlFor="select-all" className="text-sm cursor-pointer">
-              전체 선택
+              {t('key165', '전체 선택')}
             </label>
             <button
               type="button"
@@ -280,15 +282,15 @@ export function CartSection() {
               disabled={selectedItems.size === 0 || bulkDeleting}
               className="text-sm text-muted-foreground hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              선택 삭제
+              {t('key166', '선택 삭제')}
             </button>
           </div>
 
           {/* Column Headers (desktop only) */}
           <div className="hidden md:grid grid-cols-[1fr_140px_140px] gap-4 py-3 border-b text-sm text-muted-foreground">
-            <div className="pl-10">상품정보</div>
-            <div className="text-center">수량</div>
-            <div className="text-center">금액</div>
+            <div className="pl-10">{t('key167', '상품정보')}</div>
+            <div className="text-center">{t('key168', '수량')}</div>
+            <div className="text-center">{t('key169', '금액')}</div>
           </div>
 
           {/* Cart Items */}
@@ -317,7 +319,7 @@ export function CartSection() {
                       </div>
                       <div className="min-w-0">
                         <h3 className="font-medium text-sm mb-1 truncate">{item.product.productName}</h3>
-                        <p className="text-xs text-muted-foreground">옵션: {item.product.productCode}</p>
+                        <p className="text-xs text-muted-foreground">{t('productcode', '옵션: {{productCode}}', { productCode: item.product.productCode })}</p>
                       </div>
                     </div>
                     <div className="flex items-center justify-center gap-2">
@@ -372,7 +374,7 @@ export function CartSection() {
                           <Trash2 className="h-3.5 w-3.5" />
                         </Button>
                       </div>
-                      <p className="text-xs text-muted-foreground mt-0.5">옵션: {item.product.productCode}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{t('productcode', '옵션: {{productCode}}', { productCode: item.product.productCode })}</p>
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex items-center gap-1.5">
                           <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => handleQuantityChange(item.id, -1)}>
@@ -396,19 +398,19 @@ export function CartSection() {
         {/* Right Section: Order Summary */}
         <div className="lg:w-80">
           <div className="border rounded-lg p-4 sm:p-6 lg:sticky lg:top-4">
-            <h2 className="text-lg font-bold mb-4">주문 금액</h2>
+            <h2 className="text-lg font-bold mb-4">{t('key170', '주문 금액')}</h2>
 
             <div className="space-y-3 mb-6">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">상품 금액</span>
+                <span className="text-muted-foreground">{t('key171', '상품 금액')}</span>
                 <span>{formatCurrency(productAmount)} 원</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">배송비</span>
+                <span className="text-muted-foreground">{t('key172', '배송비')}</span>
                 <span>{formatCurrency(shippingCost)} 원</span>
               </div>
               <div className="flex justify-between text-lg font-bold pt-3 border-t">
-                <span>총 주문 금액</span>
+                <span>{t('key173', '총 주문 금액')}</span>
                 <span className="text-primary">{formatCurrency(totalOrderAmount)} 원</span>
               </div>
             </div>
@@ -462,14 +464,14 @@ export function CartSection() {
                   router.push('/orders/create')
                 }}
               >
-                주문하기
+                {t('key174', '주문하기')}
               </Button>
               <Button 
                 variant="outline" 
                 className="w-full"
                 onClick={() => router.push('/market')}
               >
-                쇼핑 계속하기
+                {t('key175', '쇼핑 계속하기')}
               </Button>
             </div>
           </div>

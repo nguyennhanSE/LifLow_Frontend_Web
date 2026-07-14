@@ -17,6 +17,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Spinner } from "@/components/ui/spinner"
 import { useProduct } from "@/hooks/use-product/product.hook"
 import { ProductBadge, CreateProductSpecialOfferDto } from "@/hooks/use-product/product.dto"
+import { useTranslation } from 'react-i18next'
 
 interface WeeklyDealForm {
   discountAmount: number
@@ -72,6 +73,7 @@ export function ProductStatusSection({
   onSpecialOfferChange,
   onTurnOffWeeklySpecial,
 }: ProductStatusSectionProps) {
+  const { t } = useTranslation()
   const [isWeeklySpecialDialogOpen, setIsWeeklySpecialDialogOpen] = useState(false)
   const [isTurningOffWeeklySpecial, setIsTurningOffWeeklySpecial] = useState(false)
   const [isSettingWeeklySpecial, setIsSettingWeeklySpecial] = useState(false)
@@ -199,15 +201,15 @@ export function ProductStatusSection({
     <>
       <Card>
         <CardContent className="pt-6">
-          <h2 className="mb-4 text-lg font-semibold">태그</h2>
+          <h2 className="mb-4 text-lg font-semibold">{t('key648', '태그')}</h2>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Label htmlFor="hotDeal" className="font-normal">
-                  Hot Deal
+                  {t('hotDeal', 'Hot Deal')}
                 </Label>
                 {hotDeal && (
-                  <Badge className="bg-orange-100 text-orange-500 border border-orange-500">핫딜</Badge>
+                  <Badge className="bg-orange-100 text-orange-500 border border-orange-500">{t('key649', '핫딜')}</Badge>
                 )}
               </div>
               <Switch id="hotDeal" checked={hotDeal} onCheckedChange={handleHotDealChange} />
@@ -215,10 +217,10 @@ export function ProductStatusSection({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Label htmlFor="newProduct" className="font-normal">
-                  New products
+                  {t('newProducts', 'New products')}
                 </Label>
                 {newProduct && (
-                  <Badge className="bg-blue-100 text-blue-500 border border-blue-500">신상품</Badge>
+                  <Badge className="bg-blue-100 text-blue-500 border border-blue-500">{t('key650', '신상품')}</Badge>
                 )}
               </div>
               <Switch id="newProduct" checked={newProduct} onCheckedChange={handleNewProductChange} />
@@ -226,11 +228,11 @@ export function ProductStatusSection({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Label htmlFor="weeklySpecial" className="font-normal">
-                  Specials this week
+                  {t('specialsThisWeek', 'Specials this week')}
                 </Label>
                 {weeklySpecial && (
                   <Badge className="bg-white text-orange-500 border border-orange-500">
-                    {discountRate > 0 ? `${discountRate}%` : ''}
+                    {discountRate > 0 ? t('discountrate', '{{discountRate}}%', { discountRate }) : ''}
                   </Badge>
                 )}
               </div>
@@ -250,28 +252,28 @@ export function ProductStatusSection({
                 </div>
                 <DialogContent className="max-w-lg">
                   <DialogHeader>
-                    <DialogTitle>이번주 특가 설정</DialogTitle>
+                    <DialogTitle>{t('key342', '이번주 특가 설정')}</DialogTitle>
                     <DialogDescription className='text-muted-foreground text-sm'>
-                      특가 할인율과 기간을 설정합니다
+                      {t('key343', '특가 할인율과 기간을 설정합니다')}
                     </DialogDescription>
                   </DialogHeader>
                   <div className="space-y-5 py-2">
                     {/* Price Summary */}
                     <div className="rounded-lg bg-orange-50 p-4 space-y-2">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-700">정가</span>
+                        <span className="text-gray-700">{t('key346', '정가')}</span>
                         <span className="text-gray-500 line-through">
                           {formatCurrency(salePrice || 0)}원
                         </span>
                       </div>
                       <div className="flex items-center justify-between text-sm text-orange-600">
-                        <span>할인금액</span>
+                        <span>{t('key347', '할인금액')}</span>
                         <span>
                           -{formatCurrency(weeklyDealForm.discountAmount || 0)}원
                         </span>
                       </div>
                       <div className="flex items-center justify-between pt-2">
-                        <span className="text-sm font-semibold">특가 적용 가격</span>
+                        <span className="text-sm font-semibold">{t('key348', '특가 적용 가격')}</span>
                         <span className="text-xl font-bold text-orange-600">
                           {formatCurrency(dealPrice)}원
                         </span>
@@ -281,7 +283,7 @@ export function ProductStatusSection({
                     {/* Discount Input */}
                     <div className="space-y-2">
                       <Label htmlFor="discountAmount" className="text-sm font-semibold">
-                        특가 할인금액 (원)
+                        {t('key345', '특가 할인금액 (원)')}
                       </Label>
                       <Input
                         id="discountAmount"
@@ -299,7 +301,7 @@ export function ProductStatusSection({
 
                     <div className="grid gap-4 md:grid-cols-2">
                       <div className="space-y-2">
-                        <Label>특가 시작 시간</Label>
+                        <Label>{t('key349', '특가 시작 시간')}</Label>
                         <Popover>
                           <PopoverTrigger asChild>
                             <Button
@@ -327,7 +329,7 @@ export function ProductStatusSection({
                       </div>
 
                       <div className="space-y-2">
-                        <Label>특가 종료 시간</Label>
+                        <Label>{t('key350', '특가 종료 시간')}</Label>
                         <Popover>
                           <PopoverTrigger asChild>
                             <Button
@@ -359,7 +361,7 @@ export function ProductStatusSection({
                       variant="outline"
                       onClick={handleWeeklySpecialCancel}
                     >
-                      취소
+                      {t('key212', '취소')}
                     </Button>
                     <Button
                       className="bg-black text-white hover:bg-black/90"
@@ -370,7 +372,7 @@ export function ProductStatusSection({
                       {isSettingWeeklySpecial ? (
                         <span className="inline-flex items-center gap-2">
                           <Spinner className="size-4" />
-                          설정 중...
+                          {t('key651', '설정 중...')}
                         </span>
                       ) : (
                         "설정 완료"
@@ -383,10 +385,10 @@ export function ProductStatusSection({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Label htmlFor="bestProduct" className="font-normal">
-                  Best
+                  {t('best', 'Best')}
                 </Label>
                 {bestProduct && (
-                  <Badge className="bg-purple-100 text-purple-500 border border-purple-500">BEST</Badge>
+                  <Badge className="bg-purple-100 text-purple-500 border border-purple-500">{t('best2', 'BEST')}</Badge>
                 )}
               </div>
               <Switch id="bestProduct" checked={bestProduct} onCheckedChange={handleBestProductChange} />
@@ -397,23 +399,23 @@ export function ProductStatusSection({
 
       <Card>
         <CardContent className="pt-6">
-          <h2 className="mb-4 text-lg font-semibold">상태</h2>
+          <h2 className="mb-4 text-lg font-semibold">{t('key336', '상태')}</h2>
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <Label className="text-sm font-medium">판매 상태</Label>
+              <Label className="text-sm font-medium">{t('key324', '판매 상태')}</Label>
               <Select value={saleStatus || ''} onValueChange={onSaleStatusChange}>
                 <SelectTrigger className="bg-white">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Y">판매중</SelectItem>
-                  <SelectItem value="N">품절</SelectItem>
+                  <SelectItem value="Y">{t('key326', '판매중')}</SelectItem>
+                  <SelectItem value="N">{t('key327', '품절')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <Label className="text-sm font-medium">노출 상태</Label>
+              <Label className="text-sm font-medium">{t('key652', '노출 상태')}</Label>
               <Select
                 value={displayStatus}
                 onValueChange={(v) => onDisplayStatusChange(v as "Y" | "N")}
@@ -422,8 +424,8 @@ export function ProductStatusSection({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Y">노출</SelectItem>
-                  <SelectItem value="N">숨김</SelectItem>
+                  <SelectItem value="Y">{t('key504', '노출')}</SelectItem>
+                  <SelectItem value="N">{t('key237', '숨김')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -433,4 +435,3 @@ export function ProductStatusSection({
     </>
   )
 }
-

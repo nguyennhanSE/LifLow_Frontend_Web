@@ -85,6 +85,7 @@ import { DialogDescription } from '@radix-ui/react-dialog'
 import { useRouter } from 'next/navigation'
 import { PaginationButton } from '@/components/common/PaginationButton'
 import { ProductListQueryDto } from '@/hooks/use-product/product.dto'
+import { useTranslation } from 'react-i18next'
 
 type ProductStatus = '판매중' | '품절' | '숨김'
 
@@ -116,6 +117,7 @@ const ProductImage = memo(({
   onLoadStart?: () => void
   onLoadEnd?: () => void
 }) => {
+  const { t } = useTranslation()
   const { ref, inView } = useInView({
     threshold: 0.01,
     triggerOnce: true,
@@ -172,7 +174,7 @@ const ProductImage = memo(({
           />
           {imageError && (
             <div className="absolute inset-0 flex items-center justify-center bg-muted text-xs text-muted-foreground">
-              이미지 없음
+              {t('key320', '이미지 없음')}
             </div>
           )}
         </>
@@ -205,6 +207,7 @@ function mapProductToDisplay(product: ProductEntity) {
 }
 
 export default function AdminProductsPage() {
+  const { t } = useTranslation()
   const { getProducts, deleteProduct, updateProductById, deleteSpecialOffer, createSpecialOffer } = useProduct()
   const { getCategories } = useCategory()
   const [page, setPage] = useState(1)
@@ -369,16 +372,14 @@ export default function AdminProductsPage() {
     <div className="space-y-6 min-w-0">
       <section className="flex items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-semibold">상품 관리</h2>
-          <p className="text-muted-foreground text-sm">
-            전체 {total}개의 상품
-          </p>
+          <h2 className="text-xl font-semibold">{t('key321', '상품 관리')}</h2>
+          <p className="text-muted-foreground text-sm">{t('total', '전체 {{total}}개의 상품', { total })}</p>
         </div>
 
         <Button size="lg" className="bg-black text-white hover:bg-black/90" asChild>
           <Link href="/admin/products/new">
             <Plus className="mr-2 h-5 w-5" />
-            상품 추가
+            {t('key322', '상품 추가')}
           </Link>
         </Button>
       </section>
@@ -387,7 +388,7 @@ export default function AdminProductsPage() {
         <CardContent className="pt-6">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
             <Input
-              placeholder="상품명, 브랜드로 검색"
+              placeholder={t('key323', '상품명, 브랜드로 검색')}
               className="flex-1 min-w-0"
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
@@ -398,12 +399,12 @@ export default function AdminProductsPage() {
                 onValueChange={(value) => setSelectedSaleStatus(value === 'ALL' ? '' : value)}
               >
                 <SelectTrigger className="w-full sm:w-[120px]">
-                  <SelectValue placeholder="판매 상태" />
+                  <SelectValue placeholder={t('key324', '판매 상태')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ALL">전체</SelectItem>
-                  <SelectItem value="Y">판매중</SelectItem>
-                  <SelectItem value="N">품절</SelectItem>
+                  <SelectItem value="ALL">{t('key325', '전체')}</SelectItem>
+                  <SelectItem value="Y">{t('key326', '판매중')}</SelectItem>
+                  <SelectItem value="N">{t('key327', '품절')}</SelectItem>
                 </SelectContent>
               </Select>
               <Select
@@ -412,7 +413,7 @@ export default function AdminProductsPage() {
                 disabled={isLoadingCategories}
               >
                 <SelectTrigger className="w-full sm:w-[140px]">
-                  <SelectValue placeholder={isLoadingCategories ? "로딩 중..." : "카테고리"} />
+                  <SelectValue placeholder={isLoadingCategories ? t('key74', '로딩 중...') : "카테고리"} />
                 </SelectTrigger>
                 <SelectContent>
                   {categoryOptions.map((category) => (
@@ -433,36 +434,36 @@ export default function AdminProductsPage() {
             <Table className="min-w-[900px]">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-16 text-center">이미지</TableHead>
-                <TableHead className="w-12 text-center">번호</TableHead>
-                <TableHead className="w-24 text-center">상품번호</TableHead>
-                <TableHead className="min-w-[180px]">상품명</TableHead>
-                <TableHead className="min-w-[100px]">카테고리</TableHead>
-                <TableHead className="min-w-[80px]">제조사</TableHead>
-                <TableHead className="min-w-[80px]">판매가</TableHead>
-                <TableHead className="w-16">재고</TableHead>
-                <TableHead className="w-16">상태</TableHead>
-                <TableHead className="min-w-[90px]">이번주 특가</TableHead>
-                <TableHead className="w-20 text-center">관리</TableHead>
+                <TableHead className="w-16 text-center">{t('key328', '이미지')}</TableHead>
+                <TableHead className="w-12 text-center">{t('key329', '번호')}</TableHead>
+                <TableHead className="w-24 text-center">{t('key330', '상품번호')}</TableHead>
+                <TableHead className="min-w-[180px]">{t('key331', '상품명')}</TableHead>
+                <TableHead className="min-w-[100px]">{t('key332', '카테고리')}</TableHead>
+                <TableHead className="min-w-[80px]">{t('key333', '제조사')}</TableHead>
+                <TableHead className="min-w-[80px]">{t('key334', '판매가')}</TableHead>
+                <TableHead className="w-16">{t('key335', '재고')}</TableHead>
+                <TableHead className="w-16">{t('key336', '상태')}</TableHead>
+                <TableHead className="min-w-[90px]">{t('key337', '이번주 특가')}</TableHead>
+                <TableHead className="w-20 text-center">{t('key338', '관리')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {isError ? (
                 <TableRow>
                   <TableCell colSpan={11} className="text-center text-red-500">
-                    오류가 발생했습니다: {error instanceof Error ? error.message : '알 수 없는 오류'}
+                    {t('key339', '오류가 발생했습니다:')} {error instanceof Error ? error.message : t('key340', '알 수 없는 오류')}
                   </TableCell>
                 </TableRow>
               ) : isLoading ? (
                 <TableRow>
                   <TableCell colSpan={11} className="text-center text-muted-foreground">
-                    로딩 중...
+                    {t('key74', '로딩 중...')}
                   </TableCell>
                 </TableRow>
               ) : allProducts.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={11} className="text-center text-muted-foreground">
-                    데이터가 없습니다.
+                    {t('key341', '데이터가 없습니다.')}
                   </TableCell>
                 </TableRow>
               ) : (
@@ -580,8 +581,8 @@ export default function AdminProductsPage() {
                             {selectedProduct && selectedProduct.id === product.id && (
                               <DialogContent className="max-w-lg">
                                 <DialogHeader>
-                                  <DialogTitle>이번주 특가 설정</DialogTitle>
-                                  <DialogDescription className='text-muted-foreground text-sm'>특가 할인율과 기간을 설정합니다</DialogDescription>
+                                  <DialogTitle>{t('key342', '이번주 특가 설정')}</DialogTitle>
+                                  <DialogDescription className='text-muted-foreground text-sm'>{t('key343', '특가 할인율과 기간을 설정합니다')}</DialogDescription>
                                 </DialogHeader>
                                 <div className="space-y-5 py-2">
                                   {/* Product Info Card */}
@@ -602,7 +603,7 @@ export default function AdminProductsPage() {
                                         {selectedProduct.name}
                                       </p>
                                       <p className="text-sm text-muted-foreground">
-                                        판매가: {formatCurrency(selectedProduct.price)}원
+                                        {t('key344', '판매가:')} {formatCurrency(selectedProduct.price)}원
                                       </p>
                                     </div>
                                   </div>
@@ -610,7 +611,7 @@ export default function AdminProductsPage() {
                                   {/* Discount Input */}
                                   <div className="space-y-2">
                                     <Label htmlFor="discountAmount" className="text-sm font-semibold">
-                                      특가 할인금액 (원)
+                                      {t('key345', '특가 할인금액 (원)')}
                                     </Label>
                                     <Input
                                       id="discountAmount"
@@ -631,7 +632,7 @@ export default function AdminProductsPage() {
                                   {/* Price Summary */}
                                   <div className="rounded-lg bg-orange-50 p-4 space-y-2">
                                     <div className="flex items-center justify-between text-sm">
-                                      <span className="text-gray-700">정가</span>
+                                      <span className="text-gray-700">{t('key346', '정가')}</span>
                                       <span className="text-gray-500 line-through">
                                         {formatCurrency(
                                           selectedProduct.price ?? 0,
@@ -640,7 +641,7 @@ export default function AdminProductsPage() {
                                       </span>
                                     </div>
                                     <div className="flex items-center justify-between text-sm text-orange-600">
-                                      <span>할인금액</span>
+                                      <span>{t('key347', '할인금액')}</span>
                                       <span>
                                         -
                                         {formatCurrency(
@@ -650,7 +651,7 @@ export default function AdminProductsPage() {
                                       </span>
                                     </div>
                                     <div className="flex items-center justify-between pt-2">
-                                      <span className="text-sm font-semibold">특가 적용 가격</span>
+                                      <span className="text-sm font-semibold">{t('key348', '특가 적용 가격')}</span>
                                       <span className="text-xl font-bold text-orange-600">
                                         {formatCurrency(
                                           Math.max(dealPrice, 0),
@@ -662,7 +663,7 @@ export default function AdminProductsPage() {
 
                                   <div className="grid gap-4 md:grid-cols-2">
                                     <div className="space-y-2">
-                                      <Label>특가 시작 시간</Label>
+                                      <Label>{t('key349', '특가 시작 시간')}</Label>
                                       <Popover>
                                         <PopoverTrigger asChild>
                                           <Button
@@ -694,7 +695,7 @@ export default function AdminProductsPage() {
                                     </div>
 
                                     <div className="space-y-2">
-                                      <Label>특가 종료 시간</Label>
+                                      <Label>{t('key350', '특가 종료 시간')}</Label>
                                       <Popover>
                                         <PopoverTrigger asChild>
                                           <Button
@@ -736,7 +737,7 @@ export default function AdminProductsPage() {
                                       )
                                     }
                                   >
-                                    설정 완료
+                                    {t('key351', '설정 완료')}
                                   </Button>
                                 </DialogFooter>
                               </DialogContent>
@@ -776,14 +777,14 @@ export default function AdminProductsPage() {
       <Dialog open={productToDelete !== null} onOpenChange={(open) => !open && setProductToDelete(null)}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
-            <DialogTitle>상품 삭제</DialogTitle>
+            <DialogTitle>{t('key352', '상품 삭제')}</DialogTitle>
             <DialogDescription className="text-muted-foreground text-sm">
-              이 상품을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.
+              {t('key353', '이 상품을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setProductToDelete(null)}>
-              취소
+              {t('key212', '취소')}
             </Button>
             <Button
               variant="destructive"
@@ -818,5 +819,4 @@ export default function AdminProductsPage() {
     
   )
 }
-
 

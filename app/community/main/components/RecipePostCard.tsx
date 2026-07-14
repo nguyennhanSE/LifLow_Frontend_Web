@@ -16,12 +16,14 @@ import { Recipe } from "@/entities/recipes/recipe.entity"
 import { RecipeComment } from "@/entities/recipe-comments/recipe-comment.entity"
 import { ProductEntity } from "@/entities/products/product.entity"
 import Link from "next/link"
+import { useTranslation } from 'react-i18next'
 
 interface RecipePostCardProps {
   id: string
 }
 
 export function RecipePostCard({ id }: RecipePostCardProps) {
+  const { t } = useTranslation()
   const router = useRouter()
   const queryClient = useQueryClient()
   const { getRecipeById, getRecipes, toggleRecipeLike } = useRecipe()
@@ -223,8 +225,8 @@ export function RecipePostCard({ id }: RecipePostCardProps) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">레시피를 찾을 수 없습니다</h2>
-          <Button onClick={() => router.push('/contents')}>목록으로</Button>
+          <h2 className="text-2xl font-bold mb-2">{t('key628', '레시피를 찾을 수 없습니다')}</h2>
+          <Button onClick={() => router.push('/contents')}>{t('key629', '목록으로')}</Button>
         </div>
       </div>
     )
@@ -275,7 +277,7 @@ export function RecipePostCard({ id }: RecipePostCardProps) {
             onClick={handleLike}
             disabled={likeMutation.isPending}
             className="flex items-center gap-1 p-1 hover:bg-muted rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            aria-label="Like recipe"
+            aria-label={t('likeRecipe', 'Like recipe')}
           >
             {likeMutation.isPending ? (
               <Loader2 className="h-5 w-5 animate-spin text-[#F15A29]" />
@@ -300,7 +302,7 @@ export function RecipePostCard({ id }: RecipePostCardProps) {
 
         {/* Stats: 조회수 (views), 좋아요 (likes), 댓글 (comments) */}
         <p className="text-sm text-foreground mb-4">
-          <span className="font-semibold">{viewCount}</span> 조회수 · <span className="font-semibold">{likeCount}</span> 좋아요 · <span className="font-semibold">{comments.length}</span> 댓글
+          <span className="font-semibold">{viewCount}</span> {t('key630', '조회수 ·')} <span className="font-semibold">{likeCount}</span> {t('key631', '좋아요 ·')} <span className="font-semibold">{comments.length}</span> {t('key632', '댓글')}
         </p>
 
         {/* Ingredients */}
@@ -315,7 +317,7 @@ export function RecipePostCard({ id }: RecipePostCardProps) {
 
         {/* Recipe Steps */}
         <div className="bg-white rounded-lg p-3 mb-4">
-          <h3 className="font-medium text-foreground text-sm mb-2 flex items-center gap-1">👨‍🍳 레시피</h3>
+          <h3 className="font-medium text-foreground text-sm mb-2 flex items-center gap-1">{t('key633', '👨‍🍳 레시피')}</h3>
           <ol className="text-sm text-muted-foreground space-y-1">
             {steps.map((step, index) => (
               <li key={index}>
@@ -330,7 +332,7 @@ export function RecipePostCard({ id }: RecipePostCardProps) {
           <div className="flex gap-2 mb-4">
             {galleryImages.map((image, index) => (
               <div key={index} className="rounded-lg overflow-hidden">
-                <img src={image || "/placeholder.svg"} alt={`Gallery ${index + 1}`} className="w-20 h-20 object-cover" />
+                <img src={image || "/placeholder.svg"} alt={t('galleryVal', 'Gallery {{val}}', { val: index + 1 })} className="w-20 h-20 object-cover" />
               </div>
             ))}
           </div>
@@ -340,7 +342,7 @@ export function RecipePostCard({ id }: RecipePostCardProps) {
         {featuredProduct && (
           <div className="mb-4">
             <p className="text-sm text-[#F15A29] mb-2">
-              이번 주 사용된 제품은 무엇인가요?
+              {t('key634', '이번 주 사용된 제품은 무엇인가요?')}
             </p>
             <div className="border border-border rounded-lg p-3 flex items-center gap-3">
               <div className="rounded-lg overflow-hidden shrink-0">
@@ -387,7 +389,7 @@ export function RecipePostCard({ id }: RecipePostCardProps) {
               </div>
             ))
           ) : (
-            <p className="text-sm text-muted-foreground text-center py-4">아직 댓글이 없습니다</p>
+            <p className="text-sm text-muted-foreground text-center py-4">{t('key635', '아직 댓글이 없습니다')}</p>
           )}
         </div>
 
@@ -395,7 +397,7 @@ export function RecipePostCard({ id }: RecipePostCardProps) {
         <div className="flex items-center gap-3 mb-3">
           <span className="text-sm text-muted-foreground">나</span>
           <Input
-            placeholder="댓글을 입력해주세요..."
+            placeholder={t('key636', '댓글을 입력해주세요...')}
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             onKeyDown={(e) => {
@@ -419,13 +421,13 @@ export function RecipePostCard({ id }: RecipePostCardProps) {
             {createCommentMutation.isPending ? (
               <>
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                게시 중...
+                {t('key637', '게시 중...')}
               </>
             ) : (
               "댓글 작성"
             )}
           </Button>
-          <button className="p-2 border border-border rounded-md hover:bg-muted transition-colors" aria-label="Share recipe">
+          <button className="p-2 border border-border rounded-md hover:bg-muted transition-colors" aria-label={t('shareRecipe', 'Share recipe')}>
             <Share2 className="h-4 w-4 text-muted-foreground" />
           </button>
         </div>
@@ -441,19 +443,19 @@ export function RecipePostCard({ id }: RecipePostCardProps) {
             {isLastRecipe ? (
               <>
                 <ChevronLeft className="h-4 w-4 mr-1" />
-                이전 게시글
+                {t('key638', '이전 게시글')}
               </>
             ) : (
               <>
                 <ChevronRight className="h-4 w-4 mr-1" />
-                다음 게시글
+                {t('key639', '다음 게시글')}
               </>
             )}
           </Button>
           <Link href="/contents">
             <Button variant="outline" className="flex-1 text-sm bg-transparent">
               <List className="h-4 w-4 mr-1" />
-              목록
+              {t('key640', '목록')}
             </Button>
           </Link>
         </div>

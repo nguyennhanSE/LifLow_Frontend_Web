@@ -22,8 +22,10 @@ import { ProductStatusSection } from "../components/product-status-section"
 import { toast } from "sonner"
 import { ProductEntity } from "@/entities/products/product.entity"
 import { Spinner } from "@/components/ui/spinner"
+import { useTranslation, Trans } from 'react-i18next'
 
 export default function AdminProductEditPage() {
+  const { t } = useTranslation()
   const params = useParams()
   const router = useRouter()
   const productId = params?.id as string
@@ -330,9 +332,9 @@ export default function AdminProductEditPage() {
   if (isError || !product) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen gap-4">
-        <p className="text-destructive">상품을 불러올 수 없습니다.</p>
+        <p className="text-destructive">{t('key663', '상품을 불러올 수 없습니다.')}</p>
         <Button onClick={() => router.push('/admin/products')} variant="outline">
-          목록으로 돌아가기
+          {t('key664', '목록으로 돌아가기')}
         </Button>
       </div>
     )
@@ -346,8 +348,8 @@ export default function AdminProductEditPage() {
           <ChevronLeft className="h-5 w-5" />
         </Button>
         <div>
-          <h1 className="text-xl font-semibold">상품 수정</h1>
-          <p className="text-sm text-muted-foreground">상품 정보를 수정합니다</p>
+          <h1 className="text-xl font-semibold">{t('key665', '상품 수정')}</h1>
+          <p className="text-sm text-muted-foreground">{t('key666', '상품 정보를 수정합니다')}</p>
         </div>
       </div>
 
@@ -355,16 +357,14 @@ export default function AdminProductEditPage() {
         {/* Basic Information */}
         <Card>
           <CardContent className="pt-6">
-            <h2 className="mb-4 text-lg font-semibold">기본 정보</h2>
+            <h2 className="mb-4 text-lg font-semibold">{t('key7', '기본 정보')}</h2>
             <div className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="productName">
-                    상품명 <span className="text-destructive">*</span>
-                  </Label>
+                  <Label htmlFor="productName"><Trans i18nKey="spanClassnametextdestructivespan3">상품명 <span className="text-destructive">*</span></Trans></Label>
                   <Input
                     id="productName"
-                    placeholder="예: 유기농 쌀 10kg"
+                    placeholder={t('10kg', '예: 유기농 쌀 10kg')}
                     className="bg-white"
                     value={formData.productName}
                     onChange={(e) =>
@@ -373,10 +373,10 @@ export default function AdminProductEditPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="productCode">상품코드</Label>
+                  <Label htmlFor="productCode">{t('key667', '상품코드')}</Label>
                   <Input
                     id="productCode"
-                    placeholder="예: RICE-001"
+                    placeholder={t('rice001', '예: RICE-001')}
                     className="bg-white"
                     value={formData.productCode || ""}
                     onChange={(e) =>
@@ -399,7 +399,7 @@ export default function AdminProductEditPage() {
                 />
                 <div className="space-y-2">
                   <Label htmlFor="storageMethod">
-                    보관 방법
+                    {t('key668', '보관 방법')}
                   </Label>
                   <Select
                     value={formData.storageMethod || ""}
@@ -411,17 +411,17 @@ export default function AdminProductEditPage() {
                       <SelectValue placeholder="선택" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="frozen">냉동</SelectItem>
-                      <SelectItem value="refrigerated">냉장</SelectItem>
-                      <SelectItem value="room temperature">실온</SelectItem>
+                      <SelectItem value="frozen">{t('key669', '냉동')}</SelectItem>
+                      <SelectItem value="refrigerated">{t('key670', '냉장')}</SelectItem>
+                      <SelectItem value="room temperature">{t('key671', '실온')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="manufacturer">제조사</Label>
+                  <Label htmlFor="manufacturer">{t('key333', '제조사')}</Label>
                   <Input
                     id="manufacturer"
-                    placeholder="예: (주)푸릇식품"
+                    placeholder={t('key672', '예: (주)푸릇식품')}
                     className="bg-white"
                     value={formData.manufacturer || ""}
                     onChange={(e) =>
@@ -538,7 +538,7 @@ export default function AdminProductEditPage() {
         {/* Action Buttons */}
         <div className="flex justify-end gap-3">
           <Button variant="outline" size="lg" onClick={() => router.push('/admin/products')}>
-            취소
+            {t('key212', '취소')}
           </Button>
           <Button
             size="lg"
@@ -549,7 +549,7 @@ export default function AdminProductEditPage() {
             {isSubmitting || updateMutation.isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                수정 중...
+                {t('key317', '수정 중...')}
               </>
             ) : (
               "상품 수정"

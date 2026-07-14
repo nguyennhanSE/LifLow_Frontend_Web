@@ -5,6 +5,7 @@ import { OTPInput, OTPInputContext } from 'input-otp'
 import { MinusIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
+import { useTranslation } from 'react-i18next'
 
 function InputOTP({
   className,
@@ -13,6 +14,7 @@ function InputOTP({
 }: React.ComponentProps<typeof OTPInput> & {
   containerClassName?: string
 }) {
+  const { t } = useTranslation()
   return (
     <OTPInput
       data-slot="input-otp"

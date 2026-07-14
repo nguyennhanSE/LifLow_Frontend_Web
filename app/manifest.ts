@@ -1,11 +1,12 @@
 import type { MetadataRoute } from 'next'
+import i18next from 'i18next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: '쭈왕몰 - 프리미엄 한식 쇼핑몰',
+    name: i18next.t('key', '쭈왕몰 - 프리미엄 한식 쇼핑몰'),
     short_name: '쭈왕몰',
     description:
-      '주왕몰 - 엄선된 한국 식자재와 전통 조미료를 만나보세요. 프리미엄 한식 쇼핑몰.',
+      i18next.t('key2', '주왕몰 - 엄선된 한국 식자재와 전통 조미료를 만나보세요. 프리미엄 한식 쇼핑몰.'),
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',

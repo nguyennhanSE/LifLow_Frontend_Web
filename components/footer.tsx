@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Facebook, Instagram, Youtube } from "lucide-react"
+import { useTranslation } from 'react-i18next'
 
 function getCookie(name: string): string | null {
   if (typeof document === "undefined") return null
@@ -13,6 +14,7 @@ function getCookie(name: string): string | null {
 }
 
 export function Footer() {
+  const { t } = useTranslation()
   const [adminHref, setAdminHref] = useState("/admin/sign-in")
   useEffect(() => {
     const token = getCookie("access_token")
@@ -27,8 +29,8 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-6">
           <div className="space-y-2">
             <h3 className="text-xl font-bold text-[#2d2d2d]">1660-2890</h3>
-            <p className="text-sm text-[#6b6b6b]">09:30 AM - 6:30 PM</p>
-            <p className="text-sm text-[#6b6b6b]">e-mail: liflow01@naver.com</p>
+            <p className="text-sm text-[#6b6b6b]">{t('0930Am630Pm', '09:30 AM - 6:30 PM')}</p>
+            <p className="text-sm text-[#6b6b6b]">{t('emailLiflow01navercom', 'e-mail: liflow01@naver.com')}</p>
           </div>
           
           <div className="flex gap-4">
@@ -47,7 +49,7 @@ export function Footer() {
         {/* Menu Links */}
         <div className="flex flex-wrap gap-4 md:gap-8 mb-8 text-sm text-[#6b6b6b]">
           <Link href="/notice" className="hover:text-[#2d2d2d] transition-colors">
-            공지사항
+            {t('key4', '공지사항')}
           </Link>
           {/* <span className="text-[#d0d0d0]">|</span> */}
           {/* <Link href="/guide" className="hover:text-[#2d2d2d] transition-colors">
@@ -55,36 +57,36 @@ export function Footer() {
           </Link> */}
           <span className="hidden md:inline text-[#d0d0d0]">|</span>
           <Link href={adminHref} className="hidden md:inline hover:text-[#2d2d2d] transition-colors">
-            관리자
+            {t('key5', '관리자')}
           </Link>
           <span className="text-[#d0d0d0]">|</span>
           <Link href="/userflow" className="hover:text-[#2d2d2d] transition-colors">
-            유저 가이드
+            {t('key6', '유저 가이드')}
           </Link>
         </div>
 
         {/* Company Information */}
         <div className="space-y-2 text-xs text-[#6b6b6b] mb-6">
           <p>
-            상호명: 농업회사법인 라이플로우 주식회사 | 대표: 윤동윤 | 사업자등록번호: 715-87-02493
+            {t('7158702493', '상호명: 농업회사법인 라이플로우 주식회사 | 대표: 윤동윤 | 사업자등록번호: 715-87-02493')}
           </p>
           <p>
-            경북 청송군 주왕산면 주왕산로 508-9 2층 (우: 37437) | 통신판매신고번호 : 제2022-경북청송-00036호
+            {t('5089237437202200036', '경북 청송군 주왕산면 주왕산로 508-9 2층 (우: 37437) | 통신판매신고번호 : 제2022-경북청송-00036호')}
           </p>
           <div className="flex gap-4">
             <Link href="/policy/privacy-policy" className="hover:text-[#2d2d2d] transition-colors">
-              개인정보처리방침
+              {t('key7', '개인정보처리방침')}
             </Link>
             <span>|</span>
             <Link href="/policy/terms-of-service" className="hover:text-[#2d2d2d] transition-colors">
-              이용약관
+              {t('key8', '이용약관')}
             </Link>
           </div>
         </div>
 
         {/* Copyright */}
         <div className="text-xs text-[#999999]">
-          <p>Copyright 2023 주왕산가든. All Rights Reserved.</p>
+          <p>{t('copyright2023AllRightsReserved', 'Copyright 2023 주왕산가든. All Rights Reserved.')}</p>
         </div>
       </div>
     </footer>

@@ -21,9 +21,11 @@ import { useBanner } from '@/hooks/use-banner/banner.hook'
 import { BannerEntity, EBannerStatus, EBannerType } from '@/entities/banner/banner.entity'
 import { ProductEntity } from '@/entities/products/product.entity'
 import { CreateBannerDto } from '@/hooks/use-banner/banner.dto'
+import { useTranslation } from 'react-i18next'
 
 
 export function MainProductsTab({ initialBanner }: { initialBanner: BannerEntity | null }) {
+  const { t } = useTranslation()
   const { getProducts } = useProduct()
   const { updateBanner} = useBanner()
   const [selectedProduct, setSelectedProduct] = useState<ProductEntity | undefined>(undefined)
@@ -139,7 +141,7 @@ export function MainProductsTab({ initialBanner }: { initialBanner: BannerEntity
       <div className="flex items-center gap-2">
         <ImageIcon className="h-5 w-5 text-foreground" />
         <h2 className="text-base font-medium text-foreground">
-          메인 화면 상품 노출 배너 설정
+          {t('key749', '메인 화면 상품 노출 배너 설정')}
         </h2>
       </div>
 
@@ -148,12 +150,12 @@ export function MainProductsTab({ initialBanner }: { initialBanner: BannerEntity
         <div className="flex gap-3">
           <Info className="mt-0.5 h-5 w-5 shrink-0 text-foreground-600" />
           <div className="space-y-1">
-            <p className="text-sm font-medium text-foreground-900">권장 사이즈</p>
+            <p className="text-sm font-medium text-foreground-900">{t('key750', '권장 사이즈')}</p>
             <p className="text-sm text-foreground-700">
-              제는 이미지 800×800px 이상
+              {t('800800px2', '제는 이미지 800×800px 이상')}
             </p>
             <p className="mt-2 text-sm text-foreground-700">
-              메인 페이지 상단에 표시되는 상품 배너입니다. 상품을 선택하면 해당 상품 정보가 자동으로 표시됩니다.
+              {t('key751', '메인 페이지 상단에 표시되는 상품 배너입니다. 상품을 선택하면 해당 상품 정보가 자동으로 표시됩니다.')}
             </p>
           </div>
         </div>
@@ -166,15 +168,15 @@ export function MainProductsTab({ initialBanner }: { initialBanner: BannerEntity
           {/* Product Selection */}
           <div className="space-y-2">
             <Label htmlFor="product" className="text-sm font-medium">
-              상품 선택
+              {t('key742', '상품 선택')}
             </Label>
             {isLoading ? (
               <div className="flex h-10 items-center justify-center rounded-md border bg-muted/30">
-                <span className="text-sm text-muted-foreground">상품 불러오는 중...</span>
+                <span className="text-sm text-muted-foreground">{t('key752', '상품 불러오는 중...')}</span>
               </div>
             ) : isError ? (
               <div className="flex h-10 items-center justify-center rounded-md border border-red-200 bg-red-50">
-                <span className="text-sm text-red-600">상품 불러오기 오류</span>
+                <span className="text-sm text-red-600">{t('key753', '상품 불러오기 오류')}</span>
               </div>
             ) : (
               <Select
@@ -187,7 +189,7 @@ export function MainProductsTab({ initialBanner }: { initialBanner: BannerEntity
                 }}
               >
                 <SelectTrigger id="product" className="bg-muted/30 w-full">
-                  <SelectValue placeholder="상품을 선택하세요" />
+                  <SelectValue placeholder={t('key754', '상품을 선택하세요')} />
                 </SelectTrigger>
                 <SelectContent>
                   {productOptions.map((product) => (
@@ -204,7 +206,7 @@ export function MainProductsTab({ initialBanner }: { initialBanner: BannerEntity
                         onClick={() => fetchNextPage()}
                         disabled={isFetchingNextPage}
                       >
-                        {isFetchingNextPage ? '로딩 중...' : '더 보기'}
+                        {isFetchingNextPage ? t('key74', '로딩 중...') : '더 보기'}
                       </Button>
                     </div>
                   )}
@@ -216,7 +218,7 @@ export function MainProductsTab({ initialBanner }: { initialBanner: BannerEntity
           {/* Badge Text */}
           <div className="space-y-2">
             <Label htmlFor="badge" className="text-sm font-medium">
-              배치 텍스트
+              {t('key755', '배치 텍스트')}
             </Label>
             <Input
               id="badge"
@@ -229,7 +231,7 @@ export function MainProductsTab({ initialBanner }: { initialBanner: BannerEntity
           {/* Title */} 
           <div className="space-y-2">
             <Label htmlFor="title" className="text-sm font-medium">
-              타이틀
+              {t('key756', '타이틀')}
             </Label>
             <Textarea
               id="title"
@@ -242,7 +244,7 @@ export function MainProductsTab({ initialBanner }: { initialBanner: BannerEntity
           {/* CTA Button URL */}
           <div className="space-y-2">
             <Label htmlFor="cta-url" className="text-sm font-medium">
-              CTA 버튼 이동 URL
+              {t('ctaUrl', 'CTA 버튼 이동 URL')}
             </Label>
             <Input
               disabled={true}
@@ -256,31 +258,31 @@ export function MainProductsTab({ initialBanner }: { initialBanner: BannerEntity
           {(
             <div className="space-y-3 pt-4">
               <p className="text-sm font-medium text-foreground">
-                선택된 상품 정보 (자동 적용)
+                {t('key757', '선택된 상품 정보 (자동 적용)')}
               </p>
               <div className="space-y-2 rounded-lg bg-muted/30 p-4">
                 <div className="flex justify-between">
-                  <span className="text-sm font-medium">상품명:</span>
+                  <span className="text-sm font-medium">{t('key758', '상품명:')}</span>
                   <span className="text-sm text-muted-foreground">
                     {selectedProduct ? selectedProduct.productName : initialBanner?.product?.productName || initialBanner?.productName}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm font-medium">가격:</span>
+                  <span className="text-sm font-medium">{t('key759', '가격:')}</span>
                   <span className="text-sm text-muted-foreground">
                     {selectedProduct ? selectedProduct.salePrice : initialBanner?.product?.productPrice}원
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm font-medium">브랜드:</span>
+                  <span className="text-sm font-medium">{t('key760', '브랜드:')}</span>
                   <span className="text-sm text-muted-foreground">
                     {selectedProduct ? selectedProduct.manufacturer : initialBanner?.product?.manufacturer}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm font-medium">설명:</span>
+                  <span className="text-sm font-medium">{t('key761', '설명:')}</span>
                   <span className="text-sm text-muted-foreground">
-                    깊은 맛의 프리미엄 라면
+                    {t('key762', '깊은 맛의 프리미엄 라면')}
                   </span>
                 </div>
               </div>
@@ -290,7 +292,7 @@ export function MainProductsTab({ initialBanner }: { initialBanner: BannerEntity
 
         {/* Right Side - Preview */}
         <div className="space-y-2">
-          <Label className="text-sm font-medium">미리보기</Label>
+          <Label className="text-sm font-medium">{t('key763', '미리보기')}</Label>
           <div className="rounded-lg border border-border bg-gradient-to-br from-gray-50 to-gray-100 p-6">
             <div className="overflow-hidden rounded-lg bg-white shadow-lg">
               <div className="relative">
@@ -343,7 +345,7 @@ export function MainProductsTab({ initialBanner }: { initialBanner: BannerEntity
 
                   {/* CTA Button */}
                   <Button className="bg-[#ff5733] px-6 font-medium text-white hover:bg-[#e64a2e]">
-                    구매하기
+                    {t('key91', '구매하기')}
                   </Button>
                 </div>
               </div>
@@ -362,12 +364,12 @@ export function MainProductsTab({ initialBanner }: { initialBanner: BannerEntity
           {isUpdating ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
-              저장 중...
+              {t('key582', '저장 중...')}
             </>
           ) : (
             <>
               <Save className="h-4 w-4" />
-              저장
+              {t('key289', '저장')}
             </>
           )}
         </Button>

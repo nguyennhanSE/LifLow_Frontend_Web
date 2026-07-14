@@ -9,8 +9,10 @@ import { Label } from '@/components/ui/label'
 import { BannerEntity, EBannerStatus, EBannerType } from '@/entities/banner/banner.entity'
 import { useBanner } from '@/hooks/use-banner/banner.hook'
 import { UpdateBannerDto } from '@/hooks/use-banner/banner.dto'
+import { useTranslation } from 'react-i18next'
 
 export function ContentHeroTab() {
+  const { t } = useTranslation()
   const { getBannersByType, updateBanner, updateBannerImageById } = useBanner()
   const [banner, setBanner] = useState<BannerEntity | null>(null)
   const [loading, setLoading] = useState(false)
@@ -114,7 +116,7 @@ export function ContentHeroTab() {
       <div className="flex items-center gap-2">
         <ImageIcon className="h-5 w-5 text-foreground" />
         <h2 className="text-base font-medium text-foreground">
-          콘텐츠 페이지 Hero Section 설정
+          {t('heroSection', '콘텐츠 페이지 Hero Section 설정')}
         </h2>
       </div>
 
@@ -124,10 +126,10 @@ export function ContentHeroTab() {
           <Info className="mt-0.5 h-5 w-5 shrink-0 text-foreground-600" />
           <div className="space-y-1">
             <p className="text-sm font-medium text-foreground-900">
-              권장 사이즈:배너 이미지 1200×600px
+              {t('1200600px', '권장 사이즈:배너 이미지 1200×600px')}
             </p>
             <p className="text-sm text-foreground-700">
-              콘텐츠 페이지 상단에 표시되는 Hero Section입니다.
+              {t('heroSection2', '콘텐츠 페이지 상단에 표시되는 Hero Section입니다.')}
             </p>
           </div>
         </div>
@@ -136,7 +138,7 @@ export function ContentHeroTab() {
       {/* Form and Preview Grid */}
       {loading ? (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">배너 불러오는 중...</p>
+          <p className="text-muted-foreground">{t('key764', '배너 불러오는 중...')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
@@ -144,7 +146,7 @@ export function ContentHeroTab() {
           <div className="space-y-6">
             {/* Upload Background */}
             <div className="space-y-2">
-              <Label className="text-sm font-medium">배경 이미지 업로드</Label>
+              <Label className="text-sm font-medium">{t('key768', '배경 이미지 업로드')}</Label>
               <input
                 type="file"
                 id="image-upload"
@@ -164,7 +166,7 @@ export function ContentHeroTab() {
                     <div className="relative w-full">
                       <img
                         src={getImageUrl()}
-                        alt="배너 미리보기"
+                        alt={t('key769', '배너 미리보기')}
                         className="h-48 w-full rounded-lg object-cover"
                       />
                       <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 hover:opacity-100 transition-opacity rounded-lg">
@@ -175,23 +177,21 @@ export function ContentHeroTab() {
                     <>
                       <Upload className="h-8 w-8 text-muted-foreground" />
                       <p className="text-sm text-muted-foreground">
-                        클릭하여 업로드 또는 드래그 앤 드롭
+                        {t('key770', '클릭하여 업로드 또는 드래그 앤 드롭')}
                       </p>
                     </>
                   )}
                 </div>
               </label>
               {selectedImage && (
-                <p className="text-xs text-muted-foreground">
-                  선택됨: {selectedImage.name}
-                </p>
+                <p className="text-xs text-muted-foreground">{t('name2', '선택됨: {{name}}', { name: selectedImage.name })}</p>
               )}
             </div>
 
             {/* Title */}
             <div className="space-y-2">
               <Label htmlFor="hero-title" className="text-sm font-medium">
-                제목
+                {t('key502', '제목')}
               </Label>
               <Input
                 id="hero-title"
@@ -204,7 +204,7 @@ export function ContentHeroTab() {
             {/* Subtitle */}
             <div className="space-y-2">
               <Label htmlFor="hero-subtitle" className="text-sm font-medium">
-                부제목
+                {t('key771', '부제목')}
               </Label>
               <Input
                 id="hero-subtitle"
@@ -217,7 +217,7 @@ export function ContentHeroTab() {
             {/* CTA Button Text */}
             <div className="space-y-2">
               <Label htmlFor="hero-cta-text" className="text-sm font-medium">
-                CTA 버튼 텍스트
+                {t('cta', 'CTA 버튼 텍스트')}
               </Label>
               <Input
                 id="hero-cta-text"
@@ -230,7 +230,7 @@ export function ContentHeroTab() {
             {/* CTA Button Redirect URL */}
             <div className="space-y-2">
               <Label htmlFor="hero-cta-url" className="text-sm font-medium">
-                CTA 버튼 이동 URL
+                {t('ctaUrl', 'CTA 버튼 이동 URL')}
               </Label>
               <Input
                 id="hero-cta-url"
@@ -243,19 +243,19 @@ export function ContentHeroTab() {
 
           {/* Right Side - Preview */}
           <div className="space-y-2">
-            <Label className="text-sm font-medium">미리보기</Label>
+            <Label className="text-sm font-medium">{t('key763', '미리보기')}</Label>
             <div className="rounded-lg border border-border bg-gradient-to-br from-gray-50 to-gray-100 p-6">
               <div className="overflow-hidden rounded-lg shadow-lg">
                 <div className="relative aspect-[2/1]">
                   <img
                     src={getImageUrl()}
-                    alt="Hero 배경"
+                    alt={t('hero2', 'Hero 배경')}
                     className="h-full w-full object-cover"
                   />
                   <div className="absolute inset-0 bg-black/30" />
                   <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center text-white">
                     <h2 className="mb-3 text-balance text-3xl font-bold">{heroTitle || '쏘잉을 콘텐츠'}</h2>
-                    <p className="mb-6 text-base opacity-90">{heroSubtitle || '신선한 식재료와 레시피를 만나보세요'}</p>
+                    <p className="mb-6 text-base opacity-90">{heroSubtitle || t('key772', '신선한 식재료와 레시피를 만나보세요')}</p>
                     <Button className="bg-white px-8 font-medium text-foreground hover:bg-white/90">
                       {heroCtaText || '더 알아보기'}
                     </Button>
@@ -275,7 +275,7 @@ export function ContentHeroTab() {
           className="flex h-12 w-full items-center justify-center gap-2 bg-foreground text-background hover:bg-foreground/90 text-base font-medium"
         >
           <Save className="h-4 w-4" />
-          {isSaving ? '저장 중...' : '저장'}
+          {isSaving ? t('key582', '저장 중...') : '저장'}
         </Button>
       </div>
     </div>

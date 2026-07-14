@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Card, CardContent } from "@/components/ui/card"
+import { useTranslation } from 'react-i18next'
 
 interface StockDeliverySectionProps {
   deliveryMethod: string
@@ -31,21 +32,22 @@ export function StockDeliverySection({
   onStockManagementChange,
   onSameDayDeliveryChange,
 }: StockDeliverySectionProps) {
+  const { t } = useTranslation()
   return (
     <Card>
       <CardContent className="pt-6">
-        <h2 className="mb-4 text-lg font-semibold">제고 및 배송</h2>
+        <h2 className="mb-4 text-lg font-semibold">{t('key641', '제고 및 배송')}</h2>
         <div className="space-y-4">
           <div className="pb-4 border-b">
             <div className="flex gap-4">
               <div className="space-y-2 flex-1">
-                <Label htmlFor="origin">원산지</Label>
+                <Label htmlFor="origin">{t('key642', '원산지')}</Label>
                 <Input 
                   id="origin" 
                   type="text" 
                   value={origin || ""} 
                   className="bg-white"
-                  placeholder="예: 대한민국"
+                  placeholder={t('key643', '예: 대한민국')}
                   onChange={(e) => onOriginChange(e.target.value)}
                 />
               </div>
@@ -62,21 +64,21 @@ export function StockDeliverySection({
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="deliveryMethod">배송 방법</Label>
+              <Label htmlFor="deliveryMethod">{t('key644', '배송 방법')}</Label>
               <Select value={deliveryMethod || ""} onValueChange={onDeliveryMethodChange}>
                 <SelectTrigger id="deliveryMethod" className="bg-white w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   {/* <SelectItem value="standard">Standard</SelectItem> */}
-                  <SelectItem value="regular">일반 배송</SelectItem>
-                  <SelectItem value="quick">빠른 배송</SelectItem>
-                  <SelectItem value="direct">직접 배송</SelectItem>
+                  <SelectItem value="regular">{t('key645', '일반 배송')}</SelectItem>
+                  <SelectItem value="quick">{t('key646', '빠른 배송')}</SelectItem>
+                  <SelectItem value="direct">{t('key647', '직접 배송')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="deliveryFee">배송비</Label>
+              <Label htmlFor="deliveryFee">{t('key192', '배송비')}</Label>
               <Input
                 id="deliveryFee"
                 type="number"

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { Download, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>
@@ -23,6 +24,7 @@ function isInStandaloneMode(): boolean {
 }
 
 export function PwaInstallPrompt() {
+  const { t } = useTranslation()
   const [visible, setVisible] = useState(false)
   const [canNativeInstall, setCanNativeInstall] = useState(false)
   useEffect(() => {
@@ -96,9 +98,9 @@ export function PwaInstallPrompt() {
       <div className="flex items-center gap-3 rounded-2xl bg-white p-3 shadow-[0_4px_24px_rgba(0,0,0,0.15)] ring-1 ring-black/5">
         <AppIcon />
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold text-gray-900 truncate">쭈왕몰 앱 설치</p>
+          <p className="text-sm font-semibold text-gray-900 truncate">{t('key', '쭈왕몰 앱 설치')}</p>
           <p className="text-xs text-gray-500">
-            {canNativeInstall ? '홈 화면에 추가하여 빠르게 이용하세요' : '브라우저 메뉴에서 앱 설치를 선택하세요'}
+            {canNativeInstall ? t('key2', '홈 화면에 추가하여 빠르게 이용하세요') : t('key3', '브라우저 메뉴에서 앱 설치를 선택하세요')}
           </p>
         </div>
         <button

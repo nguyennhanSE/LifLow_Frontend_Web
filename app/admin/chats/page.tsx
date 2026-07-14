@@ -17,6 +17,7 @@ import { useChat } from '@/hooks/use-chat/chat.hook'
 import type { GetUsersQueryDto } from '@/hooks/use-user/user.dto'
 import { useUser } from '@/hooks/use-user/user.hook'
 import { toast } from '@/hooks/use-toast'
+import { useTranslation } from 'react-i18next'
 
 function normalizeRooms(input: any): RoomEntity[] {
   if (Array.isArray(input)) return input as RoomEntity[]
@@ -29,6 +30,7 @@ function normalizeRooms(input: any): RoomEntity[] {
 }
 
 export default function AdminChatsPage() {
+  const { t } = useTranslation()
   const { getUsers } = useUser()
   const { getRooms, createRoom } = useChat()
   const queryClient = useQueryClient()
@@ -96,13 +98,13 @@ export default function AdminChatsPage() {
 
       toast({
         title: '채팅방 생성 완료',
-        description: `${userId} 회원의 채팅방을 생성했습니다.`,
+        description: t('userid', '{{userId}} 회원의 채팅방을 생성했습니다.', { userId }),
       })
     },
     onError: (error) => {
       toast({
         title: '채팅방 생성 실패',
-        description: error instanceof Error ? error.message : '잠시 후 다시 시도해주세요.',
+        description: error instanceof Error ? error.message : t('key354', '잠시 후 다시 시도해주세요.'),
         variant: 'destructive',
       })
     },
@@ -120,9 +122,9 @@ export default function AdminChatsPage() {
     <div className="space-y-6">
       <section className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-xl font-semibold">앱 채팅 관리</h2>
+          <h2 className="text-xl font-semibold">{t('key506', '앱 채팅 관리')}</h2>
           <p className="text-sm text-muted-foreground">
-            USER 권한 회원 {total.toLocaleString()}명 · 현재 페이지 채팅방 {totalRoomsOnPage.toLocaleString()}개
+            {t('user', 'USER 권한 회원')} {total.toLocaleString()}{t('key507', '명 · 현재 페이지 채팅방')} {totalRoomsOnPage.toLocaleString()}개
           </p>
         </div>
         <Button
@@ -135,7 +137,7 @@ export default function AdminChatsPage() {
           disabled={usersQuery.isFetching || roomQueries.some((roomQuery) => roomQuery.isFetching)}
         >
           <RefreshCcw className="mr-2 h-4 w-4" />
-          새로고침
+          {t('key508', '새로고침')}
         </Button>
       </section>
 
@@ -144,7 +146,7 @@ export default function AdminChatsPage() {
           <Input
             value={keyword}
             onChange={(event) => setKeyword(event.target.value)}
-            placeholder="이름, 아이디, 이메일, 전화번호로 검색"
+            placeholder={t('key448', '이름, 아이디, 이메일, 전화번호로 검색')}
           />
         </CardContent>
       </Card>
@@ -155,33 +157,33 @@ export default function AdminChatsPage() {
             <Table className="min-w-[980px]">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-16 text-center">번호</TableHead>
+                  <TableHead className="w-16 text-center">{t('key329', '번호')}</TableHead>
                   <TableHead className="w-36 text-center">ID</TableHead>
-                  <TableHead>이름</TableHead>
-                  <TableHead>이메일</TableHead>
-                  <TableHead>연락처</TableHead>
-                  <TableHead>채팅방</TableHead>
-                  <TableHead className="w-32 text-center">관리</TableHead>
+                  <TableHead>{t('key79', '이름')}</TableHead>
+                  <TableHead>{t('key80', '이메일')}</TableHead>
+                  <TableHead>{t('key205', '연락처')}</TableHead>
+                  <TableHead>{t('key509', '채팅방')}</TableHead>
+                  <TableHead className="w-32 text-center">{t('key338', '관리')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {usersQuery.isError ? (
                   <TableRow>
                     <TableCell colSpan={7} className="text-center text-red-500">
-                      오류가 발생했습니다:{' '}
-                      {usersQuery.error instanceof Error ? usersQuery.error.message : '알 수 없는 오류'}
+                      {t('key339', '오류가 발생했습니다:')}{' '}
+                      {usersQuery.error instanceof Error ? usersQuery.error.message : t('key340', '알 수 없는 오류')}
                     </TableCell>
                   </TableRow>
                 ) : usersQuery.isLoading ? (
                   <TableRow>
                     <TableCell colSpan={7} className="text-center text-muted-foreground">
-                      로딩 중...
+                      {t('key74', '로딩 중...')}
                     </TableCell>
                   </TableRow>
                 ) : users.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={7} className="text-center text-muted-foreground">
-                      데이터가 없습니다.
+                      {t('key341', '데이터가 없습니다.')}
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -202,21 +204,21 @@ export default function AdminChatsPage() {
                           {roomQuery?.isLoading ? (
                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
                               <Spinner className="h-4 w-4" />
-                              채팅방 조회 중
+                              {t('key510', '채팅방 조회 중')}
                             </div>
                           ) : roomQuery?.isError ? (
                             <div className="flex items-center gap-2">
-                              <span className="text-sm text-red-500">조회 실패</span>
+                              <span className="text-sm text-red-500">{t('key511', '조회 실패')}</span>
                               <Button
                                 variant="outline"
                                 size="sm"
                                 onClick={() => roomQuery.refetch()}
                               >
-                                다시 시도
+                                {t('key512', '다시 시도')}
                               </Button>
                             </div>
                           ) : rooms.length === 0 ? (
-                            <span className="text-sm text-muted-foreground">0개</span>
+                            <span className="text-sm text-muted-foreground">{t('0', '0개')}</span>
                           ) : (
                             <span className="font-medium">{rooms.length.toLocaleString()}개</span>
                           )}
@@ -233,7 +235,7 @@ export default function AdminChatsPage() {
                             ) : (
                               <Plus className="mr-2 h-4 w-4" />
                             )}
-                            생성
+                            {t('key513', '생성')}
                           </Button>
                         </TableCell>
                       </TableRow>

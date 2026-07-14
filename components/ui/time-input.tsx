@@ -3,6 +3,7 @@
 import * as React from "react"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
+import i18next from 'i18next'
 
 /** Normalize time string: "1" → "1:00", "13" → "13:00", "1:30" → "1:30" */
 function normalizeTimeString(raw: string): string {
@@ -19,7 +20,7 @@ function normalizeTimeString(raw: string): string {
   const num = parseInt(trimmed, 10)
   if (Number.isNaN(num)) return ""
   const hour = Math.min(23, Math.max(0, num))
-  return `${hour}:00`
+  return i18next.t('hour00', '{{hour}}:00', { hour })
 }
 
 export interface TimeInputProps

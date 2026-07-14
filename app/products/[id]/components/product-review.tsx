@@ -37,6 +37,7 @@ import {
 } from "@/hooks/use-product-review/product-review.dto"
 import { Spinner } from "@/components/ui/spinner"
 import { useToast } from "@/hooks/use-toast"
+import { useTranslation } from 'react-i18next'
 
 interface RatingDistribution {
   [key: number]: number
@@ -67,6 +68,7 @@ function InteractiveStarRating({
   onRatingChange: (rating: number) => void;
   size?: number;
 }) {
+  const { t } = useTranslation()
   return (
     <div className="flex items-center gap-1">
       {[1, 2, 3, 4, 5].map((star) => (
@@ -75,7 +77,7 @@ function InteractiveStarRating({
           type="button"
           onClick={() => onRatingChange(star)}
           className="focus:outline-none transition-transform hover:scale-110"
-          aria-label={`Rate ${star} star${star > 1 ? 's' : ''}`}
+          aria-label={t('rateStarStarval', 'Rate {{star}} star{{val}}', { star, val: star > 1 ? 's' : '' })}
         >
           <Star
             className={`${star <= rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"} cursor-pointer`}
@@ -99,6 +101,7 @@ function FeedRecipeCard({
   onLikeClick: (recipeId: string) => Promise<void>
   isLiking: boolean
 }) {
+  const { t } = useTranslation()
   const { recipe, createdAt, likes, likedByMe } = item
   const thumbnailUrl = recipe.thumbnailUrl?.[0] ?? null
   return (
@@ -107,12 +110,11 @@ function FeedRecipeCard({
         <div className="space-y-4">
           <div className="flex items-start justify-between gap-2 flex-wrap">
             <Badge variant="secondary" className="bg-amber-100 text-amber-800 border-amber-200">
-              Recipe review
+              {t('recipeReview', 'Recipe review')}
             </Badge>
 
           </div>
-          <div className="text-sm text-muted-foreground">
-              {recipe.authorName} · {formatDate(createdAt)}
+          <div className="text-sm text-muted-foreground">{t('authorname', '{{authorName}} ·', { authorName: recipe.authorName })}{formatDate(createdAt)}
             </div>
           {thumbnailUrl && (
             <div className="relative w-full max-w-[200px] aspect-video rounded-md overflow-hidden border">
@@ -135,14 +137,12 @@ function FeedRecipeCard({
               onClick={() => onLikeClick(recipe.id)}
               disabled={isLiking}
             >
-              <ThumbsUp size={16} className={likedByMe ? "fill-current" : undefined} />
-              도움이 돼요 ({likes})
-            </Button>
+              <ThumbsUp size={16} className={likedByMe ? "fill-current" : undefined} />{t('likes', '도움이 돼요 ({{likes}})', { likes })}</Button>
           </div>
           <Button asChild variant="outline" size="sm" className="gap-2">
             <Link href={`/community/main/${recipe.id}`}>
               <FileText size={16} />
-              View recipe
+              {t('viewRecipe', 'View recipe')}
             </Link>
           </Button>
         </div>
@@ -163,6 +163,7 @@ function FeedReviewCard({
   onLikeClick: (productReviewId: string) => Promise<void>
   isLiking: boolean
 }) {
+  const { t } = useTranslation()
   const { review, likes, likedByMe } = item
   return (
     <Card className="border">
@@ -171,8 +172,7 @@ function FeedReviewCard({
           <div className="flex items-start justify-between">
             <StarRating rating={review.rating} />
           </div>
-          <div className="text-sm text-muted-foreground">
-              {review.authorName} · {formatDate(review.createdAt)}
+          <div className="text-sm text-muted-foreground">{t('authorname', '{{authorName}} ·', { authorName: review.authorName })}{formatDate(review.createdAt)}
             </div>
           {review.imageUrl && (
             <div className="flex gap-2 flex-wrap">
@@ -198,9 +198,7 @@ function FeedReviewCard({
               onClick={() => onLikeClick(review.id)}
               disabled={isLiking}
             >
-              <ThumbsUp size={16} className={likedByMe ? "fill-current" : undefined} />
-              도움이 돼요 ({likes})
-            </Button>
+              <ThumbsUp size={16} className={likedByMe ? "fill-current" : undefined} />{t('likes', '도움이 돼요 ({{likes}})', { likes })}</Button>
           </div>
         </div>
       </CardContent>
@@ -209,6 +207,7 @@ function FeedReviewCard({
 }
 
 export function ProductReview() {
+  const { t } = useTranslation()
   const params = useParams()
   const productId = params?.id as string
   const { getProductReviewsByProductId, createProductReview, toggleProductReviewLike } = useProductReview()
@@ -359,7 +358,7 @@ export function ProductReview() {
       }
       toast({
         title: "오류",
-        description: "좋아요를 누를 수 없습니다.",
+        description: t('key539', '좋아요를 누를 수 없습니다.'),
         variant: "destructive",
       })
     },
@@ -385,7 +384,7 @@ export function ProductReview() {
       }
       toast({
         title: "오류",
-        description: "좋아요를 누를 수 없습니다.",
+        description: t('key539', '좋아요를 누를 수 없습니다.'),
         variant: "destructive",
       })
     },
@@ -445,7 +444,7 @@ export function ProductReview() {
     if (!reviewRating || reviewRating === 0) {
       toast({
         title: "평점 필수",
-        description: "제출하기 전에 평점을 선택해주세요.",
+        description: t('key540', '제출하기 전에 평점을 선택해주세요.'),
         variant: "destructive",
       })
       return
@@ -454,7 +453,7 @@ export function ProductReview() {
     if (!reviewText.trim()) {
       toast({
         title: "리뷰 내용 필수",
-        description: "제출하기 전에 리뷰를 작성해주세요.",
+        description: t('key541', '제출하기 전에 리뷰를 작성해주세요.'),
         variant: "destructive",
       })
       return
@@ -471,7 +470,7 @@ export function ProductReview() {
       
       toast({
         title: "리뷰 등록 완료",
-        description: "리뷰가 성공적으로 등록되었습니다.",
+        description: t('key542', '리뷰가 성공적으로 등록되었습니다.'),
       })
 
       // Reset form
@@ -487,7 +486,7 @@ export function ProductReview() {
     } catch (error: any) {
       toast({
         title: "오류",
-        description: error?.message || "리뷰 제출에 실패했습니다. 다시 시도해주세요.",
+        description: error?.message || t('key543', '리뷰 제출에 실패했습니다. 다시 시도해주세요.'),
         variant: "destructive",
       })
     } finally {
@@ -506,7 +505,7 @@ export function ProductReview() {
   if (isError) {
     return (
       <div className="text-center py-12 text-muted-foreground">
-        리뷰를 불러오는데 실패했습니다. 나중에 다시 시도해주세요.
+        {t('key544', '리뷰를 불러오는데 실패했습니다. 나중에 다시 시도해주세요.')}
       </div>
     )
   }
@@ -520,7 +519,7 @@ export function ProductReview() {
           onClick={() => setIsDialogOpen(true)}
         >
           <Upload size={16} />
-          리뷰 작성
+          {t('key545', '리뷰 작성')}
         </Button>
       </div>
 
@@ -528,16 +527,16 @@ export function ProductReview() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
-            <DialogTitle>리뷰 작성</DialogTitle>
+            <DialogTitle>{t('key545', '리뷰 작성')}</DialogTitle>
             <DialogDescription>
-              이 제품에 대한 경험을 공유해 주세요. 귀하의 리뷰는 다른 고객이 정보에 입각한 결정을 내리는 데 도움이 됩니다.
+              {t('key546', '이 제품에 대한 경험을 공유해 주세요. 귀하의 리뷰는 다른 고객이 정보에 입각한 결정을 내리는 데 도움이 됩니다.')}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-6 py-4">
             {/* Rating Selection */}
             <div className="space-y-2">
-              <Label>평점 *</Label>
+              <Label>{t('key547', '평점 *')}</Label>
               <InteractiveStarRating 
                 rating={reviewRating} 
                 onRatingChange={setReviewRating}
@@ -546,10 +545,10 @@ export function ProductReview() {
 
             {/* Review Text */}
             <div className="space-y-2">
-              <Label htmlFor="review-text">리뷰 내용 *</Label>
+              <Label htmlFor="review-text">{t('key548', '리뷰 내용 *')}</Label>
               <Textarea
                 id="review-text"
-                placeholder="이 제품에 대한 경험을 알려주세요..."
+                placeholder={t('key549', '이 제품에 대한 경험을 알려주세요...')}
                 value={reviewText}
                 onChange={(e) => setReviewText(e.target.value)}
                 rows={6}
@@ -559,13 +558,13 @@ export function ProductReview() {
 
             {/* Image Upload */}
             <div className="space-y-2">
-              <Label htmlFor="review-image">사진 추가 (선택사항)</Label>
+              <Label htmlFor="review-image">{t('key550', '사진 추가 (선택사항)')}</Label>
               {reviewImagePreview ? (
                 <div className="relative inline-block">
                   <div className="relative w-32 h-32 rounded-md overflow-hidden border">
                     <Image
                       src={reviewImagePreview}
-                      alt="Review preview"
+                      alt={t('reviewPreview', 'Review preview')}
                       fill
                       className="object-cover"
                     />
@@ -574,7 +573,7 @@ export function ProductReview() {
                     type="button"
                     onClick={handleRemoveImage}
                     className="absolute -top-2 -right-2 bg-destructive text-white rounded-full p-1 hover:bg-destructive/90"
-                    aria-label="Remove image"
+                    aria-label={t('removeImage', 'Remove image')}
                   >
                     <X size={16} />
                   </button>
@@ -587,7 +586,7 @@ export function ProductReview() {
                   >
                     <div className="flex items-center gap-2">
                       <Upload size={20} className="text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">이미지 업로드</span>
+                      <span className="text-sm text-muted-foreground">{t('key551', '이미지 업로드')}</span>
                     </div>
                   </Label>
                   <input
@@ -596,7 +595,7 @@ export function ProductReview() {
                     accept="image/*"
                     onChange={handleImageSelect}
                     className="hidden"
-                    aria-label="Upload review image"
+                    aria-label={t('uploadReviewImage', 'Upload review image')}
                   />
                 </div>
               )}
@@ -615,7 +614,7 @@ export function ProductReview() {
               }}
               disabled={isSubmitting}
             >
-              취소
+              {t('key212', '취소')}
             </Button>
             <Button
               onClick={handleSubmitReview}
@@ -625,7 +624,7 @@ export function ProductReview() {
               {isSubmitting ? (
                 <>
                   <Spinner className="w-4 h-4 mr-2" />
-                  제출 중...
+                  {t('key538', '제출 중...')}
                 </>
               ) : (
                 "리뷰 등록"
@@ -640,7 +639,7 @@ export function ProductReview() {
         <Card className="border">
           <CardContent className="pt-6">
             <div className="space-y-4">
-              <h3 className="font-semibold text-lg">평점 분포</h3>
+              <h3 className="font-semibold text-lg">{t('key552', '평점 분포')}</h3>
               <div className="space-y-3">
                 {[5, 4, 3, 2, 1].map((rating) => {
                   const count = ratingDistribution[rating] || 0
@@ -651,7 +650,7 @@ export function ProductReview() {
                         <span className="flex items-center gap-1">
                           {rating} <Star className="fill-yellow-400 text-yellow-400" size={14} />
                         </span>
-                        <span className="text-muted-foreground">{percentage}%</span>
+                        <span className="text-muted-foreground">{t('percentage', '{{percentage}}%', { percentage })}</span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2 relative overflow-hidden">
                         <div
@@ -674,21 +673,15 @@ export function ProductReview() {
             <SelectValue placeholder="정렬" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="latest">최신순</SelectItem>
-            <SelectItem value="oldest">오래된순</SelectItem>
+            <SelectItem value="latest">{t('key494', '최신순')}</SelectItem>
+            <SelectItem value="oldest">{t('key553', '오래된순')}</SelectItem>
           </SelectContent>
         </Select>
         <Tabs value={filterTab} onValueChange={setFilterTab} className="w-full lg:w-auto">
           <TabsList>
-            <TabsTrigger value="all" className="data-[state=active]:bg-[#FF6B4A] data-[state=active]:text-white">
-              전체 ({totalItems})
-            </TabsTrigger>
-            <TabsTrigger value="general" className="data-[state=active]:bg-[#FF6B4A] data-[state=active]:text-white">
-              일반 리뷰 ({totalReviews})
-            </TabsTrigger>
-            <TabsTrigger value="recipe" className="data-[state=active]:bg-[#FF6B4A] data-[state=active]:text-white">
-              레시피 리뷰 ({totalRecipes})
-            </TabsTrigger>
+            <TabsTrigger value="all" className="data-[state=active]:bg-[#FF6B4A] data-[state=active]:text-white">{t('totalitems', '전체 ({{totalItems}})', { totalItems })}</TabsTrigger>
+            <TabsTrigger value="general" className="data-[state=active]:bg-[#FF6B4A] data-[state=active]:text-white">{t('totalreviews', '일반 리뷰 ({{totalReviews}})', { totalReviews })}</TabsTrigger>
+            <TabsTrigger value="recipe" className="data-[state=active]:bg-[#FF6B4A] data-[state=active]:text-white">{t('totalrecipes2', '레시피 리뷰 ({{totalRecipes}})', { totalRecipes })}</TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
@@ -697,7 +690,7 @@ export function ProductReview() {
       <div className="space-y-6">
         {filteredItems.length === 0 ? (
           <div className="text-center py-12 text-muted-foreground">
-            리뷰가 없습니다.
+            {t('key554', '리뷰가 없습니다.')}
           </div>
         ) : (
           <>

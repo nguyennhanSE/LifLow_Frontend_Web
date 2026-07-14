@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { ChevronUp, ChevronDown, Plus, Minus } from "lucide-react"
+import { useTranslation } from 'react-i18next'
+import i18next from 'i18next'
 
 /** Item từ getMyCoupons().availableCoupons */
 export interface OrderCouponItem {
@@ -42,7 +44,7 @@ interface OrderCouponProps {
 /** Format date as YYYY.M.D (no spaces, e.g. 2026.1.31) */
 function formatDateCompact(dateStr: string): string {
   const d = new Date(dateStr)
-  return `${d.getFullYear()}.${d.getMonth() + 1}.${d.getDate()}`
+  return i18next.t('valval2val3', '{{val}}.{{val2}}.{{val3}}', { val: d.getFullYear(), val2: d.getMonth() + 1, val3: d.getDate() })
 }
 
 /** Format date as YYYY-MM-DD */
@@ -183,6 +185,7 @@ export function OrderCoupon({
   selectedCouponIds,
   onSelectedCouponIdsChange,
 }: OrderCouponProps) {
+  const { t } = useTranslation()
   const [discountExpanded, setDiscountExpanded] = useState(false)
 
   const usedCountByCouponId = useMemo(() => {
@@ -312,7 +315,7 @@ export function OrderCoupon({
         onClick={() => setDiscountExpanded(!discountExpanded)}
         className="flex items-center justify-between w-full mb-4"
       >
-        <h2 className="text-lg font-semibold">할인/추가 결제</h2>
+        <h2 className="text-lg font-semibold">{t('key607', '할인/추가 결제')}</h2>
         {discountExpanded ? (
           <ChevronUp className="w-5 h-5" />
         ) : (
@@ -323,17 +326,15 @@ export function OrderCoupon({
         <div className="space-y-4">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <Label className="text-sm">쿠폰 할인 (주문 전체)</Label>
+              <Label className="text-sm">{t('key608', '쿠폰 할인 (주문 전체)')}</Label>
             </div>
-            <p className="text-sm text-muted-foreground">
-              사용 가능한 쿠폰 {availableCoupons.length}장 (총 {totalQuantity}장)
-            </p>
+            <p className="text-sm text-muted-foreground">{t('lengthTotalquantity', '사용 가능한 쿠폰 {{length}}장 (총 {{totalQuantity}}장)', { length: availableCoupons.length, totalQuantity })}</p>
           </div>
 
           <div className="space-y-2 max-h-96 overflow-y-auto">
             {availableCoupons.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-4">
-                사용 가능한 쿠폰이 없습니다.
+                {t('key609', '사용 가능한 쿠폰이 없습니다.')}
               </p>
             ) : (
               availableCoupons.map((item, index) => {
@@ -349,8 +350,8 @@ export function OrderCoupon({
                 const discountText = isFreeShipping
                   ? "무료 배송"
                   : isPercent
-                    ? `${item.discountRate}% 할인`
-                    : `${formatCurrency(item.discountAmount ?? 0)}원 할인`
+                    ? t('discountrate2', '{{discountRate}}% 할인', { discountRate: item.discountRate })
+                    : t('val2', '{{val}}원 할인', { val: formatCurrency(item.discountAmount ?? 0) })
 
                 const now = Date.now()
                 const startMs = item.startDate ? new Date(item.startDate).getTime() : 0
@@ -377,7 +378,7 @@ export function OrderCoupon({
                 const leftLabel = isFreeShipping
                   ? "무료 배송"
                   : isPercent
-                    ? `${item.discountRate}%`
+                    ? t('discountrate', '{{discountRate}}%', { discountRate: item.discountRate })
                     : `${formatCurrency(item.discountAmount ?? 0)}원`
                 const displayName =
                   item.couponName ?? discountText
@@ -395,7 +396,7 @@ export function OrderCoupon({
                   >
                     <div className="w-[24%] min-w-[90px] flex flex-col items-center justify-center bg-[#FF6B5A] text-white py-5 px-2 shrink-0">
                       <span className="text-xl font-bold leading-tight">{leftLabel}</span>
-                      <span className="text-xs mt-0.5">할인</span>
+                      <span className="text-xs mt-0.5">{t('key246', '할인')}</span>
                     </div>
                     <div className="flex-1 min-w-0 flex items-start justify-between gap-3 py-4 pl-4 pr-4">
                       <div className="flex-1 min-w-0">
@@ -404,12 +405,12 @@ export function OrderCoupon({
                         </p>
                         {item.couponCode != null && item.couponCode !== "" && (
                           <p className="text-xs text-muted-foreground mb-0.5">
-                            코드: <span className="font-semibold text-foreground">{item.couponCode}</span>
+                            {t('key248', '코드:')} <span className="font-semibold text-foreground">{item.couponCode}</span>
                           </p>
                         )}
                         {item.maxDiscountAmount != null && item.maxDiscountAmount > 0 && (
                           <p className="text-xs text-muted-foreground mb-0.5">
-                            최대 할인금액: {formatCurrency(item.maxDiscountAmount)}원
+                            {t('key249', '최대 할인금액:')} {formatCurrency(item.maxDiscountAmount)}원
                           </p>
                         )}
                         <p
@@ -417,7 +418,7 @@ export function OrderCoupon({
                             !meetsMin && item.minPurchaseAmount > 0 ? "text-red-500" : "text-muted-foreground"
                           }`}
                         >
-                          최소 주문금액: {formatCurrency(item.minPurchaseAmount)}원
+                          {t('key250', '최소 주문금액:')} {formatCurrency(item.minPurchaseAmount)}원
                           {!meetsMin && item.minPurchaseAmount > 0 && " (미달)"}
                         </p>
                         {(item.startDate || item.endDate) && (
@@ -426,16 +427,14 @@ export function OrderCoupon({
                               !isWithinDateRange ? "text-red-500" : "text-muted-foreground"
                             }`}
                           >
-                            유효기간: {item.startDate ? formatDateYMD(item.startDate) : "—"} ~ {item.endDate ? formatDateYMD(item.endDate) : "—"}
-                            {!isWithinDateRange && " (미사용 기간)"}
+                            {t('key251', '유효기간:')} {item.startDate ? formatDateYMD(item.startDate) : "—"} ~ {item.endDate ? formatDateYMD(item.endDate) : "—"}
+                            {!isWithinDateRange && t('key610', ' (미사용 기간)')}
                           </p>
                         )}
                         <p className="text-xs text-muted-foreground">
-                          발급일: {formatDateYMD(item.issuedAt)}
+                          {t('key252', '발급일:')} {formatDateYMD(item.issuedAt)}
                         </p>
-                        <p className="text-xs text-muted-foreground mt-0.5">
-                          보유: {quantity}장
-                          {isFreeShipping && " (1회만 적용 가능)"}
+                        <p className="text-xs text-muted-foreground mt-0.5">{t('quantity2', '보유: {{quantity}}장', { quantity })}{isFreeShipping && t('128', ' (1회만 적용 가능)')}
                           {remaining <= 0 && " (소진)"}
                         </p>
                       </div>
@@ -482,7 +481,7 @@ export function OrderCoupon({
           </div>
 
           <div className="flex items-center justify-between border-t pt-4">
-            <span className="text-sm font-medium">총 할인 금액</span>
+            <span className="text-sm font-medium">{t('key611', '총 할인 금액')}</span>
             <span className="text-[#FF6B5A] font-semibold">
               -{formatCurrency(totalDiscount)} 원
             </span>

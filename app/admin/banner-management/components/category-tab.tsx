@@ -11,6 +11,7 @@ import { ECategoryType, ProductCategoryEntity } from '@/entities/product-categor
 import { useBanner } from '@/hooks/use-banner/banner.hook'
 import { UpdateBannerDto } from '@/hooks/use-banner/banner.dto'
 import { useCategory } from '@/hooks/use-category/category.hook'
+import { useTranslation } from 'react-i18next'
 
 type CategoryTypeOrAll = ECategoryType | 'ALL'
 
@@ -27,6 +28,7 @@ type CategoryFormData = {
 }
 
 export function CategoryTab({ categories }: CategoryTabProps) {
+  const { t } = useTranslation()
   const { updateBanner, updateBannerImageById } = useBanner()
   const { getCategories } = useCategory()
   const [formData, setFormData] = useState<Record<string, CategoryFormData>>({})
@@ -267,7 +269,7 @@ export function CategoryTab({ categories }: CategoryTabProps) {
       <div className="flex items-center gap-2">
         <ImageIcon className="h-5 w-5 text-foreground" />
         <h2 className="text-base font-medium text-foreground">
-          마켓 카테고리별 세로형 배너 설정
+          {t('key773', '마켓 카테고리별 세로형 배너 설정')}
         </h2>
       </div>
 
@@ -276,9 +278,9 @@ export function CategoryTab({ categories }: CategoryTabProps) {
         <div className="flex gap-3">
           <Info className="mt-0.5 h-5 w-5 shrink-0 text-foreground-600" />
           <div className="space-y-1">
-            <p className="text-sm font-medium text-foreground-900">권장 사이즈:배너 이미지 400×600px</p>
+            <p className="text-sm font-medium text-foreground-900">{t('400600px', '권장 사이즈:배너 이미지 400×600px')}</p>
             <p className="text-sm text-foreground-700">
-              메인 페이지 마켓 영역의 좌측에 표시되는 세로형 배너입니다.
+              {t('key774', '메인 페이지 마켓 영역의 좌측에 표시되는 세로형 배너입니다.')}
             </p>
           </div>
         </div>
@@ -287,7 +289,7 @@ export function CategoryTab({ categories }: CategoryTabProps) {
       {/* Category Banners */}
       {categoriesLoading ? (
         <div className="flex items-center justify-center py-12">
-          <p className="text-sm text-muted-foreground">카테고리 불러오는 중...</p>
+          <p className="text-sm text-muted-foreground">{t('key775', '카테고리 불러오는 중...')}</p>
         </div>
       ) : (
         <div className="space-y-8">
@@ -310,12 +312,12 @@ export function CategoryTab({ categories }: CategoryTabProps) {
                   <div className="space-y-6">
                     <div>
                       <h3 className="mb-1 text-lg font-semibold">{getCategoryName(category.name)}</h3>
-                      <p className="text-sm text-muted-foreground">카테고리</p>
+                      <p className="text-sm text-muted-foreground">{t('key332', '카테고리')}</p>
                     </div>
 
                     {/* Upload Banner */}
                     <div className="space-y-2">
-                      <Label className="text-sm font-medium">배너 이미지 업로드</Label>
+                      <Label className="text-sm font-medium">{t('key776', '배너 이미지 업로드')}</Label>
                       <input
                         type="file"
                         id={`image-upload-${key}`}
@@ -335,7 +337,7 @@ export function CategoryTab({ categories }: CategoryTabProps) {
                             <div className="relative w-full">
                               <img
                                 src={imageUrl}
-                                alt="배너 미리보기"
+                                alt={t('key769', '배너 미리보기')}
                                 className="h-48 w-full rounded-lg object-cover"
                               />
                               <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 hover:opacity-100 transition-opacity rounded-lg">
@@ -346,7 +348,7 @@ export function CategoryTab({ categories }: CategoryTabProps) {
                             <>
                               <Upload className="h-8 w-8 text-muted-foreground" />
                               <p className="text-sm text-muted-foreground">
-                                클릭하여 업로드 또는 드래그 앤 드롭
+                                {t('key770', '클릭하여 업로드 또는 드래그 앤 드롭')}
                               </p>
                             </>
                           )}
@@ -354,7 +356,7 @@ export function CategoryTab({ categories }: CategoryTabProps) {
                       </label>
                       {selectedImages[key] && (
                         <p className="text-xs text-muted-foreground">
-                          선택됨: {selectedImages[key]?.name}
+                          {t('key766', '선택됨:')} {selectedImages[key]?.name}
                         </p>
                       )}
                     </div>
@@ -362,7 +364,7 @@ export function CategoryTab({ categories }: CategoryTabProps) {
                     {/* Title */}
                     <div className="space-y-2">
                       <Label htmlFor={`title-${key}`} className="text-sm font-medium">
-                        제목
+                        {t('key502', '제목')}
                       </Label>
                       <Input
                         id={`title-${key}`}
@@ -386,7 +388,7 @@ export function CategoryTab({ categories }: CategoryTabProps) {
                         htmlFor={`subtitle-${key}`}
                         className="text-sm font-medium"
                       >
-                        부제목
+                        {t('key771', '부제목')}
                       </Label>
                       <Input
                         id={`subtitle-${key}`}
@@ -410,7 +412,7 @@ export function CategoryTab({ categories }: CategoryTabProps) {
                         htmlFor={`cta-text-${key}`}
                         className="text-sm font-medium"
                       >
-                        CTA 버튼 텍스트
+                        {t('cta', 'CTA 버튼 텍스트')}
                       </Label>
                       <Input
                         id={`cta-text-${key}`}
@@ -434,7 +436,7 @@ export function CategoryTab({ categories }: CategoryTabProps) {
                         htmlFor={`cta-url-${key}`}
                         className="text-sm font-medium"
                       >
-                        CTA 버튼 이동 URL
+                        {t('ctaUrl', 'CTA 버튼 이동 URL')}
                       </Label>
                       <Input
                         id={`cta-url-${key}`}
@@ -458,7 +460,7 @@ export function CategoryTab({ categories }: CategoryTabProps) {
                         htmlFor={`bg-color-${key}`}
                         className="text-sm font-medium"
                       >
-                        배경색
+                        {t('key777', '배경색')}
                       </Label>
                       <div className="flex gap-2">
                         <Input
@@ -485,7 +487,7 @@ export function CategoryTab({ categories }: CategoryTabProps) {
 
                   {/* Right Side - Preview */}
                   <div className="space-y-2">
-                    <Label className="text-sm font-medium">미리보기</Label>
+                    <Label className="text-sm font-medium">{t('key763', '미리보기')}</Label>
                     <div className="rounded-lg border border-border bg-gradient-to-br from-gray-50 to-gray-100 p-6">
                       <div
                         className="aspect-[2/3] overflow-hidden rounded-lg shadow-lg relative"
@@ -530,7 +532,7 @@ export function CategoryTab({ categories }: CategoryTabProps) {
           className="flex h-12 w-full items-center justify-center gap-2 bg-foreground hover:bg-foreground/90 text-base font-medium text-white"
         >
           <Save className="h-4 w-4" />
-          {isSaving ? '저장 중...' : '모든 카테고리 배너 저장'}
+          {isSaving ? t('key582', '저장 중...') : t('key778', '모든 카테고리 배너 저장')}
         </Button>
       </div>
     </div>

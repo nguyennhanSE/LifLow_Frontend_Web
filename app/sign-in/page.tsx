@@ -7,8 +7,10 @@ import { useAuthHook } from "@/hooks/use-auth/auth.hook"
 import { useSignIn } from "./use.sign-in.hook"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
+import { useTranslation } from 'react-i18next'
 
 export default function LoginPage() {
+  const { t } = useTranslation()
   const [id, setId] = useState("")
   const [password, setPassword] = useState("")
   const [keepLoggedIn, setKeepLoggedIn] = useState(false)
@@ -88,7 +90,7 @@ export default function LoginPage() {
         <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-50">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#ff5833] mx-auto mb-4" />
-            <p className="text-lg font-semibold text-gray-700">로그인 처리 중...</p>
+            <p className="text-lg font-semibold text-gray-700">{t('key43', '로그인 처리 중...')}</p>
           </div>
         </div>
       )}
@@ -97,7 +99,7 @@ export default function LoginPage() {
       <div className="w-full max-w-[min(100%,28rem)] sm:max-w-lg mx-auto py-4 sm:py-5 bg-[#f5f5f5] rounded-2xl px-4 sm:px-6">
         <div className="flex justify-center items-center gap-3 mb-2">
           <Image src="/Icon-orange.png" alt="icon" width={40} height={40} className="shrink-0" />
-          <h1 className="text-xl sm:text-2xl font-bold">쭈왕몰</h1>
+          <h1 className="text-xl sm:text-2xl font-bold">{t('key4', '쭈왕몰')}</h1>
         </div>
         <header className="flex justify-between items-center">
           <Link href="/" className="p-2 -m-2 touch-manipulation" aria-label="뒤로">
@@ -107,7 +109,7 @@ export default function LoginPage() {
             <Home className="w-6 h-6" />
           </Link>
         </header>
-        <h1 className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">로그인</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">{t('key42', '로그인')}</h1>
 
         <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-6 md:p-8">
           <form className="space-y-4" onSubmit={handleSubmit}>
@@ -115,14 +117,14 @@ export default function LoginPage() {
             <div>
               <label htmlFor="id" className="block text-base font-semibold mb-2">
                 {/* id in Korean */}
-                아이디
+                {t('key44', '아이디')}
               </label>
               <input
                 type="text"
                 id="id"
                 value={id}
                 onChange={(e) => setId(e.target.value)}
-                placeholder="이메일을 입력하세요"
+                placeholder={t('key17', '이메일을 입력하세요')}
                 className="w-full px-4 py-3 bg-[#f3f3f5] rounded-lg text-base placeholder:text-[#717182] focus:outline-none focus:ring-2 focus:ring-[#ff5833]/20"
                 required
               />
@@ -131,14 +133,14 @@ export default function LoginPage() {
             {/* Password Field */}
             <div>
               <label htmlFor="password" className="block text-base font-semibold mb-2">
-                비밀번호
+                {t('key45', '비밀번호')}
               </label>
               <input
                 type="password"
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="비밀번호를 입력하세요"
+                placeholder={t('key11', '비밀번호를 입력하세요')}
                 className="w-full px-4 py-3 bg-[#f3f3f5] rounded-lg text-base placeholder:text-[#717182] focus:outline-none focus:ring-2 focus:ring-[#ff5833]/20"
                 required
               />
@@ -154,7 +156,7 @@ export default function LoginPage() {
                 className="w-5 h-5 rounded border-gray-300 text-[#ff5833] focus:ring-[#ff5833]"
               />
               <label htmlFor="keepLoggedIn" className="text-base text-gray-700">
-                로그인 유지
+                {t('key46', '로그인 유지')}
               </label>
             </div>
 
@@ -164,17 +166,17 @@ export default function LoginPage() {
               disabled={isLoading}
               className="w-full bg-[#ff5833] hover:bg-[#e54d2c] text-white font-semibold py-3 rounded-lg transition-colors text-lg disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation min-h-[48px]"
             >
-              {isLoading ? "로그인 중..." : "로그인"}
+              {isLoading ? t('key47', '로그인 중...') : "로그인"}
             </button>
 
             {/* Find Links */}
             <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-sm text-gray-600">
               <Link href="/find-id" className="hover:text-gray-900 touch-manipulation">
-                아이디 찾기
+                {t('key48', '아이디 찾기')}
               </Link>
               <span className="text-gray-400">|</span>
               <Link href="/find-password" className="hover:text-gray-900 touch-manipulation">
-                비밀번호 찾기
+                {t('key49', '비밀번호 찾기')}
               </Link>
             </div>
 
@@ -184,7 +186,7 @@ export default function LoginPage() {
                 <div className="w-full border-t border-gray-200"></div>
               </div>
               <div className="relative flex justify-center">
-                <span className="px-4 bg-white text-gray-500 text-sm">또는</span>
+                <span className="px-4 bg-white text-gray-500 text-sm">{t('key50', '또는')}</span>
               </div>
             </div>
 
@@ -198,7 +200,7 @@ export default function LoginPage() {
                 <div className="w-6 h-6 bg-white rounded flex items-center justify-center shrink-0">
                   <span className="text-[#03c75a] font-bold text-lg">N</span>
                 </div>
-                <span className="truncate">네이버 1초 로그인/회원가입</span>
+                <span className="truncate">{t('1', '네이버 1초 로그인/회원가입')}</span>
               </button>
 
               <button
@@ -207,15 +209,15 @@ export default function LoginPage() {
                 className="w-full bg-[#fee500] hover:bg-[#f5dc00] text-[#000000] font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 touch-manipulation min-h-[48px]"
               >
                 <Image src="/kakao.png" alt="Kakao" width={24} height={24} className="w-5 h-5 object-contain shrink-0" />
-                <span className="truncate">카카오 1초 로그인/회원가입</span>
+                <span className="truncate">{t('12', '카카오 1초 로그인/회원가입')}</span>
               </button>
             </div>
 
             {/* Sign Up Link */}
             <div className="text-center pt-2 text-sm sm:text-base">
-              <span className="text-gray-600">계정이 없으신가요? </span>
+              <span className="text-gray-600">{t('key51', '계정이 없으신가요?')} </span>
               <Link href="/sign-up" className="text-[#ff5833] font-semibold hover:underline touch-manipulation">
-                회원가입
+                {t('key6', '회원가입')}
               </Link>
             </div>
           </form>

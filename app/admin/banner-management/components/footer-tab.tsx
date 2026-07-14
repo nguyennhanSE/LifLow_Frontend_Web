@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label'
 import { BannerEntity, EBannerType } from '@/entities/banner/banner.entity'
 import { useBanner } from '@/hooks/use-banner/banner.hook'
 import { ECategoryType } from '@/hooks/use-banner/banner.dto'
+import { useTranslation } from 'react-i18next'
 
 type FooterTabProps = {
   footerBanner1Url: string
@@ -27,6 +28,7 @@ export function FooterTab({
   onChangeBanner2Url,
   onChangeBanner3Url,
 }: FooterTabProps) {
+  const { t } = useTranslation()
   const { getBannerByCategory, getBannersByType, updateBannerImageById, updateBanner } = useBanner()
   const [banners, setBanners] = useState<BannerEntity[]>([])
   const [loading, setLoading] = useState(false)
@@ -210,7 +212,7 @@ export function FooterTab({
       <div className="flex items-center gap-2">
         <ImageIcon className="h-5 w-5 text-foreground" />
         <h2 className="text-base font-medium text-foreground">
-          푸터 위 배너 설정 (3개)
+          {t('315', '푸터 위 배너 설정 (3개)')}
         </h2>
       </div>
 
@@ -220,10 +222,10 @@ export function FooterTab({
           <Info className="mt-0.5 h-5 w-5 shrink-0 text-foreground-600" />
           <div className="space-y-1">
             <p className="text-sm font-medium text-foreground-900">
-              권장 사이즈:배너 이미지 800×400px
+              {t('800400px', '권장 사이즈:배너 이미지 800×400px')}
             </p>
             <p className="text-sm text-foreground-700">
-              푸터 영역 위에 표시되는 3개의 배너 이미지입니다.
+              {t('316', '푸터 영역 위에 표시되는 3개의 배너 이미지입니다.')}
             </p>
           </div>
         </div>
@@ -232,7 +234,7 @@ export function FooterTab({
       {/* Three Banners Grid */}
       {loading ? (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">배너 불러오는 중...</p>
+          <p className="text-muted-foreground">{t('key764', '배너 불러오는 중...')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -242,7 +244,7 @@ export function FooterTab({
 
             return (
               <div key={index} className="space-y-4">
-                <Label className="text-sm font-medium">배너 {index + 1} 이미지 업로드</Label>
+                <Label className="text-sm font-medium">{t('key765', '배너')} {index + 1} {t('key551', '이미지 업로드')}</Label>
                 <input
                   type="file"
                   id={`image-upload-${index}`}
@@ -262,7 +264,7 @@ export function FooterTab({
                       <div className="relative w-full">
                         <img
                           src={imageUrl}
-                          alt={`배너 ${index + 1} 미리보기`}
+                          alt={t('val5', '배너 {{val}} 미리보기', { val: index + 1 })}
                           className="h-48 w-full rounded-lg object-cover"
                         />
                         <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 hover:opacity-100 transition-opacity rounded-lg">
@@ -272,19 +274,19 @@ export function FooterTab({
                     ) : (
                       <>
                         <Upload className="h-8 w-8 text-muted-foreground" />
-                        <p className="text-xs text-muted-foreground">이미지 업로드</p>
+                        <p className="text-xs text-muted-foreground">{t('key551', '이미지 업로드')}</p>
                       </>
                     )}
                   </div>
                 </label>
                 {selectedImages[index] && (
                   <p className="text-xs text-muted-foreground">
-                    선택됨: {selectedImages[index]?.name}
+                    {t('key766', '선택됨:')} {selectedImages[index]?.name}
                   </p>
                 )}
                 <div className="space-y-2">
                   <Label htmlFor={`banner${index + 1}-url`} className="text-sm font-medium">
-                    배너 {index + 1} CTA URL
+                    {t('key765', '배너')} {index + 1} {t('ctaUrl2', 'CTA URL')}
                   </Label>
                   <Input
                     id={`banner${index + 1}-url`}
@@ -311,7 +313,7 @@ export function FooterTab({
 
       {/* Full Preview */}
       <div className="space-y-3 pt-4">
-        <Label className="text-sm font-medium">전체 미리보기</Label>
+        <Label className="text-sm font-medium">{t('key767', '전체 미리보기')}</Label>
         <div className="rounded-lg border border-border bg-gradient-to-br from-gray-50 to-gray-100 p-6">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {[0, 1, 2].map((index) => {
@@ -321,12 +323,12 @@ export function FooterTab({
                   {imageUrl ? (
                     <img
                       src={imageUrl}
-                      alt={`배너 ${index + 1}`}
+                      alt={t('val6', '배너 {{val}}', { val: index + 1 })}
                       className="h-full w-full cursor-pointer object-cover transition-transform duration-300 hover:scale-105"
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center bg-muted">
-                      <p className="text-sm text-muted-foreground">이미지 없음</p>
+                      <p className="text-sm text-muted-foreground">{t('key320', '이미지 없음')}</p>
                     </div>
                   )}
                 </div>
@@ -344,7 +346,7 @@ export function FooterTab({
           className="flex h-12 w-full items-center justify-center gap-2 bg-foreground text-background hover:bg-foreground/90 text-base font-medium"
         >
           <Save className="h-4 w-4" />
-          {isSaving ? '저장 중...' : '저장'}
+          {isSaving ? t('key582', '저장 중...') : '저장'}
         </Button>
       </div>
     </div>

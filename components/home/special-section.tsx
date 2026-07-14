@@ -13,6 +13,7 @@ import { createProductNavigationHandler } from "@/lib/utils"
 import { useBanner } from "@/hooks/use-banner/banner.hook"
 import { EBannerType } from "@/entities/banner/banner.entity"
 import { Button } from "@/components/ui/button"
+import { useTranslation, Trans } from 'react-i18next'
 
 interface SpecialProduct {
   id: string
@@ -110,6 +111,7 @@ function mapProductToSpecialProduct(product: ProductEntity): SpecialProduct {
 }
 
 export default function SpecialSection() {
+  const { t } = useTranslation()
   const router = useRouter()
   const [searchTerm, setSearchTerm] = useState("")
   const [sortBy, setSortBy] = useState("less-time")
@@ -236,9 +238,9 @@ export default function SpecialSection() {
     const secs = seconds % 60
 
     if (days > 0) {
-      return `${days}일 ${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")} 남음`
+      return t('daysValval2val3', '{{days}}일 {{val}}:{{val2}}:{{val3}} 남음', { days, val: hours.toString().padStart(2, "0"), val2: minutes.toString().padStart(2, "0"), val3: secs.toString().padStart(2, "0") })
     }
-    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")} 남음`
+    return t('valval2val3', '{{val}}:{{val2}}:{{val3}} 남음', { val: hours.toString().padStart(2, "0"), val2: minutes.toString().padStart(2, "0"), val3: secs.toString().padStart(2, "0") })
   }
 
 
@@ -247,11 +249,9 @@ export default function SpecialSection() {
       {/* Hero Section with Gradient - Fallback if no banner */}
       {!isLoadingBanner && !bannerData && (
         <div className="bg-gradient-to-r from-[#ff6900] via-[#ff5833] to-[#ff5c5c] px-6 py-16 text-center">
-          <h1 className="mb-2 text-4xl font-bold text-white">
-            <span className="mr-2">🔥</span>
-            이번주 특가
-          </h1>
-          <p className="text-lg text-white/90">매주 새로운 특가 상품을 만나보세요!</p>
+          <h1 className="mb-2 text-4xl font-bold text-white"><Trans i18nKey="spanClassnamemr2span"><span className="mr-2">🔥</span>
+            이번주 특가</Trans></h1>
+          <p className="text-lg text-white/90">{t('key31', '매주 새로운 특가 상품을 만나보세요!')}</p>
         </div>
       )}
 
@@ -268,7 +268,7 @@ export default function SpecialSection() {
                 />
               ) : (
                 <div className="h-full w-full bg-gradient-to-r from-[#EFF6FF] to-[#ECFEFF] flex items-center justify-center rounded-none">
-                  <p className="text-lg font-semibold text-gray-400">Banner Pic</p>
+                  <p className="text-lg font-semibold text-gray-400">{t('bannerPic', 'Banner Pic')}</p>
                 </div>
               )}
               
@@ -299,22 +299,18 @@ export default function SpecialSection() {
             <button
               onClick={() => setActiveFilter("in-progress")}
               className={`text-sm whitespace-nowrap ${activeFilter === "in-progress" ? "font-semibold text-gray-900" : "text-gray-600"}`}
-            >
-              진행중 ({inProgressCount})
-            </button>
+            >{t('inprogresscount', '진행중 ({{inProgressCount}})', { inProgressCount })}</button>
             <button
               onClick={() => setActiveFilter("ended")}
               className={`text-sm whitespace-nowrap ${activeFilter === "ended" ? "font-semibold text-gray-900" : "text-gray-600"}`}
-            >
-              종료 ({isOutDatedCount})
-            </button>
+            >{t('isoutdatedcount', '종료 ({{isOutDatedCount}})', { isOutDatedCount })}</button>
           </div>
 
           <div className="flex items-center gap-2 min-w-0 flex-1">
             <div className="relative flex-1 min-w-0">
               <Input
                 type="text"
-                placeholder="상품명 검색..."
+                placeholder={t('key32', '상품명 검색...')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full bg-white pr-10"
@@ -326,9 +322,9 @@ export default function SpecialSection() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="less-time">남은시간 적은순</SelectItem>
-                <SelectItem value="most-discount">할인율 높은순</SelectItem>
-                <SelectItem value="highest-rated">평점 높은순</SelectItem>
+                <SelectItem value="less-time">{t('key33', '남은시간 적은순')}</SelectItem>
+                <SelectItem value="most-discount">{t('key34', '할인율 높은순')}</SelectItem>
+                <SelectItem value="highest-rated">{t('key35', '평점 높은순')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -344,7 +340,7 @@ export default function SpecialSection() {
         {/* Error State */}
         {isError && (
           <div className="flex items-center justify-center py-12">
-            <p className="text-red-500">특가 상품을 불러오는 중 오류가 발생했습니다: {error?.message || "알 수 없는 오류"}</p>
+            <p className="text-red-500">{t('key36', '특가 상품을 불러오는 중 오류가 발생했습니다:')} {error?.message || t('key37', '알 수 없는 오류')}</p>
           </div>
         )}
 
@@ -353,7 +349,7 @@ export default function SpecialSection() {
           <>
             {mappedProducts.length === 0 ? (
               <div className="flex items-center justify-center py-12">
-                <p className="text-gray-500">특가 상품이 없습니다</p>
+                <p className="text-gray-500">{t('key38', '특가 상품이 없습니다')}</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-5">
@@ -423,7 +419,7 @@ export default function SpecialSection() {
                             </>
                           )}
                           {product.reviewCount > 0 && (
-                            <span className="text-sm text-gray-500">({product.reviewCount})</span>
+                            <span className="text-sm text-gray-500">{t('reviewcount', '({{reviewCount}})', { reviewCount: product.reviewCount })}</span>
                           )}
                         </div>
                       )}
@@ -436,7 +432,7 @@ export default function SpecialSection() {
                           )}
                           {product.discount > 0 && (
                             <span className="rounded bg-[#ff5c5c] px-2 py-0.5 text-xs font-bold text-white">
-                              {product.discount.toLocaleString()}원↓
+                              {product.discount.toLocaleString()}{t('key39', '원↓')}
                             </span>
                           )}
                         </div>

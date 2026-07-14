@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
+import { useTranslation, Trans } from 'react-i18next'
 
 interface PriceDiscountSectionProps {
   consumerPrice: number | undefined
@@ -30,6 +31,7 @@ export function PriceDiscountSection({
   onDiscountEndDateChange,
   onDiscountRateChange,
 }: PriceDiscountSectionProps) {
+  const { t } = useTranslation()
   const isDiscountPeriodDisabled = !discountRate || discountRate === 0
 
   const calculateDiscountRate = (regular: number | undefined, sale: number | undefined) => {
@@ -66,11 +68,11 @@ export function PriceDiscountSection({
   return (
     <Card>
       <CardContent className="pt-6">
-        <h2 className="mb-4 text-lg font-semibold">가격 및 할인</h2>
+        <h2 className="mb-4 text-lg font-semibold">{t('key658', '가격 및 할인')}</h2>
         <div className="space-y-4">
           <div className="grid gap-4 md:grid-cols-3">
             <div className="space-y-2">
-              <Label htmlFor="regularPrice">정가</Label>
+              <Label htmlFor="regularPrice">{t('key346', '정가')}</Label>
               <Input
                 id="regularPrice"
                 type="number"
@@ -85,9 +87,7 @@ export function PriceDiscountSection({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="salePrice">
-                판매가 <span className="text-destructive">*</span>
-              </Label>
+              <Label htmlFor="salePrice"><Trans i18nKey="spanClassnametextdestructivespan">판매가 <span className="text-destructive">*</span></Trans></Label>
               <Input
                 id="salePrice"
                 type="number"
@@ -102,7 +102,7 @@ export function PriceDiscountSection({
               />
             </div>
             <div className="space-y-2">
-              <Label>할인율</Label>
+              <Label>{t('key480', '할인율')}</Label>
               <Input value={discountRate?.toString() + '%' || "0%"} type= "text" readOnly className="bg-white"
               />
             </div>
@@ -110,7 +110,7 @@ export function PriceDiscountSection({
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="discountStart">할인 시작일</Label>
+              <Label htmlFor="discountStart">{t('key659', '할인 시작일')}</Label>
               <Input
                 type="date"
                 id="discountStart"
@@ -129,7 +129,7 @@ export function PriceDiscountSection({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="discountEnd">할인 종료일</Label>
+              <Label htmlFor="discountEnd">{t('key660', '할인 종료일')}</Label>
               <Input
                 type="date"
                 id="discountEnd"

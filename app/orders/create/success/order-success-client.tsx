@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button"
 import { CheckCircle2, Loader2 } from "lucide-react"
 import { usePayment } from "@/hooks/use-payment/payment.hook"
 import type { CouponIdQuantityDto } from "@/hooks/use-payment/payment.dto"
+import { useTranslation } from 'react-i18next'
 
 export default function OrderSuccessClient() {
+  const { t } = useTranslation()
   const router = useRouter()
   const searchParams = useSearchParams()
   const { confirmPayment } = usePayment()
@@ -101,7 +103,7 @@ export default function OrderSuccessClient() {
         const errorMsg =
           error?.response?.data?.message ||
           error?.message ||
-          "결제 확인에 실패했습니다"
+          t('key584', '결제 확인에 실패했습니다')
         setErrorMessage(errorMsg)
         setStatus("error")
 
@@ -128,13 +130,13 @@ export default function OrderSuccessClient() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-12 h-12 animate-spin mx-auto mb-4 text-[#FF6B5A]" />
-          <h2 className="text-xl font-semibold mb-2">결제 확인 중...</h2>
+          <h2 className="text-xl font-semibold mb-2">{t('key585', '결제 확인 중...')}</h2>
           <p className="text-muted-foreground">
-            결제를 확인하는 중입니다. 잠시만 기다려주세요
+            {t('key586', '결제를 확인하는 중입니다. 잠시만 기다려주세요')}
           </p>
           {paymentInfo && (
             <div className="mt-4 text-sm text-muted-foreground">
-              <p>주문 번호: {paymentInfo.orderId}</p>
+              <p>{t('orderid', '주문 번호: {{orderId}}', { orderId: paymentInfo.orderId })}</p>
             </div>
           )}
         </div>
@@ -148,13 +150,13 @@ export default function OrderSuccessClient() {
         <div className="text-center">
           <Loader2 className="w-12 h-12 animate-spin mx-auto mb-4 text-red-500" />
           <h2 className="text-xl font-semibold mb-2 text-red-500">
-            결제 확인 실패
+            {t('key587', '결제 확인 실패')}
           </h2>
           <p className="text-muted-foreground mb-2">
             {errorMessage || "오류가 발생했습니다"}
           </p>
           <p className="text-sm text-muted-foreground">
-            오류 페이지로 이동 중...
+            {t('key588', '오류 페이지로 이동 중...')}
           </p>
         </div>
       </div>
@@ -166,21 +168,21 @@ export default function OrderSuccessClient() {
       <div className="max-w-2xl mx-auto px-4 py-16">
         <div className="text-center">
           <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold mb-4">결제 완료!</h1>
+          <h1 className="text-2xl font-bold mb-4">{t('key589', '결제 완료!')}</h1>
           <p className="text-muted-foreground mb-8">
-            주문이 성공적으로 완료되었습니다.
+            {t('key590', '주문이 성공적으로 완료되었습니다.')}
           </p>
 
           {paymentInfo && (
             <div className="bg-muted rounded-lg p-6 mb-8 text-left">
-              <h2 className="font-semibold mb-4">결제 정보</h2>
+              <h2 className="font-semibold mb-4">{t('key575', '결제 정보')}</h2>
               <div className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">주문 번호:</span>
+                  <span className="text-muted-foreground">{t('key591', '주문 번호:')}</span>
                   <span className="font-mono text-sm">{paymentInfo.orderId}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">결제 키:</span>
+                  <span className="text-muted-foreground">{t('key592', '결제 키:')}</span>
                   <span
                     className="font-mono text-sm truncate max-w-[200px]"
                     title={paymentInfo.paymentKey}
@@ -189,7 +191,7 @@ export default function OrderSuccessClient() {
                   </span>
                 </div>
                 <div className="flex justify-between border-t pt-3">
-                  <span className="text-muted-foreground">결제 금액:</span>
+                  <span className="text-muted-foreground">{t('key593', '결제 금액:')}</span>
                   <span className="font-semibold text-[#FF6B5A]">
                     {formatCurrency(paymentInfo.amount)} 원
                   </span>
@@ -200,13 +202,13 @@ export default function OrderSuccessClient() {
 
           <div className="flex gap-4 justify-center">
             <Button variant="outline" onClick={() => router.push(`/my-page/orders/${paymentInfo?.orderId}`)}>
-              주문 내역 보기
+              {t('key594', '주문 내역 보기')}
             </Button>
             <Button
               onClick={() => router.push("/")}
               className="bg-[#FF6B5A] hover:bg-[#FF6B5A]/90"
             >
-              홈으로 돌아가기
+              {t('key171', '홈으로 돌아가기')}
             </Button>
           </div>
         </div>

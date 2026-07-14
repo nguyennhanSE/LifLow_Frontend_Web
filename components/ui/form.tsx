@@ -15,6 +15,7 @@ import {
 
 import { cn } from '@/lib/utils'
 import { Label } from '@/components/ui/label'
+import { useTranslation } from 'react-i18next'
 
 const Form = FormProvider
 
@@ -105,6 +106,7 @@ function FormLabel({
 }
 
 function FormControl({ ...props }: React.ComponentProps<typeof Slot>) {
+  const { t } = useTranslation()
   const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
 
   return (
@@ -113,8 +115,8 @@ function FormControl({ ...props }: React.ComponentProps<typeof Slot>) {
       id={formItemId}
       aria-describedby={
         !error
-          ? `${formDescriptionId}`
-          : `${formDescriptionId} ${formMessageId}`
+          ? t('formdescriptionid', '{{formDescriptionId}}', { formDescriptionId })
+          : t('formdescriptionidFormmessageid', '{{formDescriptionId}} {{formMessageId}}', { formDescriptionId, formMessageId })
       }
       aria-invalid={!!error}
       {...props}

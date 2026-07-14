@@ -12,6 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import i18next from 'i18next'
 
 function Command({
   className,
@@ -31,7 +32,7 @@ function Command({
 
 function CommandDialog({
   title = 'Command Palette',
-  description = 'Search for a command to run...',
+  description = i18next.t('searchForACommandToRun', 'Search for a command to run...'),
   children,
   className,
   showCloseButton = true,

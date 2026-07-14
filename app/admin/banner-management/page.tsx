@@ -11,12 +11,14 @@ import { SpecialBannerTab } from './components/special-banner-tab'
 import { products, initialCategoryBanners, type CategoryBanner } from './components/types'
 import { BannerEntity, EBannerType } from '@/entities/banner/banner.entity'
 import { useBanner } from '@/hooks/use-banner/banner.hook'
+import { useTranslation } from 'react-i18next'
 
 export default function AdminBannerManagementPage() {
+  const { t } = useTranslation()
   const [selectedProduct, setSelectedProduct] = useState(products[0])
   const [badgeText, setBadgeText] = useState('for new members only')
   const [mainText, setMainText] = useState(
-    "If this is your first time at Jjuwangsan Garden, don't hesitate and take it with you.",
+    t('ifThisIsYourFirstTimeAtJjuwangsanGardenDontHesitateAndTakeItWithYou', 'If this is your first time at Jjuwangsan Garden, don\'t hesitate and take it with you.'),
   )
   const [ctaUrl, setCtaUrl] = useState('/products/1')
   // 1.Main products banners
@@ -53,9 +55,9 @@ export default function AdminBannerManagementPage() {
     <div className="space-y-6">
       {/* Header */}
       <section>
-        <h1 className="text-xl font-semibold text-foreground">배너 관리</h1>
+        <h1 className="text-xl font-semibold text-foreground">{t('key514', '배너 관리')}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          쭈왕몰의 모든 배너를 관리합니다.
+          {t('key515', '쭈왕몰의 모든 배너를 관리합니다.')}
         </p>
       </section>
 
@@ -66,31 +68,31 @@ export default function AdminBannerManagementPage() {
             value="main-products"
             className="rounded-full px-6 py-2 text-sm data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-gray-600"
           >
-            메인 상품
+            {t('key516', '메인 상품')}
           </TabsTrigger>
           <TabsTrigger
             value="category"
             className="rounded-full px-6 py-2 text-sm data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-gray-600"
           >
-            카테고리
+            {t('key332', '카테고리')}
           </TabsTrigger>
           <TabsTrigger
             value="footer"
             className="rounded-full px-6 py-2 text-sm data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-gray-600"
           >
-            푸터
+            {t('key517', '푸터')}
           </TabsTrigger>
           <TabsTrigger
             value="content-hero"
             className="rounded-full px-6 py-2 text-sm data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-gray-600"
           >
-            콘텐츠 Hero
+            {t('hero', '콘텐츠 Hero')}
           </TabsTrigger>
           <TabsTrigger
             value="special"
             className="rounded-full px-6 py-2 text-sm data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-gray-600"
           >
-            이번주특가
+            {t('key518', '이번주특가')}
           </TabsTrigger>
         </TabsList>
 

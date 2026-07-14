@@ -15,6 +15,8 @@ import {
   Redo,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useTranslation } from 'react-i18next'
+import i18next from 'i18next'
 
 interface RichTextEditorProps {
   content: string
@@ -26,9 +28,10 @@ interface RichTextEditorProps {
 export function RichTextEditor({
   content,
   onChange,
-  placeholder = '내용을 입력하세요...',
+  placeholder = i18next.t('key29', '내용을 입력하세요...'),
   className,
 }: RichTextEditorProps) {
+  const { t } = useTranslation()
   const [isEmpty, setIsEmpty] = useState(true)
 
   const editor = useEditor({
@@ -197,7 +200,7 @@ export function RichTextEditor({
             accept="image/*"
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             onChange={handleImageUpload}
-            aria-label="이미지 업로드"
+            aria-label={t('key30', '이미지 업로드')}
           />
         </div>
       </div>

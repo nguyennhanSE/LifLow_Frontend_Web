@@ -6,6 +6,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { useUser } from "@/hooks/use-user/user.hook"
 import { useToast } from "@/hooks/use-toast"
+import { useTranslation } from 'react-i18next'
 
 interface ShippingAddress {
   id: string
@@ -31,6 +32,7 @@ export function OrderDeliveryAddress({
   onAddNewAddressClick,
   refreshTrigger,
 }: OrderDeliveryAddressProps) {
+  const { t } = useTranslation()
   const { getMyDeliveryAddress } = useUser()
   const { toast } = useToast()
   const [addresses, setAddresses] = useState<ShippingAddress[]>([])
@@ -61,8 +63,8 @@ export function OrderDeliveryAddress({
       } catch (error) {
         console.error('Error loading delivery addresses:', error)
         toast({
-          title: "오류",
-          description: "배송 주소를 불러오는데 실패했습니다",
+          title: t('key602', '오류'),
+          description: t('key603', '배송 주소를 불러오는데 실패했습니다'),
           variant: "destructive",
         })
       } finally {
@@ -76,8 +78,8 @@ export function OrderDeliveryAddress({
   if (loading) {
     return (
       <div className="border rounded-lg p-6">
-        <h2 className="text-lg font-semibold mb-4">배송지 정보</h2>
-        <div className="text-center py-4 text-muted-foreground">주소를 불러오는 중...</div>
+        <h2 className="text-lg font-semibold mb-4">{t('key604', '배송지 정보')}</h2>
+        <div className="text-center py-4 text-muted-foreground">{t('key605', '주소를 불러오는 중...')}</div>
       </div>
     )
   }
@@ -85,14 +87,14 @@ export function OrderDeliveryAddress({
   if (addresses.length === 0) {
     return (
       <div className="border rounded-lg p-6">
-        <h2 className="text-lg font-semibold mb-4">배송지 정보</h2>
-        <div className="text-center py-4 text-muted-foreground">등록된 배송지가 없습니다</div>
+        <h2 className="text-lg font-semibold mb-4">{t('key604', '배송지 정보')}</h2>
+        <div className="text-center py-4 text-muted-foreground">{t('key606', '등록된 배송지가 없습니다')}</div>
         <Button
           variant="outline"
           className="w-full bg-transparent mt-4"
           onClick={onAddNewAddressClick}
         >
-          새 배송지 추가
+          {t('key199', '새 배송지 추가')}
         </Button>
       </div>
     )
@@ -100,7 +102,7 @@ export function OrderDeliveryAddress({
 
   return (
     <div className="border rounded-lg p-6">
-      <h2 className="text-lg font-semibold mb-4">배송지 정보</h2>
+      <h2 className="text-lg font-semibold mb-4">{t('key604', '배송지 정보')}</h2>
       <RadioGroup value={selectedAddressId} onValueChange={(value) => {
         setSelectedAddressId(value)
         onSelectedAddressChange?.(value)
@@ -134,10 +136,10 @@ export function OrderDeliveryAddress({
                   <div className="flex items-center gap-2 mb-2">
                     {isDefault && <span className="text-[#FF6B5A] text-sm">★</span>}
                     <span className="font-medium text-base">
-                      {address.deliveryAddress || address.name || 'Address'}
+                      {address.deliveryAddress || address.name || t('address', 'Address')}
                     </span>
                     {isDefault && (
-                      <span className="text-[#FF6B5A] text-xs ml-1">기본 배송지</span>
+                      <span className="text-[#FF6B5A] text-xs ml-1">{t('key314', '기본 배송지')}</span>
                     )}
                   </div>
                   <div className="text-sm text-muted-foreground space-y-0.5">
@@ -156,7 +158,7 @@ export function OrderDeliveryAddress({
             className="w-full bg-transparent mt-6"
             onClick={onAddNewAddressClick}
           >
-            새 배송지 추가
+            {t('key199', '새 배송지 추가')}
           </Button>
         </div>
       </RadioGroup>

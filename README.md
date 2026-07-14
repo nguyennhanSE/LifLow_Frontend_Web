@@ -53,6 +53,16 @@ styles/       Global style entry points
 utils/        Shared helper utilities
 ```
 
+## Internationalization
+
+The app uses `i18next` and `react-i18next` for UI translations.
+
+- Client-side i18n setup lives in `lib/i18n/`.
+- The app-wide wrapper is `components/i18n/i18n-provider.tsx` and is mounted from `components/providers.tsx`.
+- Translation files live in `public/locales/{language}/translation.json`.
+- Current languages are `kr` and `en`, with `kr` as the fallback language.
+- Use `const { t } = useTranslation()` inside client components, then render labels with keys such as `t("navigation.market")`.
+
 ## Getting Started
 
 Install dependencies:

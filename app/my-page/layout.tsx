@@ -20,4 +20,3 @@ export default function MyPageLayout({ children }: { children: ReactNode }) {
   )
 }
 
-

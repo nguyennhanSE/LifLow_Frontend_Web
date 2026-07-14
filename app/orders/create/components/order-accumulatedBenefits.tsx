@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { ChevronUp, ChevronDown } from "lucide-react"
+import { useTranslation } from 'react-i18next'
 
 /** Reward % by membership: 씨앗 1%, 새싹 2%, 열매 2.5%, 나무/정원 3% */
 function getMembershipRewardRate(membershipLevel: string | null | undefined): number {
@@ -29,6 +30,7 @@ export function OrderAccumulatedBenefits({
   points,
   pointsToUse,
 }: OrderAccumulatedBenefitsProps) {
+  const { t } = useTranslation()
   const [benefitsExpanded, setBenefitsExpanded] = useState(false)
 
   const rate = getMembershipRewardRate(membershipLevel)
@@ -42,25 +44,25 @@ export function OrderAccumulatedBenefits({
         onClick={() => setBenefitsExpanded(!benefitsExpanded)}
         className="flex items-center justify-between w-full mb-4"
       >
-        <h2 className="text-lg font-semibold">적립 혜택</h2>
+        <h2 className="text-lg font-semibold">{t('key612', '적립 혜택')}</h2>
         {benefitsExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
       </button>
       {benefitsExpanded && (
         <div className="space-y-3">
           <div className="flex items-center justify-between text-sm">
-            <span>상품별 포인트</span>
+            <span>{t('key613', '상품별 포인트')}</span>
             <span>{formatCurrency(points)} 원</span>
           </div>
           <div className="flex items-center justify-between text-sm">
-            <span>회원 적립</span>
+            <span>{t('key614', '회원 적립')}</span>
             <span>{formatCurrency(memberReward)} 원</span>
           </div>
           <div className="flex items-center justify-between text-sm">
-            <span>사용 포인트</span>
+            <span>{t('key615', '사용 포인트')}</span>
             <span>{formatCurrency(pointsToUse)} 원</span>
           </div>
           <div className="flex items-center justify-between font-medium pt-3 border-t">
-            <span>예상 적립 금액</span>
+            <span>{t('key616', '예상 적립 금액')}</span>
             <span className="text-[#FF6B5A]">{formatCurrency(Math.max(0, expectedAccumulated))} 원</span>
           </div>
         </div>

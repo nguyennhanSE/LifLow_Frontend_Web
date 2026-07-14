@@ -5,6 +5,7 @@ import { Upload, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent } from "@/components/ui/card"
+import { useTranslation, Trans } from 'react-i18next'
 
 interface ImageUploadSectionProps {
   thumbnail: File | null
@@ -31,6 +32,7 @@ export function ImageUploadSection({
   onRemoveExistingDetail,
   onRemoveExistingAdditional,
 }: ImageUploadSectionProps) {
+  const { t } = useTranslation()
   const thumbnailInputRef = useRef<HTMLInputElement>(null)
   const additionalImageInputRef = useRef<HTMLInputElement>(null)
 
@@ -82,19 +84,17 @@ export function ImageUploadSection({
   return (
     <Card>
       <CardContent className="pt-6">
-        <h2 className="mb-4 text-lg font-semibold">이미지 관리</h2>
+        <h2 className="mb-4 text-lg font-semibold">{t('key661', '이미지 관리')}</h2>
         <div className="space-y-6">
           <div className="space-y-2">
-            <Label>
-              대표 이미지 <span className="text-destructive">*</span>
-            </Label>
+            <Label><Trans i18nKey="spanClassnametextdestructivespan2">대표 이미지 <span className="text-destructive">*</span></Trans></Label>
             <div className="flex gap-4">
               <div className="relative">
                 {thumbnail && thumbnailPreviewUrl ? (
                   <div className="relative h-24 w-24">
                     <img
                       src={thumbnailPreviewUrl}
-                      alt="Thumbnail preview"
+                      alt={t('thumbnailPreview', 'Thumbnail preview')}
                       className="h-full w-full rounded-lg border-2 border-dashed object-cover"
                     />
                     <Button
@@ -110,7 +110,7 @@ export function ImageUploadSection({
                   <div className="relative h-24 w-24">
                     <img
                       src={existingThumbnailUrl}
-                      alt="Existing thumbnail"
+                      alt={t('existingThumbnail', 'Existing thumbnail')}
                       className="h-full w-full rounded-lg border-2 border-dashed object-cover"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement
@@ -143,7 +143,7 @@ export function ImageUploadSection({
                   accept="image/*"
                   className="hidden"
                   onChange={handleThumbnailUpload}
-                  aria-label="Upload representative image"
+                  aria-label={t('uploadRepresentativeImage', 'Upload representative image')}
                 />
               </div>
               <div className="flex-1 space-y-2">
@@ -152,7 +152,7 @@ export function ImageUploadSection({
                     {thumbnail?.name || (existingThumbnailUrl ? "기존 이미지" : "선택된 파일 없음")}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    {thumbnail ? `${(thumbnail.size / 1024).toFixed(2)} KB` : "권장 크기: 800 × 800px"}
+                    {thumbnail ? t('valKb', '{{val}} KB', { val: (thumbnail.size / 1024).toFixed(2) }) : t('800800px', '권장 크기: 800 × 800px')}
                   </p>
                 </div>
               </div>
@@ -160,14 +160,14 @@ export function ImageUploadSection({
           </div>
 
           <div className="space-y-2">
-            <Label>추가 이미지 (최대 14개)</Label>
+            <Label>{t('144', '추가 이미지 (최대 14개)')}</Label>
             <div className="flex flex-wrap gap-4">
               {/* Existing additional images */}
               {existingAdditionalImageUrls.map((url, index) => (
                 <div key={`existing-${index}`} className="relative h-24 w-24">
                   <img
                     src={url}
-                    alt={`Existing additional image ${index + 1}`}
+                    alt={t('existingAdditionalImageVal', 'Existing additional image {{val}}', { val: index + 1 })}
                     className="h-full w-full rounded-lg border-2 border-dashed object-cover"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement
@@ -191,7 +191,7 @@ export function ImageUploadSection({
                 <div key={`new-${index}`} className="relative h-24 w-24">
                   <img
                     src={additionalImagePreviewUrls[index]}
-                    alt={`Additional image ${index + 1}`}
+                    alt={t('additionalImageVal', 'Additional image {{val}}', { val: index + 1 })}
                     className="h-full w-full rounded-lg border-2 border-dashed object-cover"
                   />
                   <Button
@@ -219,7 +219,7 @@ export function ImageUploadSection({
                 accept="image/*"
                 className="hidden"
                 onChange={handleAdditionalImageUpload}
-                aria-label="Upload additional image"
+                aria-label={t('uploadAdditionalImage', 'Upload additional image')}
               />
             </div>
           </div>

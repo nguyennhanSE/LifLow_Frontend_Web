@@ -19,6 +19,8 @@ import {
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
+import { useTranslation } from 'react-i18next'
+import i18next from 'i18next'
 
 // Helper function to map order situation to display text
 const getOrderStatusText = (situation?: EOrderSituation | null): string => {
@@ -31,7 +33,7 @@ const getOrderStatusText = (situation?: EOrderSituation | null): string => {
     [EOrderSituation.ORDER_CANCELLED]: "주문 취소",
     [EOrderSituation.ORDER_RETURNED]: "반품",
   }
-  return situation ? statusMap[situation] : "알 수 없음"
+  return situation ? statusMap[situation] : i18next.t('key258', '알 수 없음')
 }
 
 // Helper function to check if status should have badge styling
@@ -93,6 +95,7 @@ const parseImageUrl = (imageString: string | null | undefined): string | null =>
 }
 
 export default function MyPageOrder() {
+  const { t } = useTranslation()
   const router = useRouter()
   const { getMyOrders } = useOrder()
   const { cancelPayment, returnPayment } = usePayment()
@@ -161,7 +164,7 @@ export default function MyPageOrder() {
     if (!returningOrderGroup?.paymentId?.trim()) {
       toast({
         title: "오류",
-        description: "결제 정보를 찾을 수 없습니다.",
+        description: t('key259', '결제 정보를 찾을 수 없습니다.'),
         variant: "destructive",
       })
       return
@@ -169,7 +172,7 @@ export default function MyPageOrder() {
     if (!returnReason.trim()) {
       toast({
         title: "반품 사유 입력",
-        description: "반품 사유를 입력해주세요.",
+        description: t('key260', '반품 사유를 입력해주세요.'),
         variant: "destructive",
       })
       return
@@ -182,12 +185,12 @@ export default function MyPageOrder() {
       })
       toast({
         title: "반품 요청 완료",
-        description: "반품 요청이 처리되었습니다.",
+        description: t('key261', '반품 요청이 처리되었습니다.'),
       })
       closeReturnDialog()
       await fetchOrders()
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "반품 요청에 실패했습니다."
+      const message = error instanceof Error ? error.message : t('key262', '반품 요청에 실패했습니다.')
       toast({
         title: "반품 요청 실패",
         description: message,
@@ -202,7 +205,7 @@ export default function MyPageOrder() {
     if (!cancelingOrderGroup?.paymentId?.trim()) {
       toast({
         title: "오류",
-        description: "결제 정보를 찾을 수 없습니다.",
+        description: t('key259', '결제 정보를 찾을 수 없습니다.'),
         variant: "destructive",
       })
       return
@@ -210,7 +213,7 @@ export default function MyPageOrder() {
     if (!cancelReason.trim()) {
       toast({
         title: "취소 사유 입력",
-        description: "취소 사유를 입력해주세요.",
+        description: t('key263', '취소 사유를 입력해주세요.'),
         variant: "destructive",
       })
       return
@@ -223,12 +226,12 @@ export default function MyPageOrder() {
       })
       toast({
         title: "결제 취소 요청 완료",
-        description: "결제 취소가 처리되었습니다.",
+        description: t('key264', '결제 취소가 처리되었습니다.'),
       })
       closeCancelDialog()
       await fetchOrders()
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "결제 취소에 실패했습니다."
+      const message = error instanceof Error ? error.message : t('key265', '결제 취소에 실패했습니다.')
       toast({
         title: "결제 취소 실패",
         description: message,
@@ -251,15 +254,15 @@ export default function MyPageOrder() {
     return (
       <div className="text-center py-12">
         <Package className="size-12 text-muted-foreground mx-auto mb-4" />
-        <h3 className="text-lg font-medium mb-2">주문 내역이 없습니다</h3>
-        <p className="text-muted-foreground">주문 내역이 여기에 표시됩니다</p>
+        <h3 className="text-lg font-medium mb-2">{t('key266', '주문 내역이 없습니다')}</h3>
+        <p className="text-muted-foreground">{t('key267', '주문 내역이 여기에 표시됩니다')}</p>
       </div>
     )
   }
 
   return (
     <div>
-      <h2 className="text-2xl font-semibold mb-6">주문/배송 조회</h2>
+      <h2 className="text-2xl font-semibold mb-6">{t('key225', '주문/배송 조회')}</h2>
 
       <div className="space-y-6">
         {orderGroups.map((orderGroup) => {
@@ -292,7 +295,7 @@ export default function MyPageOrder() {
                   </div>
 
                   <div className="text-right shrink-0">
-                    <p className="text-xs text-muted-foreground">주문 금액</p>
+                    <p className="text-xs text-muted-foreground">{t('key268', '주문 금액')}</p>
                     <p className="text-3xl font-semibold leading-tight mt-1">
                       {formatCurrency(orderGroup.finalAmount || orderGroup.originalAmount || 0)}
                     </p>
@@ -323,14 +326,14 @@ export default function MyPageOrder() {
                             />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs">
-                              No Image
+                              {t('noImage', 'No Image')}
                             </div>
                           )}
                         </div>
                       <div className="min-w-0 flex-1 space-y-1">
                         <h4 className="font-medium">{order.productNameWithOptions || order.productName}</h4>
                         <p className="text-sm text-muted-foreground">
-                          {formatCurrency(order.salePrice)} 원 × {order.quantity || 0}
+                          {formatCurrency(order.salePrice)} {t('key269', '원 ×')} {order.quantity || 0}
                         </p>
                       </div>
                     </div>
@@ -344,13 +347,11 @@ export default function MyPageOrder() {
                 <div className="px-6 pb-4">
                   <div className="rounded-md bg-gray-50 p-4">
                     <p className="text-sm">
-                      <span className="text-muted-foreground">받는 사람 </span>
+                      <span className="text-muted-foreground">{t('key203', '받는 사람')} </span>
                       <span className="font-medium">{firstOrder.recipient}</span> /{" "}
                       <span className="text-muted-foreground">{firstOrder.recipientMobilePhone}</span>
                     </p>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      ({firstOrder.recipientPostalCode}) {firstOrder.recipientAddressFull}
-                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">{t('recipientpostalcodeRecipientaddressfull', '({{recipientPostalCode}}) {{recipientAddressFull}}', { recipientPostalCode: firstOrder.recipientPostalCode, recipientAddressFull: firstOrder.recipientAddressFull })}</p>
                   </div>
                 </div>
               )}
@@ -360,11 +361,11 @@ export default function MyPageOrder() {
                 <div className="px-6 pb-4">
                   <div className="space-y-1 pb-4 border-b">
                     <p className="text-sm">
-                      <span className="text-muted-foreground">택배사: </span>
+                      <span className="text-muted-foreground">{t('key270', '택배사:')} </span>
                       <span className="font-medium">{orderGroup.courierCompany}</span>
                     </p>
                     <p className="text-sm">
-                      <span className="text-muted-foreground">운송장 번호: </span>
+                      <span className="text-muted-foreground">{t('key271', '운송장 번호:')} </span>
                       <span className="font-medium">{orderGroup.invoiceNumber}</span>
                     </p>
                   </div>
@@ -381,7 +382,7 @@ export default function MyPageOrder() {
                       className="flex-1 min-w-[120px] bg-red-500 text-white border-gray-200 hover:bg-red-600 h-12"
                       onClick={() => openCancelDialog(orderGroup)}
                     >
-                      결제 취소
+                      {t('key272', '결제 취소')}
                     </Button>
                   )}
                   {orderGroup.situation === EOrderSituation.ORDER_SHIPPED && (
@@ -390,7 +391,7 @@ export default function MyPageOrder() {
                       className="flex-1 min-w-[120px] bg-red-500 text-white border-gray-200 hover:bg-red-600 h-12"
                       onClick={() => openReturnDialog(orderGroup)}
                     >
-                      교환/반품
+                      {t('key273', '교환/반품')}
                     </Button>
                   )}
                   <Button
@@ -398,7 +399,7 @@ export default function MyPageOrder() {
                     className="flex-1 bg-transparent border-gray-200 hover:bg-gray-50 h-12"
                     onClick={() => handleViewOrderDetail(orderGroup.orderGroupNumber)}
                   >
-                    주문 상세
+                    {t('key274', '주문 상세')}
                   </Button>
                 </div>
               </div>
@@ -411,14 +412,14 @@ export default function MyPageOrder() {
       <Dialog open={cancelDialogOpen} onOpenChange={(open) => !open && closeCancelDialog()}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>결제 취소</DialogTitle>
+            <DialogTitle>{t('key272', '결제 취소')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="cancel-reason">취소 사유 *</Label>
+              <Label htmlFor="cancel-reason">{t('key275', '취소 사유 *')}</Label>
               <Textarea
                 id="cancel-reason"
-                placeholder="취소 사유를 입력해주세요"
+                placeholder={t('key276', '취소 사유를 입력해주세요')}
                 value={cancelReason}
                 onChange={(e) => setCancelReason(e.target.value)}
                 rows={4}
@@ -432,7 +433,7 @@ export default function MyPageOrder() {
               onClick={closeCancelDialog}
               disabled={isCanceling}
             >
-              닫기
+              {t('key277', '닫기')}
             </Button>
             <Button
               onClick={handleConfirmCancel}
@@ -441,10 +442,10 @@ export default function MyPageOrder() {
               {isCanceling ? (
                 <>
                   <Loader2 className="size-4 mr-2 animate-spin" />
-                  처리 중...
+                  {t('key197', '처리 중...')}
                 </>
               ) : (
-                "결제 취소 요청"
+                t('key278', '결제 취소 요청')
               )}
             </Button>
           </DialogFooter>
@@ -455,14 +456,14 @@ export default function MyPageOrder() {
       <Dialog open={returnDialogOpen} onOpenChange={(open) => !open && closeReturnDialog()}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>교환/반품</DialogTitle>
+            <DialogTitle>{t('key273', '교환/반품')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="return-reason">반품 사유 *</Label>
+              <Label htmlFor="return-reason">{t('key279', '반품 사유 *')}</Label>
               <Textarea
                 id="return-reason"
-                placeholder="반품 사유를 입력해주세요"
+                placeholder={t('key280', '반품 사유를 입력해주세요')}
                 value={returnReason}
                 onChange={(e) => setReturnReason(e.target.value)}
                 rows={4}
@@ -476,7 +477,7 @@ export default function MyPageOrder() {
               onClick={closeReturnDialog}
               disabled={isReturning}
             >
-              닫기
+              {t('key277', '닫기')}
             </Button>
             <Button
               onClick={handleConfirmReturn}
@@ -485,7 +486,7 @@ export default function MyPageOrder() {
               {isReturning ? (
                 <>
                   <Loader2 className="size-4 mr-2 animate-spin" />
-                  처리 중...
+                  {t('key197', '처리 중...')}
                 </>
               ) : (
                 "반품 요청"

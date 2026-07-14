@@ -39,6 +39,7 @@ import { UpdateCouponDto } from '@/hooks/use-coupon/coupon.dto'
 import { Membership } from '@/entities/membership.entity'
 import { cn } from '@/lib/utils'
 import { Checkbox } from '@/components/ui/checkbox'
+import { useTranslation } from 'react-i18next'
 
 interface UpdateCouponDialogProps {
   open: boolean
@@ -47,6 +48,7 @@ interface UpdateCouponDialogProps {
 }
 
 export function UpdateCouponDialog({ open, onOpenChange, id }: UpdateCouponDialogProps) {
+  const { t } = useTranslation()
   const [startDate, setStartDate] = useState<Date | undefined>(undefined)
   const [endDate, setEndDate] = useState<Date | undefined>(undefined)
   const [startDateOpen, setStartDateOpen] = useState(false)
@@ -202,8 +204,8 @@ export function UpdateCouponDialog({ open, onOpenChange, id }: UpdateCouponDialo
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>쿠폰 수정</DialogTitle>
-          <DialogDescription>쿠폰을 수정합니다.</DialogDescription>
+          <DialogTitle>{t('key705', '쿠폰 수정')}</DialogTitle>
+          <DialogDescription>{t('key706', '쿠폰을 수정합니다.')}</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
@@ -213,9 +215,9 @@ export function UpdateCouponDialog({ open, onOpenChange, id }: UpdateCouponDialo
             <div className="space-y-4">
               {/* Coupon name */}
               <div className="space-y-2">
-                <Label className="text-sm font-medium">쿠폰명</Label>
+                <Label className="text-sm font-medium">{t('key707', '쿠폰명')}</Label>
                 <Input
-                  placeholder="예: VIP 회원 10% 할인"
+                  placeholder={t('vip10', '예: VIP 회원 10% 할인')}
                   value={formData.name || ''}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 />
@@ -223,7 +225,7 @@ export function UpdateCouponDialog({ open, onOpenChange, id }: UpdateCouponDialo
 
               {/* Coupon type — FREE_SHIPPING thì chỉ hiển thị, không cho đổi */}
               <div className="space-y-2 ">
-                <Label className="text-sm font-medium">쿠폰 타입</Label>
+                <Label className="text-sm font-medium">{t('key708', '쿠폰 타입')}</Label>
                 <Select
                   value={formData.type || CouponType.PERCENT}
                   onValueChange={(value) => {
@@ -235,19 +237,19 @@ export function UpdateCouponDialog({ open, onOpenChange, id }: UpdateCouponDialo
                   <SelectTrigger
                     className={cn('w-full', isFreeShipping && 'bg-muted cursor-not-allowed')}
                   >
-                    <SelectValue placeholder="쿠폰 타입 선택" />
+                    <SelectValue placeholder={t('key709', '쿠폰 타입 선택')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value={CouponType.PERCENT}>할인율 (%)</SelectItem>
-                    <SelectItem value={CouponType.AMOUNT}>할인 금액 (원)</SelectItem>
-                    <SelectItem value={CouponType.FREE_SHIPPING}>무료 배송</SelectItem>
+                    <SelectItem value={CouponType.PERCENT}>{t('key710', '할인율 (%)')}</SelectItem>
+                    <SelectItem value={CouponType.AMOUNT}>{t('key711', '할인 금액 (원)')}</SelectItem>
+                    <SelectItem value={CouponType.FREE_SHIPPING}>{t('key712', '무료 배송')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               {/* Minimum purchase amount — FREE_SHIPPING일 때 비활성화 */}
               <div className="space-y-2">
-                <Label className="text-sm font-medium">최소 구매 금액 (원)</Label>
+                <Label className="text-sm font-medium">{t('key713', '최소 구매 금액 (원)')}</Label>
                 <Input
                   type="number"
                   disabled={isFreeShipping}
@@ -262,9 +264,9 @@ export function UpdateCouponDialog({ open, onOpenChange, id }: UpdateCouponDialo
             <div className="space-y-4">
               {/* Coupon Code */}
               <div className="space-y-2">
-                <Label className="text-sm font-medium">쿠폰 코드</Label>
+                <Label className="text-sm font-medium">{t('key714', '쿠폰 코드')}</Label>
                 <Input
-                  placeholder="예: VIP10"
+                  placeholder={t('vip102', '예: VIP10')}
                   value={formData.code || ''}
                   onChange={(e) => setFormData({ ...formData, code: e.target.value })}
                 />
@@ -273,7 +275,7 @@ export function UpdateCouponDialog({ open, onOpenChange, id }: UpdateCouponDialo
               {/* Discount rate (%) or Discount amount (원) — FREE_SHIPPING일 때 비활성화 */}
               {formData.type === CouponType.PERCENT ? (
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium">할인율 (%)</Label>
+                  <Label className="text-sm font-medium">{t('key710', '할인율 (%)')}</Label>
                   <Input
                     type="number"
                     disabled={isFreeShipping}
@@ -284,7 +286,7 @@ export function UpdateCouponDialog({ open, onOpenChange, id }: UpdateCouponDialo
                 </div>
               ) : (
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium">할인 금액 (원)</Label>
+                  <Label className="text-sm font-medium">{t('key711', '할인 금액 (원)')}</Label>
                   <Input
                     type="number"
                     disabled={isFreeShipping}
@@ -297,7 +299,7 @@ export function UpdateCouponDialog({ open, onOpenChange, id }: UpdateCouponDialo
 
               {/* Maximum discount amount — AMOUNT/FREE_SHIPPING일 때 비활성화 */}
               <div className="space-y-2">
-                <Label className="text-sm font-medium">최대 할인 금액 (원)</Label>
+                <Label className="text-sm font-medium">{t('key715', '최대 할인 금액 (원)')}</Label>
                 <Input
                   disabled={formData.type === CouponType.AMOUNT || isFreeShipping}
                   className={cn(
@@ -313,7 +315,7 @@ export function UpdateCouponDialog({ open, onOpenChange, id }: UpdateCouponDialo
 
           {/* Full-width: Coupon Image URL — FREE_SHIPPING일 때 비활성화 */}
           <div className="space-y-2">
-            <Label className="text-sm font-medium">쿠폰 이미지 URL (선택)</Label>
+            <Label className="text-sm font-medium">{t('url', '쿠폰 이미지 URL (선택)')}</Label>
             <Input
               placeholder="https://..."
               disabled={isFreeShipping}
@@ -328,7 +330,7 @@ export function UpdateCouponDialog({ open, onOpenChange, id }: UpdateCouponDialo
             <div className="grid grid-cols-2 gap-4">
               {/* Start date */}
               <div className="space-y-2">
-                <Label className="text-sm font-medium">시작일</Label>
+                <Label className="text-sm font-medium">{t('key716', '시작일')}</Label>
                 <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
                   <PopoverTrigger asChild>
                     <Button
@@ -339,7 +341,7 @@ export function UpdateCouponDialog({ open, onOpenChange, id }: UpdateCouponDialo
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
-                      {startDate ? format(startDate, 'PPP') : <span>날짜 선택</span>}
+                      {startDate ? format(startDate, 'PPP') : <span>{t('key398', '날짜 선택')}</span>}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
@@ -359,7 +361,7 @@ export function UpdateCouponDialog({ open, onOpenChange, id }: UpdateCouponDialo
 
               {/* End date */}
               <div className="space-y-2">
-                <Label className="text-sm font-medium">종료일</Label>
+                <Label className="text-sm font-medium">{t('key717', '종료일')}</Label>
                 <Popover open={endDateOpen} onOpenChange={setEndDateOpen}>
                   <PopoverTrigger asChild>
                     <Button
@@ -370,7 +372,7 @@ export function UpdateCouponDialog({ open, onOpenChange, id }: UpdateCouponDialo
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
-                      {endDate ? format(endDate, 'PPP') : <span>날짜 선택</span>}
+                      {endDate ? format(endDate, 'PPP') : <span>{t('key398', '날짜 선택')}</span>}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
@@ -400,7 +402,7 @@ export function UpdateCouponDialog({ open, onOpenChange, id }: UpdateCouponDialo
                 className="data-[state=checked]:bg-black"
               />
               <Label className={cn('text-sm font-medium', isFreeShipping && 'text-muted-foreground')}>
-                활성화
+                {t('key718', '활성화')}
               </Label>
             </div>
 
@@ -489,7 +491,7 @@ export function UpdateCouponDialog({ open, onOpenChange, id }: UpdateCouponDialo
             onClick={handleClose}
             disabled={updateCouponMutation.isPending}
           >
-            취소
+            {t('key212', '취소')}
           </Button>
           <Button
             onClick={handleSubmit}
@@ -499,7 +501,7 @@ export function UpdateCouponDialog({ open, onOpenChange, id }: UpdateCouponDialo
             {updateCouponMutation.isPending && (
               <Spinner className="mr-2 h-4 w-4" />
             )}
-            수정
+            {t('key288', '수정')}
           </Button>
         </DialogFooter>
       </DialogContent>

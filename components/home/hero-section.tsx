@@ -11,8 +11,10 @@ import { Spinner } from "@/components/ui/spinner"
 import Image from "next/image"
 import Link from "next/link"
 import "./modify.css"
+import { useTranslation } from 'react-i18next'
 
 export function HeroSection() {
+  const { t } = useTranslation()
   const [showModal, setShowModal] = useState(true)
   const [heroImageLoaded, setHeroImageLoaded] = useState(false)
   const { getBannersByType } = useBanner()
@@ -76,7 +78,7 @@ export function HeroSection() {
         />
         <div className="relative z-10 container mx-auto px-4 h-full flex items-center justify-center">
           <div className="text-center text-white">
-            <p>배너를 불러올 수 없습니다.</p>
+            <p>{t('key126', '배너를 불러올 수 없습니다.')}</p>
           </div>
         </div>
       </section>
@@ -103,9 +105,9 @@ export function HeroSection() {
               <span className="text-white">{banner.title}</span>
             ) : (
               <>
-                <span className="text-white">Juwang's </span>
-                <span className="text-[#FF6B4A]">The best</span>
-                <span className="text-white"> if so</span>
+                <span className="text-white">{t('juwangs', 'Juwang\'s')} </span>
+                <span className="text-[#FF6B4A]">{t('theBest', 'The best')}</span>
+                <span className="text-white"> {t('ifSo', 'if so')}</span>
               </>
             )}
           </h1>
@@ -133,7 +135,7 @@ export function HeroSection() {
                     )}
                     <Image
                       src={productImageUrl || "/placeholder.svg"}
-                      alt="Background"
+                      alt={t('background', 'Background')}
                       fill
                       className={`object-cover w-full h-full left-border transition-opacity duration-300 ${heroImageLoaded ? "opacity-100" : "opacity-0"}`}
                       sizes="(max-width: 768px) 100vw, 45vw"
@@ -202,7 +204,7 @@ export function HeroSection() {
                 <div className="flex items-center gap-1 mb-3">
                   <span className="text-yellow-500 text-sm">★</span>
                   <span className="text-sm font-medium">{product.productReviews?.averageRating || 0}</span>
-                  <span className="text-xs text-muted-foreground">(리뷰 {product.productReviews?.total || 0}건)</span>
+                  <span className="text-xs text-muted-foreground">{t('key127', '(리뷰')} {product.productReviews?.total || 0}{t('key128', '건)')}</span>
                 </div>
 
                 <div className="mb-4 flex-1">
@@ -217,9 +219,7 @@ export function HeroSection() {
                           {product.consumerPrice.toLocaleString("ko-KR")}원
                         </span>
                         {discountPercentage > 0 && (
-                          <span className="text-xs bg-[#FF6B4A] text-white px-2 py-0.5 rounded-md">
-                            {discountPercentage}%
-                          </span>
+                          <span className="text-xs bg-[#FF6B4A] text-white px-2 py-0.5 rounded-md">{t('discountpercentage', '{{discountPercentage}}%', { discountPercentage })}</span>
                         )}
                       </div>
                     )}

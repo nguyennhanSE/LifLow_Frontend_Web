@@ -27,6 +27,7 @@ import { useAnnouncement } from '@/hooks/use-announcement/announcement.hook'
 import { EAnnouncementType } from '@/entities/announcements/announcements.entity'
 import { UpdateAnnouncementDto } from '@/hooks/use-announcement/announcement.dto'
 import { AnnouncementEntity } from '@/entities/announcements/announcements.entity'
+import { useTranslation } from 'react-i18next'
 
 interface UpdateAnnouncementModalProps {
   open: boolean
@@ -54,6 +55,7 @@ export function UpdateAnnouncementModal({
   announcement,
   onSuccess,
 }: UpdateAnnouncementModalProps) {
+  const { t } = useTranslation()
   const { updateAnnouncementById } = useAnnouncement()
 
   const form = useForm<UpdateAnnouncementDto>({
@@ -114,9 +116,9 @@ export function UpdateAnnouncementModal({
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            공지사항 수정 - {getTypeLabel(announcement.type)}
+            {t('key779', '공지사항 수정 -')} {getTypeLabel(announcement.type)}
           </DialogTitle>
-          <DialogDescription>공지사항을 수정하세요.</DialogDescription>
+          <DialogDescription>{t('key780', '공지사항을 수정하세요.')}</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -127,10 +129,10 @@ export function UpdateAnnouncementModal({
               rules={{ required: '제목을 입력해주세요' }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>제목 *</FormLabel>
+                  <FormLabel>{t('key726', '제목 *')}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="공지사항 제목을 입력하세요"
+                      placeholder={t('key781', '공지사항 제목을 입력하세요')}
                       {...field}
                     />
                   </FormControl>
@@ -145,7 +147,7 @@ export function UpdateAnnouncementModal({
               rules={{ required: '작성자를 입력해주세요' }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>작성자 *</FormLabel>
+                  <FormLabel>{t('key782', '작성자 *')}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -160,12 +162,12 @@ export function UpdateAnnouncementModal({
               rules={{ required: '내용을 입력해주세요' }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>내용 *</FormLabel>
+                  <FormLabel>{t('key783', '내용 *')}</FormLabel>
                   <FormControl>
                     <RichTextEditor
                       content={field.value || ''}
                       onChange={field.onChange}
-                      placeholder="공지사항 내용을 입력하세요 (텍스트와 이미지 모두 추가 가능합니다)"
+                      placeholder={t('key784', '공지사항 내용을 입력하세요 (텍스트와 이미지 모두 추가 가능합니다)')}
                       className="min-h-[300px]"
                     />
                   </FormControl>
@@ -188,7 +190,7 @@ export function UpdateAnnouncementModal({
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel>상단 고정</FormLabel>
+                    <FormLabel>{t('key785', '상단 고정')}</FormLabel>
                   </div>
                 </FormItem>
               )}
@@ -200,10 +202,10 @@ export function UpdateAnnouncementModal({
                 variant="outline"
                 onClick={() => onOpenChange(false)}
               >
-                취소
+                {t('key212', '취소')}
               </Button>
               <Button type="submit" className="bg-orange-500 hover:bg-orange-600">
-                수정
+                {t('key288', '수정')}
               </Button>
             </DialogFooter>
           </form>

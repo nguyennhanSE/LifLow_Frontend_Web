@@ -12,6 +12,7 @@ import { Card } from "@/components/ui/card"
 import { useAuthHook } from "@/hooks/use-auth/auth.hook"
 import { useUser } from "@/hooks/use-user/user.hook"
 import { User as UserEntity } from "@/entities/user.entity"
+import { useTranslation } from 'react-i18next'
 
 type NavItem = {
   label: string
@@ -22,6 +23,7 @@ type NavItem = {
 }
 
 export default function MyPageSidebar() {
+  const { t } = useTranslation()
   const pathname = usePathname()
   const router = useRouter()
   const { handleLogout } = useAuthHook()
@@ -88,12 +90,12 @@ export default function MyPageSidebar() {
 
   const navItems: NavItem[] = [
     {
-      label: "주문/배송 조회",
+      label: t('key225', '주문/배송 조회'),
       icon: <Package className="size-5" />,
       href: "/my-page/orders",
     },
     {
-      label: "포인트 & 쿠폰",
+      label: t('key226', '포인트 & 쿠폰'),
       icon: (
         <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <rect x="3" y="8" width="18" height="12" rx="2" />
@@ -103,22 +105,22 @@ export default function MyPageSidebar() {
       href: "/my-page/points",
     },
     {
-      label: "회원 정보 수정",
+      label: t('key227', '회원 정보 수정'),
       icon: <User className="size-5" />,
       href: "/my-page/information",
     },
     {
-      label: "배송지 관리",
+      label: t('key228', '배송지 관리'),
       icon: <MapPin className="size-5" />,
       href: "/my-page/address",
     },
     {
-      label: "내가 쓴 레시피",
+      label: t('key229', '내가 쓴 레시피'),
       icon: <FileText className="size-5" />,
       href: "/my-page/recipe",
     },
     {
-      label: "로그아웃",
+      label: t('key72', '로그아웃'),
       icon: <LogOut className="size-5" />,
       danger: true,
       onClick: onLogout,
@@ -159,12 +161,12 @@ export default function MyPageSidebar() {
                 <span className="text-orange-500 font-semibold">
                   {userData.membership?.name || "GENERAL"}
                 </span>
-                <span> 등급</span>
+                <span> {t('key230', '등급')}</span>
               </p>
             </div>
 
             <div className="w-full bg-muted rounded-lg p-4 space-y-1">
-              <p className="text-sm text-muted-foreground">보유 포인트</p>
+              <p className="text-sm text-muted-foreground">{t('key231', '보유 포인트')}</p>
               <p className="text-xl font-semibold text-orange-500">
                 {formatNumber(userData.availablePoints)}P
               </p>
@@ -172,7 +174,7 @@ export default function MyPageSidebar() {
           </div>
         ) : (
           <div className="flex flex-col items-center text-center space-y-4">
-            <p className="text-sm text-muted-foreground">사용자 정보를 불러올 수 없습니다</p>
+            <p className="text-sm text-muted-foreground">{t('key232', '사용자 정보를 불러올 수 없습니다')}</p>
           </div>
         )}
       </Card>
@@ -183,7 +185,7 @@ export default function MyPageSidebar() {
           {navItems.map((item) => {
             const isActive = item.href ? pathname?.startsWith(item.href) : false
             const baseClassName =
-              "w-full flex items-center gap-3 px-3 py-3 text-left rounded-lg transition-colors"
+              'w-full flex items-center gap-3 px-3 py-3 text-left rounded-lg transition-colors'
 
             const className = cn(
               baseClassName,

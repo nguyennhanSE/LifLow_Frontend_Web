@@ -30,8 +30,10 @@ import { QueryProductInquiriesDto, CreateProductInquiryAnswerDto } from "@/hooks
 import { Spinner } from "@/components/ui/spinner"
 import { useToast } from "@/hooks/use-toast"
 import { ProductInquiryEntity } from "@/entities/product-inquiry/product-inquiry.entity"
+import { useTranslation } from 'react-i18next'
 
 export default function ProductInquiry() {
+  const { t } = useTranslation()
   const params = useParams()
   const router = useRouter()
   const productId = params?.id as string
@@ -213,7 +215,7 @@ export default function ProductInquiry() {
     if (!answerText.trim()) {
       toast({
         title: "답변 필수",
-        description: "제출하기 전에 답변을 작성해주세요.",
+        description: t('key555', '제출하기 전에 답변을 작성해주세요.'),
         variant: "destructive",
       })
       return
@@ -222,7 +224,7 @@ export default function ProductInquiry() {
     if (!selectedInquiryId) {
       toast({
         title: "오류",
-        description: "선택된 문의가 없습니다.",
+        description: t('key556', '선택된 문의가 없습니다.'),
         variant: "destructive",
       })
       return
@@ -238,7 +240,7 @@ export default function ProductInquiry() {
       
       toast({
         title: "답변 등록 완료",
-        description: "답변이 성공적으로 등록되었습니다.",
+        description: t('key557', '답변이 성공적으로 등록되었습니다.'),
       })
 
       // Reset form
@@ -251,7 +253,7 @@ export default function ProductInquiry() {
     } catch (error: any) {
       toast({
         title: "오류",
-        description: error?.message || "답변 제출에 실패했습니다. 다시 시도해주세요.",
+        description: error?.message || t('key558', '답변 제출에 실패했습니다. 다시 시도해주세요.'),
         variant: "destructive",
       })
     } finally {
@@ -277,7 +279,7 @@ export default function ProductInquiry() {
   if (isError) {
     return (
       <div className="text-center py-12 text-muted-foreground">
-        문의를 불러오는데 실패했습니다. 나중에 다시 시도해주세요.
+        {t('key559', '문의를 불러오는데 실패했습니다. 나중에 다시 시도해주세요.')}
       </div>
     )
   }
@@ -288,19 +290,19 @@ export default function ProductInquiry() {
       <Dialog open={isAnswerDialogOpen} onOpenChange={setIsAnswerDialogOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
-            <DialogTitle>문의 답변</DialogTitle>
+            <DialogTitle>{t('key560', '문의 답변')}</DialogTitle>
             <DialogDescription>
-              이 문의에 대한 답변을 작성해주세요.
+              {t('key561', '이 문의에 대한 답변을 작성해주세요.')}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-6 py-4">
             {/* Answer Text */}
             <div className="space-y-2">
-              <Label htmlFor="answer-text">답변 *</Label>
+              <Label htmlFor="answer-text">{t('key562', '답변 *')}</Label>
               <Textarea
                 id="answer-text"
-                placeholder="답변을 작성해주세요..."
+                placeholder={t('key563', '답변을 작성해주세요...')}
                 value={answerText}
                 onChange={(e) => setAnswerText(e.target.value)}
                 rows={6}
@@ -319,7 +321,7 @@ export default function ProductInquiry() {
               }}
               disabled={isSubmitting}
             >
-              취소
+              {t('key212', '취소')}
             </Button>
             <Button
               onClick={handleSubmitAnswer}
@@ -329,7 +331,7 @@ export default function ProductInquiry() {
               {isSubmitting ? (
                 <>
                   <Spinner className="w-4 h-4 mr-2" />
-                  제출 중...
+                  {t('key538', '제출 중...')}
                 </>
               ) : (
                 "답변 등록"
@@ -347,23 +349,17 @@ export default function ProductInquiry() {
               <SelectValue placeholder="정렬" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="latest">최신순</SelectItem>
-              <SelectItem value="oldest">오래된순</SelectItem>
+              <SelectItem value="latest">{t('key494', '최신순')}</SelectItem>
+              <SelectItem value="oldest">{t('key553', '오래된순')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <Tabs value={filterTab} onValueChange={setFilterTab} className="w-full lg:w-auto">
           <TabsList>
-            <TabsTrigger value="all" className="data-[state=active]:bg-[#FF6B4A] data-[state=active]:text-white">
-              전체 ({totalInquiries})
-            </TabsTrigger>
-            <TabsTrigger value="answered" className="data-[state=active]:bg-[#FF6B4A] data-[state=active]:text-white">
-              답변완료 ({answeredInquiries.length})
-            </TabsTrigger>
-            <TabsTrigger value="unanswered" className="data-[state=active]:bg-[#FF6B4A] data-[state=active]:text-white">
-              답변대기 ({unansweredInquiries.length})
-            </TabsTrigger>
+            <TabsTrigger value="all" className="data-[state=active]:bg-[#FF6B4A] data-[state=active]:text-white">{t('totalinquiries', '전체 ({{totalInquiries}})', { totalInquiries })}</TabsTrigger>
+            <TabsTrigger value="answered" className="data-[state=active]:bg-[#FF6B4A] data-[state=active]:text-white">{t('length5', '답변완료 ({{length}})', { length: answeredInquiries.length })}</TabsTrigger>
+            <TabsTrigger value="unanswered" className="data-[state=active]:bg-[#FF6B4A] data-[state=active]:text-white">{t('length6', '답변대기 ({{length}})', { length: unansweredInquiries.length })}</TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
@@ -374,11 +370,11 @@ export default function ProductInquiry() {
           /* Empty state - no inquiries at all (like design) */
           <div className="space-y-6">
             <div className="text-center space-y-2">
-              <h2 className="text-2xl font-bold">Q&A</h2>
-              <p className="text-sm text-muted-foreground">상품의 궁금한 점을 해결해 드립니다.</p>
+              <h2 className="text-2xl font-bold">{t('qa', 'Q&A')}</h2>
+              <p className="text-sm text-muted-foreground">{t('key564', '상품의 궁금한 점을 해결해 드립니다.')}</p>
             </div>
             <div className="rounded-lg bg-[#f8f8f8] py-16 flex items-center justify-center">
-              <p className="text-muted-foreground">게시물이 없습니다</p>
+              <p className="text-muted-foreground">{t('key565', '게시물이 없습니다')}</p>
             </div>
             <div className="flex justify-end gap-2">
               <Button
@@ -386,19 +382,19 @@ export default function ProductInquiry() {
                 className="border border-gray-300 bg-white hover:bg-gray-50"
                 onClick={() => router.push(`/products/${productId}`)}
               >
-                전체 보기
+                {t('key65', '전체 보기')}
               </Button>
               <Button
                 className="bg-[#FF6B4A] hover:bg-[#FF5A39] text-white"
                 onClick={() => router.push(`/products/${productId}/inquiry-create`)}
               >
-                상품문의하기
+                {t('key566', '상품문의하기')}
               </Button>
             </div>
           </div>
         ) : filteredInquiries.length === 0 ? (
           <div className="text-center py-12 text-muted-foreground">
-            해당하는 문의가 없습니다.
+            {t('key567', '해당하는 문의가 없습니다.')}
           </div>
         ) : (
           <>
@@ -417,11 +413,11 @@ export default function ProductInquiry() {
                           (inquiry.productInquiryAnswers && inquiry.productInquiryAnswers.length > 0)) ? (
                           <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
                             <CheckCircle2 size={14} className="mr-1" />
-                            답변완료
+                            {t('key364', '답변완료')}
                           </Badge>
                         ) : (
                           <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
-                            답변대기
+                            {t('key363', '답변대기')}
                           </Badge>
                         )}
                     </div>
@@ -443,7 +439,7 @@ export default function ProductInquiry() {
                           <div key={answerItem.id} className="bg-gray-50 rounded-lg p-4 border-l-4 border-[#FF6B4A]">
                             <div className="flex items-center gap-2 mb-2">
                               <CheckCircle2 size={16} className="text-[#FF6B4A]" />
-                              <span className="font-semibold text-sm">답변</span>
+                              <span className="font-semibold text-sm">{t('key568', '답변')}</span>
                               {answerItem.createdAt && (
                                 <span className="text-xs text-muted-foreground ml-auto">
                                   {formatDate(answerItem.createdAt)}
@@ -463,7 +459,7 @@ export default function ProductInquiry() {
                       <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-[#FF6B4A]">
                         <div className="flex items-center gap-2 mb-2">
                           <CheckCircle2 size={16} className="text-[#FF6B4A]" />
-                          <span className="font-semibold text-sm">답변</span>
+                          <span className="font-semibold text-sm">{t('key568', '답변')}</span>
                         </div>
                         <p className="text-sm leading-relaxed whitespace-pre-line">
                           {inquiry.answer}
@@ -481,7 +477,7 @@ export default function ProductInquiry() {
                           onClick={() => handleOpenAnswerDialog(inquiry.id)}
                         >
                           <MessageSquare size={16} />
-                          답변하기
+                          {t('key569', '답변하기')}
                         </Button>
                       </div>
                     )}
@@ -507,13 +503,13 @@ export default function ProductInquiry() {
                 className="border border-gray-300 bg-white hover:bg-gray-50"
                 onClick={() => router.push(`/products/${productId}`)}
               >
-                전체 보기
+                {t('key65', '전체 보기')}
               </Button>
               <Button
                 className="bg-[#FF6B4A] hover:bg-[#FF5A39] text-white"
                 onClick={() => router.push(`/products/${productId}/inquiry-create`)}
               >
-                상품문의하기
+                {t('key566', '상품문의하기')}
               </Button>
             </div>
           </>

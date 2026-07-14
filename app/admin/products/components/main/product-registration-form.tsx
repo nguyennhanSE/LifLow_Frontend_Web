@@ -19,8 +19,10 @@ import { ProductDescriptionSection } from "../product-description-section"
 import { ProductStatusSection } from "../product-status-section"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { useTranslation, Trans } from 'react-i18next'
 
 export function ProductRegistrationForm({ isMounted }: { isMounted: boolean }) {
+  const { t } = useTranslation()
   const { createProduct } = useProduct()
   const { createProductBadge } = useProductBadges()
   const router = useRouter()
@@ -118,8 +120,8 @@ export function ProductRegistrationForm({ isMounted }: { isMounted: boolean }) {
           <ChevronLeft className="h-5 w-5" />
         </Button>
         <div>
-          <h1 className="text-xl font-semibold">상품 등록</h1>
-          <p className="text-sm text-muted-foreground">새로운 상품을 등록합니다</p>
+          <h1 className="text-xl font-semibold">{t('key791', '상품 등록')}</h1>
+          <p className="text-sm text-muted-foreground">{t('key792', '새로운 상품을 등록합니다')}</p>
         </div>
       </div>
 
@@ -127,16 +129,14 @@ export function ProductRegistrationForm({ isMounted }: { isMounted: boolean }) {
         {/* Basic Information */}
         <Card>
           <CardContent className="pt-6">
-            <h2 className="mb-4 text-lg font-semibold">기본 정보</h2>
+            <h2 className="mb-4 text-lg font-semibold">{t('key7', '기본 정보')}</h2>
             <div className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="productName">
-                    상품명 <span className="text-destructive">*</span>
-                  </Label>
+                  <Label htmlFor="productName"><Trans i18nKey="spanClassnametextdestructivespan3">상품명 <span className="text-destructive">*</span></Trans></Label>
                   <Input
                     id="productName"
-                    placeholder="예: 유기농 쌀 10kg"
+                    placeholder={t('10kg', '예: 유기농 쌀 10kg')}
                     className="bg-white"
                     value={formData.productName}
                     onChange={(e) =>
@@ -145,10 +145,10 @@ export function ProductRegistrationForm({ isMounted }: { isMounted: boolean }) {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="productCode">상품코드</Label>
+                  <Label htmlFor="productCode">{t('key667', '상품코드')}</Label>
                   <Input
                     id="productCode"
-                    placeholder="예: RICE-001"
+                    placeholder={t('rice001', '예: RICE-001')}
                     className="bg-white"
                     value={formData.productCode || ""}
                     onChange={(e) =>
@@ -171,7 +171,7 @@ export function ProductRegistrationForm({ isMounted }: { isMounted: boolean }) {
                 />
                 <div className="space-y-2">
                   <Label htmlFor="storageMethod">
-                    보관 방법
+                    {t('key668', '보관 방법')}
                   </Label>
                   <Select
                     value={formData.storageMethod || ""}
@@ -183,17 +183,17 @@ export function ProductRegistrationForm({ isMounted }: { isMounted: boolean }) {
                       <SelectValue placeholder="선택" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="frozen">냉동</SelectItem>
-                      <SelectItem value="refrigerated">냉장</SelectItem>
-                      <SelectItem value="room_temperature">실온</SelectItem>
+                      <SelectItem value="frozen">{t('key669', '냉동')}</SelectItem>
+                      <SelectItem value="refrigerated">{t('key670', '냉장')}</SelectItem>
+                      <SelectItem value="room_temperature">{t('key671', '실온')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="manufacturer">제조사</Label>
+                  <Label htmlFor="manufacturer">{t('key333', '제조사')}</Label>
                   <Input
                     id="manufacturer"
-                    placeholder="예: (주)푸릇식품"
+                    placeholder={t('key672', '예: (주)푸릇식품')}
                     className="bg-white"
                     value={formData.manufacturer || ""}
                     onChange={(e) =>
@@ -304,7 +304,7 @@ export function ProductRegistrationForm({ isMounted }: { isMounted: boolean }) {
         {/* Action Buttons */}
         <div className="flex justify-end gap-3">
           <Button variant="outline" size="lg">
-            취소
+            {t('key212', '취소')}
           </Button>
           <Button
             size="lg"
@@ -315,7 +315,7 @@ export function ProductRegistrationForm({ isMounted }: { isMounted: boolean }) {
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                등록 중...
+                {t('key793', '등록 중...')}
               </>
             ) : (
               "상품 등록"

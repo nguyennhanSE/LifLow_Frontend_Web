@@ -12,8 +12,10 @@ import { AnnouncementEntity } from '@/entities/announcements/announcements.entit
 import { CreateAnnouncementModal } from './components/create-announcement-modal'
 import { UpdateAnnouncementModal } from './components/update-announcement-modal'
 import { DeleteAnnouncementModal } from './components/delete-announcement-modal'
+import { useTranslation } from 'react-i18next'
 
 export default function AnnouncementManagementPage() {
+  const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState<'general' | 'recipe' | 'guide'>('general')
   const [currentPage, setCurrentPage] = useState(1)
   const limit = 10
@@ -98,9 +100,9 @@ export default function AnnouncementManagementPage() {
     <div className="space-y-6">
       {/* Header */}
       <section>
-        <h1 className="text-xl font-semibold text-foreground">공지사항 관리</h1>
+        <h1 className="text-xl font-semibold text-foreground">{t('key519', '공지사항 관리')}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          공지사항을 탭별로 작성하고 관리할 수 있습니다.
+          {t('key520', '공지사항을 탭별로 작성하고 관리할 수 있습니다.')}
         </p>
       </section>
 
@@ -112,21 +114,21 @@ export default function AnnouncementManagementPage() {
             variant={activeTab === 'general' ? 'secondary' : 'outline'}
             onClick={() => { setActiveTab('general'); setCurrentPage(1) }}
           >
-            일반 공지사항
+            {t('key215', '일반 공지사항')}
           </Button>
           <Button
             type="button"
             variant={activeTab === 'recipe' ? 'secondary' : 'outline'}
             onClick={() => { setActiveTab('recipe'); setCurrentPage(1) }}
           >
-            레시피 공지사항
+            {t('key521', '레시피 공지사항')}
           </Button>
           <Button
             type="button"
             variant={activeTab === 'guide' ? 'secondary' : 'outline'}
             onClick={() => { setActiveTab('guide'); setCurrentPage(1) }}
           >
-            이용가이드
+            {t('key522', '이용가이드')}
           </Button>
         </div>
 
@@ -136,7 +138,7 @@ export default function AnnouncementManagementPage() {
           onClick={() => setIsModalOpen(true)}
         >
           <Plus className="h-4 w-4" />
-          공지사항 작성
+          {t('key523', '공지사항 작성')}
         </Button>
       </section>
 
@@ -151,25 +153,25 @@ export default function AnnouncementManagementPage() {
             <thead className="bg-gray-100">
               <tr className="text-xs font-medium text-muted-foreground">
                 <th className="p-4 text-left">ID</th>
-                <th className="p-4 text-left">고정</th>
-                <th className="p-4 text-left">제목</th>
-                <th className="p-4 text-left">작성자</th>
-                <th className="p-4 text-left">작성일</th>
-                <th className="p-4 text-left">조회수</th>
-                <th className="p-4 text-center">관리</th>
+                <th className="p-4 text-left">{t('key524', '고정')}</th>
+                <th className="p-4 text-left">{t('key502', '제목')}</th>
+                <th className="p-4 text-left">{t('key221', '작성자')}</th>
+                <th className="p-4 text-left">{t('key222', '작성일')}</th>
+                <th className="p-4 text-left">{t('key503', '조회수')}</th>
+                <th className="p-4 text-center">{t('key338', '관리')}</th>
               </tr>
             </thead>
             <tbody className="text-sm">
               {loading ? (
                 <tr>
                   <td colSpan={7} className="p-4 text-center text-muted-foreground">
-                    로딩 중...
+                    {t('key74', '로딩 중...')}
                   </td>
                 </tr>
               ) : announcements.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="p-4 text-center text-muted-foreground">
-                    공지사항이 없습니다.
+                    {t('key218', '공지사항이 없습니다.')}
                   </td>
                 </tr>
               ) : (
@@ -181,7 +183,7 @@ export default function AnnouncementManagementPage() {
                         day: '2-digit',
                       })
                     : '-'
-                  const authorName = announcement.author?.name || '알 수 없음'
+                  const authorName = announcement.author?.name || t('key258', '알 수 없음')
                   
                   return (
                     <tr
@@ -237,7 +239,7 @@ export default function AnnouncementManagementPage() {
 
         <div className="border-border flex items-center justify-between border-t px-6 py-4">
           <p className="text-sm text-muted-foreground">
-            전체 {pagination?.total ?? announcements.length}개의 공지
+            {t('key325', '전체')} {pagination?.total ?? announcements.length}{t('key525', '개의 공지')}
           </p>
           {pagination && (
             <PaginationButton

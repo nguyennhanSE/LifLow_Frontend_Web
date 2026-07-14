@@ -9,6 +9,7 @@ import { useInfiniteQuery } from "@tanstack/react-query"
 import { useRecipe } from "@/hooks/use-recipe/recipt.hook"
 import { Recipe } from "@/entities/recipes/recipe.entity"
 import Link from "next/link"
+import { useTranslation } from 'react-i18next'
 
 interface RecipeDisplay {
   id: string
@@ -62,6 +63,7 @@ const translateCategoryToKorean = (category: string) => {
 }
 
 export function RecipesSection() {
+  const { t } = useTranslation()
   const { getRecipes } = useRecipe()
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const limit = 10
@@ -153,14 +155,14 @@ export function RecipesSection() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-foreground mb-1">🔍 쭈왕 레시피</h2>
+            <h2 className="text-2xl font-bold text-foreground mb-1">{t('key96', '🔍 쭈왕 레시피')}</h2>
             <p className="text-sm text-muted-foreground">
-              쭈왕 상품으로 만드는 맛있는 레시피를 공유해보세요 (레시피 승인 시 500 포인트!)
+              {t('500', '쭈왕 상품으로 만드는 맛있는 레시피를 공유해보세요 (레시피 승인 시 500 포인트!)')}
             </p>
           </div>
           {recipes.length > 4 && (
             <Link href="/contents">
-              <Button variant="outline">전체보기</Button>
+              <Button variant="outline">{t('key42', '전체보기')}</Button>
             </Link>
           )}
         </div>
@@ -172,11 +174,11 @@ export function RecipesSection() {
             </div>
           ) : isError ? (
             <div className="flex justify-center items-center py-12 text-red-400">
-              레시피를 불러오는데 실패했습니다
+              {t('key97', '레시피를 불러오는데 실패했습니다')}
             </div>
           ) : recipes.length === 0 ? (
             <div className="flex justify-center items-center py-12 text-gray-400">
-              레시피가 없습니다
+              {t('key98', '레시피가 없습니다')}
             </div>
           ) : (
             <>
@@ -198,7 +200,7 @@ export function RecipesSection() {
                       </div>
                       <CardContent className="px-4 pb-4">
                       <div className="mb-2 flex items-center gap-3">
-                        🥄
+                        {t('key99', '🥄')}
                         <span className="text-xs text-orange-500">{translateCategoryToKorean(recipe.category || "")}</span>
                       </div>
                         <h3 className="font-semibold text-base mb-2 text-foreground line-clamp-2">{recipe.title}</h3>
@@ -209,7 +211,7 @@ export function RecipesSection() {
                           </div>
                           <div>
                             <p className="text-xs font-medium text-foreground">{recipe.author}</p>
-                            <p className="text-xs text-muted-foreground">25.10.28</p>
+                            <p className="text-xs text-muted-foreground">{t('251028', '25.10.28')}</p>
                           </div>
                           <div className="ml-auto flex items-center gap-1">
                             <span className="text-red-500 text-sm">♥</span>
@@ -249,7 +251,7 @@ export function RecipesSection() {
 
         <div className="text-center mt-8">
           <Link href="/community/create">
-            <Button className="bg-[#FF5833] hover:bg-[#E64A2E] text-white px-8">레시피 작성하기</Button>
+            <Button className="bg-[#FF5833] hover:bg-[#E64A2E] text-white px-8">{t('key100', '레시피 작성하기')}</Button>
           </Link>
         </div>
       </div>

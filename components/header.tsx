@@ -10,16 +10,18 @@ import { useState, useEffect, useRef } from "react"
 import { useCart } from "@/hooks/use-cart/cart.hook"
 import { ChatBadge } from "@/components/chatBadge"
 import Image from "next/image"
+import { useTranslation } from "react-i18next"
 
 const NAV_LINKS = [
-  { href: "/", label: "메인", icon: "/homepage/1.png", alt: "home", iconSize: "w-5 h-5", px: 20 },
-  { href: "/service", label: "서비스소개", icon: "/homepage/2.png", alt: "service", iconSize: "w-8 h-8", px: 32 },
-  { href: "/contents", label: "콘텐츠", icon: "/homepage/3.png", alt: "contents", iconSize: "w-8 h-8", px: 32 },
-  { href: "/special", label: "이번쭈특가", icon: "/homepage/4.png", alt: "special", iconSize: "w-8 h-8", px: 32 },
-  { href: "/market", label: "마켓", icon: "/homepage/5.png", alt: "market", iconSize: "w-8 h-8", px: 32 },
+  { href: "/", labelKey: "navigation.main", icon: "/homepage/1.png", alt: "home", iconSize: "w-5 h-5", px: 20 },
+  { href: "/service", labelKey: "navigation.service", icon: "/homepage/2.png", alt: "service", iconSize: "w-8 h-8", px: 32 },
+  { href: "/contents", labelKey: "navigation.contents", icon: "/homepage/3.png", alt: "contents", iconSize: "w-8 h-8", px: 32 },
+  { href: "/special", labelKey: "navigation.special", icon: "/homepage/4.png", alt: "special", iconSize: "w-8 h-8", px: 32 },
+  { href: "/market", labelKey: "navigation.market", icon: "/homepage/5.png", alt: "market", iconSize: "w-8 h-8", px: 32 },
 ]
 
 export function Header() {
+  const { t } = useTranslation()
   const { handleLogout } = useAuthHook()
   const { getNumberOfCartItems } = useCart()
   const router = useRouter()
@@ -117,20 +119,20 @@ export function Header() {
 
         {/* Logo */}
         <Link href="/" className="flex shrink-0 items-center gap-2">
-          <Image src="/icon.svg" alt="쭈왕몰 로고" width={36} height={36} className="w-8 h-8 md:w-9 md:h-9" />
-          <span className="text-lg md:text-xl font-bold text-white">쭈왕몰</span>
+          <Image src="/icon.svg" alt={t("header.logoAlt")} width={36} height={36} className="w-8 h-8 md:w-9 md:h-9" />
+          <span className="text-lg md:text-xl font-bold text-white">{t("common.brand")}</span>
         </Link>
 
         {/* Desktop & Tablet Navigation */}
         <nav className="hidden md:flex items-center gap-1 lg:gap-2">
-          {NAV_LINKS.map(({ href, label, icon, alt, iconSize, px }) => (
+          {NAV_LINKS.map(({ href, labelKey, icon, alt, iconSize, px }) => (
             <Link
               key={href}
               href={href}
               className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium text-white transition-colors hover:bg-white/15 ${pathname === href ? 'bg-white/20' : ''}`}
             >
               <Image src={icon} alt={alt} width={px} height={px} className={`shrink-0 ${iconSize} object-contain`} />
-              <span className="hidden lg:inline whitespace-nowrap">{label}</span>
+              <span className="hidden lg:inline whitespace-nowrap">{t(labelKey)}</span>
             </Link>
           ))}
         </nav>
@@ -146,7 +148,7 @@ export function Header() {
             className="hidden md:flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-white hover:bg-white/15 transition-colors"
           >
             <User className="h-4 w-4" />
-            <span>{isLoggedIn ? '마이페이지' : '로그인'}</span>
+            <span>{isLoggedIn ? t("navigation.myPage") : t("auth.login")}</span>
           </button>
 
           {/* Mobile hamburger — Sheet drawer */}
@@ -156,18 +158,18 @@ export function Header() {
                 variant="ghost"
                 size="icon"
                 className="md:hidden text-white hover:bg-white/15 h-9 w-9"
-                aria-label="메뉴 열기"
+                aria-label={t("header.openMenu")}
               >
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
 
-            <SheetContent side="right" title="메뉴" className="w-72 p-0 bg-white flex flex-col">
+            <SheetContent side="right" title={t("header.menu")} className="w-72 p-0 bg-white flex flex-col">
               {/* Drawer header */}
               <div className="flex items-center justify-between bg-[#FF5833] px-4 py-4">
                 <Link href="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
-                  <Image src="/icon.svg" alt="쭈왕몰 로고" width={32} height={32} className="w-8 h-8" />
-                  <span className="text-lg font-bold text-white">쭈왕몰</span>
+                  <Image src="/icon.svg" alt={t("header.logoAlt")} width={32} height={32} className="w-8 h-8" />
+                  <span className="text-lg font-bold text-white">{t("common.brand")}</span>
                 </Link>
                 <SheetClose asChild>
                   <Button variant="ghost" size="icon" className="text-white hover:bg-white/15 h-8 w-8">
@@ -182,18 +184,18 @@ export function Header() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-sm text-gray-700">
                       <User className="h-4 w-4 text-[#FF5833]" />
-                      <span className="font-medium">마이페이지</span>
+                      <span className="font-medium">{t("navigation.myPage")}</span>
                     </div>
                     <div className="flex gap-2">
                       <button
                         onClick={() => { setMobileMenuOpen(false); router.push('/my-page') }}
                         className="text-xs text-[#FF5833] font-medium hover:underline"
                       >
-                        내 정보
+                        {t("auth.myInfo")}
                       </button>
                       <span className="text-gray-300">|</span>
                       <button onClick={handleLogoutClick} className="text-xs text-gray-500 hover:underline">
-                        로그아웃
+                        {t("auth.logout")}
                       </button>
                     </div>
                   </div>
@@ -203,7 +205,7 @@ export function Header() {
                     className="flex w-full items-center gap-2 text-sm text-gray-700 font-medium"
                   >
                     <LogIn className="h-4 w-4 text-[#FF5833]" />
-                    <span>로그인 / 회원가입</span>
+                    <span>{t("auth.loginOrSignUp")}</span>
                     <ChevronRight className="h-4 w-4 ml-auto text-gray-400" />
                   </button>
                 )}
@@ -211,7 +213,7 @@ export function Header() {
 
               {/* Nav links — icons stay main color via filter */}
               <nav className="flex-1 overflow-y-auto py-2">
-                {NAV_LINKS.map(({ href, label, icon, alt }) => (
+                {NAV_LINKS.map(({ href, labelKey, icon, alt }) => (
                   <Link
                     key={href}
                     href={href}
@@ -225,7 +227,7 @@ export function Header() {
                       height={32}
                       className="shrink-0 w-8 h-8 object-contain filter-[brightness(0)_sepia(1)_saturate(1000%)_hue-rotate(10deg)]"
                     />
-                    <span>{label}</span>
+                    <span>{t(labelKey)}</span>
                     <ChevronRight className="h-4 w-4 ml-auto text-gray-300" />
                   </Link>
                 ))}
@@ -239,7 +241,7 @@ export function Header() {
                   className="flex items-center gap-3 rounded-xl bg-[#FF5833] px-4 py-3 text-sm font-semibold text-white"
                 >
                   <ShoppingCart className="h-5 w-5" />
-                  <span>장바구니 보기</span>
+                  <span>{t("cart.viewCart")}</span>
                   {cartItemCount > 0 && (
                     <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1 text-[11px] font-bold text-[#FF5833]">
                       {cartItemCount > 99 ? '99+' : cartItemCount}

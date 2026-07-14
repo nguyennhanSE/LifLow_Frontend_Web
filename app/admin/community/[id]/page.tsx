@@ -31,8 +31,10 @@ import { Recipe, ERecipeCategory } from '@/entities/recipes/recipe.entity'
 import { UpdateRecipeDto } from '@/hooks/use-recipe/recipe.dto'
 import { ProductEntity } from '@/entities/products/product.entity'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 
 export default function AdminCommunityIdPage({ params }: { params: Promise<{ id: string }> }) {
+  const { t } = useTranslation()
   const resolvedParams = use(params)
   const router = useRouter()
   const queryClient = useQueryClient()
@@ -450,8 +452,8 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">레시피를 찾을 수 없습니다</h2>
-          <Button onClick={() => router.push('/admin/community')}>목록으로</Button>
+          <h2 className="text-2xl font-bold mb-2">{t('key628', '레시피를 찾을 수 없습니다')}</h2>
+          <Button onClick={() => router.push('/admin/community')}>{t('key629', '목록으로')}</Button>
         </div>
       </div>
     )
@@ -514,13 +516,13 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
             className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>목록으로</span>
+            <span>{t('key629', '목록으로')}</span>
           </Link>
         </div>
         <div>
-            <h1 className="text-3xl font-bold mb-2">레시피 상세</h1>
+            <h1 className="text-3xl font-bold mb-2">{t('key723', '레시피 상세')}</h1>
             <p className="text-gray-600">
-              레시피 내용을 확인하고 승인/반려 또는 삭제할 수 있습니다
+              {t('key724', '레시피 내용을 확인하고 승인/반려 또는 삭제할 수 있습니다')}
             </p>
         </div>
       </div>
@@ -551,7 +553,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                       <div key={index} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200">
                         <img
                           src={imageUrl}
-                          alt={`${recipeData.title || 'Recipe'} - Image ${index + 2}`}
+                          alt={t('valImageVal2', '{{val}} - Image {{val2}}', { val: recipeData.title || 'Recipe', val2: index + 2 })}
                           className="w-full h-full object-cover"
                         />
                       </div>
@@ -572,12 +574,12 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
               <div className="p-8 space-y-6">
                 {/* Thumbnail Upload */}
                 <div className="space-y-2">
-                  <Label>이미지</Label>
+                  <Label>{t('key328', '이미지')}</Label>
                   <div className="space-y-4">
                     <div>
                       <div className="flex items-center gap-2">
                         <label htmlFor="thumbnail-upload" className="sr-only">
-                          이미지 업로드
+                          {t('key551', '이미지 업로드')}
                         </label>
                         <input
                           ref={fileInputRef}
@@ -587,7 +589,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                           onChange={handleThumbnailChange}
                           className="hidden"
                           id="thumbnail-upload"
-                          aria-label="이미지 업로드"
+                          aria-label={t('key551', '이미지 업로드')}
                         />
                         <Button
                           type="button"
@@ -595,16 +597,14 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                           onClick={() => fileInputRef.current?.click()}
                           className="cursor-pointer"
                         >
-                          이미지 선택
+                          {t('key27', '이미지 선택')}
                         </Button>
                         {thumbnailFiles.length > 0 && (
-                          <span className="text-sm text-muted-foreground">
-                            {thumbnailFiles.length}개 파일 선택됨
-                          </span>
+                          <span className="text-sm text-muted-foreground">{t('length7', '{{length}}개 파일 선택됨', { length: thumbnailFiles.length })}</span>
                         )}
                       </div>
                       <p className="text-sm text-muted-foreground mt-1">
-                        여러 이미지를 선택할 수 있습니다
+                        {t('key725', '여러 이미지를 선택할 수 있습니다')}
                       </p>
                     </div>
                     
@@ -615,7 +615,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                           <div key={index} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 group">
                             <img
                               src={preview}
-                              alt={`Preview ${index + 1}`}
+                              alt={t('previewVal', 'Preview {{val}}', { val: index + 1 })}
                               className="w-full h-full object-cover"
                             />
                             <Button
@@ -636,12 +636,12 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
 
                 {/* Title */}
                 <div className="space-y-2">
-                  <Label htmlFor="edit-title">제목 *</Label>
+                  <Label htmlFor="edit-title">{t('key726', '제목 *')}</Label>
                   <Input
                     id="edit-title"
                     value={editFormData.title}
                     onChange={(e) => handleEditFormChange('title', e.target.value)}
-                    placeholder="레시피 제목을 입력하세요"
+                    placeholder={t('key727', '레시피 제목을 입력하세요')}
                   />
                 </div>
               </div>
@@ -659,17 +659,17 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                   <div className="space-y-6">
                     {/* Author */}
                     <div>
-                      <div className="text-sm text-gray-600 mb-2">작성자</div>
+                      <div className="text-sm text-gray-600 mb-2">{t('key221', '작성자')}</div>
                       <div className="font-medium">{authorName}</div>
                     </div>
                     {/* Views */}
                     <div>
-                      <div className="text-sm text-gray-600 mb-2">조회수</div>
+                      <div className="text-sm text-gray-600 mb-2">{t('key503', '조회수')}</div>
                       <div className="font-medium">{(recipeData.views || 0).toLocaleString('en-US')}</div>
                     </div>
                     {/* Status */}
                     <div>
-                      <div className="text-sm text-gray-600 mb-2">상태</div>
+                      <div className="text-sm text-gray-600 mb-2">{t('key336', '상태')}</div>
                       <span className={`inline-block px-3 py-1 text-sm rounded border ${statusColor}`}>
                         {status}
                       </span>
@@ -680,7 +680,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                   <div className="space-y-6">
                     {/* Category */}
                     <div>
-                      <div className="text-sm text-gray-600 mb-2">카테고리</div>
+                      <div className="text-sm text-gray-600 mb-2">{t('key332', '카테고리')}</div>
                       <span className={`inline-block px-3 py-1 text-sm rounded border ${
                         category === ERecipeCategory.RECIPE
                           ? 'bg-blue-50 text-blue-600 border-blue-200'
@@ -693,12 +693,12 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                     </div>
                     {/* Likes */}
                     <div>
-                      <div className="text-sm text-gray-600 mb-2">좋아요</div>
+                      <div className="text-sm text-gray-600 mb-2">{t('key728', '좋아요')}</div>
                       <div className="font-medium">{(recipeData as { numberOfLikes?: number }).numberOfLikes ?? 0}</div>
                     </div>
                     {/* Exposure Status */}
                     <div>
-                      <div className="text-sm text-gray-600 mb-2">노출 상태</div>
+                      <div className="text-sm text-gray-600 mb-2">{t('key652', '노출 상태')}</div>
                       <span className={`inline-block px-3 py-1 text-sm rounded border ${exposureColor}`}>
                         {exposureStatus}
                       </span>
@@ -709,12 +709,12 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                   <div className="space-y-6">
                     {/* Created Date */}
                     <div>
-                      <div className="text-sm text-gray-600 mb-2">작성일</div>
+                      <div className="text-sm text-gray-600 mb-2">{t('key222', '작성일')}</div>
                       <div className="font-medium">{createdAt}</div>
                     </div>
                     {/* Comments */}
                     <div>
-                      <div className="text-sm text-gray-600 mb-2">댓글</div>
+                      <div className="text-sm text-gray-600 mb-2">{t('key632', '댓글')}</div>
                       <div className="font-medium">{(recipeData as { numberOfComments?: number }).numberOfComments ?? 0}</div>
                     </div>
                   </div>
@@ -724,17 +724,17 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
               <>
                 {/* Edit Mode - Category */}
                 <div className="space-y-2">
-                  <Label htmlFor="edit-category">카테고리 *</Label>
+                  <Label htmlFor="edit-category">{t('key729', '카테고리 *')}</Label>
                   <Select
                     value={editFormData.category}
                     onValueChange={(value) => handleEditFormChange('category', value)}
                   >
                     <SelectTrigger id="edit-category">
-                      <SelectValue placeholder="카테고리를 선택하세요" />
+                      <SelectValue placeholder={t('key730', '카테고리를 선택하세요')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value={ERecipeCategory.RECIPE}>RECIPE</SelectItem>
-                      <SelectItem value={ERecipeCategory.REVIEWS}>REVIEWS</SelectItem>
+                      <SelectItem value={ERecipeCategory.RECIPE}>{t('recipe', 'RECIPE')}</SelectItem>
+                      <SelectItem value={ERecipeCategory.REVIEWS}>{t('reviews', 'REVIEWS')}</SelectItem>
                       <SelectItem value={ERecipeCategory.DAILY_LIFE}>DAILY_LIFE</SelectItem>
                     </SelectContent>
                   </Select>
@@ -746,9 +746,9 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
             {!isEditMode ? (
               recipeData.ingredients && recipeData.ingredients.length > 0 && (
                 <div className="mb-8">
-                  <div className="text-sm text-gray-600 mb-2">재료</div>
+                  <div className="text-sm text-gray-600 mb-2">{t('key731', '재료')}</div>
                   <span className="inline-block px-3 py-1 bg-orange-50 text-orange-600 text-sm rounded border border-orange-200 mb-4">
-                    Recipe
+                    {t('recipe2', 'Recipe')}
                   </span>
                   <div className="bg-gray-50 rounded-lg p-6">
                     <div className="space-y-2 text-gray-700">
@@ -762,14 +762,14 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
             ) : (
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label>재료</Label>
+                  <Label>{t('key731', '재료')}</Label>
                   <Button
                     type="button"
                     variant="outline"
                     size="sm"
                     onClick={handleAddIngredient}
                   >
-                    재료 추가
+                    {t('key732', '재료 추가')}
                   </Button>
                 </div>
                 <div className="space-y-2">
@@ -778,7 +778,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                       <Input
                         value={ingredient}
                         onChange={(e) => handleIngredientChange(index, e.target.value)}
-                        placeholder={`재료 ${index + 1}`}
+                        placeholder={t('val4', '재료 {{val}}', { val: index + 1 })}
                       />
                       <Button
                         type="button"
@@ -791,7 +791,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                     </div>
                   ))}
                   {(!editFormData.ingredients || editFormData.ingredients.length === 0) && (
-                    <p className="text-sm text-muted-foreground">재료가 없습니다. 위의 버튼을 클릭하여 추가하세요.</p>
+                    <p className="text-sm text-muted-foreground">{t('key733', '재료가 없습니다. 위의 버튼을 클릭하여 추가하세요.')}</p>
                   )}
                 </div>
               </div>
@@ -801,7 +801,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
             {!isEditMode ? (
               product && typeof product === 'object' && (
                 <div className="mb-8">
-                  <h3 className="text-lg font-bold mb-4">사용된 제품</h3>
+                  <h3 className="text-lg font-bold mb-4">{t('key734', '사용된 제품')}</h3>
                   <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                     {product.imageRegistrationThumbnail && (
                       <div className="mb-3">
@@ -827,7 +827,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
               )
             ) : (
               <div className="space-y-2">
-                <Label>사용한 상품 (선택사항)</Label>
+                <Label>{t('key735', '사용한 상품 (선택사항)')}</Label>
                 <div className="space-y-2">
                   {selectedProduct && (
                     <div className="flex items-center gap-2 p-3 border rounded-lg bg-muted/50">
@@ -840,7 +840,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">
-                            이미지 없음
+                            {t('key320', '이미지 없음')}
                           </div>
                         )}
                       </div>
@@ -855,8 +855,8 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                       <button
                         onClick={handleRemoveProduct}
                         className="ml-1 hover:bg-muted rounded-full p-1"
-                        title="상품 제거"
-                        aria-label="상품 제거"
+                        title={t('key736', '상품 제거')}
+                        aria-label={t('key736', '상품 제거')}
                       >
                         <X className="h-4 w-4" />
                       </button>
@@ -878,7 +878,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
             {!isEditMode ? (
               cookingSteps.length > 0 && (
                 <div className="mb-8">
-                  <h3 className="text-lg font-bold mb-4">요리 방법</h3>
+                  <h3 className="text-lg font-bold mb-4">{t('key737', '요리 방법')}</h3>
                   <div className="bg-gray-50 rounded-lg p-6">
                     <div className="space-y-3 text-gray-700">
                       {cookingSteps.map((step, index) => (
@@ -892,12 +892,12 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
               )
             ) : (
               <div className="space-y-2">
-                <Label htmlFor="edit-content">요리 방법</Label>
+                <Label htmlFor="edit-content">{t('key737', '요리 방법')}</Label>
                 <Textarea
                   id="edit-content"
                   value={editFormData.content}
                   onChange={(e) => handleEditFormChange('content', e.target.value)}
-                  placeholder="요리 방법을 입력하세요 (각 단계는 새 줄로 구분)"
+                  placeholder={t('key738', '요리 방법을 입력하세요 (각 단계는 새 줄로 구분)')}
                   rows={8}
                   className="resize-none"
                 />
@@ -914,7 +914,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                       className="bg-black text-white hover:bg-gray-800 flex-1"
                     >
                       <Edit className="w-4 h-4 mr-2" />
-                      수정
+                      {t('key288', '수정')}
                     </Button>
                   </div>
                   {recipeData.status === 'pending' ? (
@@ -926,7 +926,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                         className="bg-green-600 text-white hover:bg-green-700 w-full"
                       >
                         <Check className="w-4 h-4 mr-2" />
-                        승인
+                        {t('key739', '승인')}
                       </Button>
                       <Button
                         onClick={handleReject}
@@ -934,7 +934,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                         className="bg-red-600 text-white hover:bg-red-700 w-full"
                       >
                         <X className="w-4 h-4 mr-2" />
-                        반려
+                        {t('key740', '반려')}
                       </Button>
                       {recipeData.status === 'pending' && <Button
                         onClick={handleDelete}
@@ -943,7 +943,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                         className="bg-[#ff5833] hover:bg-[#ff4520] w-full"
                       >
                         <Trash2 className="w-4 h-4 mr-2" />
-                        삭제
+                        {t('key741', '삭제')}
                       </Button>}
                     </div>
                   ) : (
@@ -961,7 +961,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                     disabled={updateMutation.isPending}
                     className="flex-1"
                   >
-                    취소
+                    {t('key212', '취소')}
                   </Button>
                   <Button
                     onClick={handleSubmitEdit}
@@ -971,7 +971,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                     {updateMutation.isPending ? (
                       <>
                         <Spinner className="w-4 h-4 mr-2" />
-                        저장 중...
+                        {t('key582', '저장 중...')}
                       </>
                     ) : (
                       '저장'
@@ -988,13 +988,13 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
       <Dialog open={productDialogOpen} onOpenChange={setProductDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[80vh] flex flex-col">
           <DialogHeader>
-            <DialogTitle>상품 선택</DialogTitle>
+            <DialogTitle>{t('key742', '상품 선택')}</DialogTitle>
           </DialogHeader>
           <div className="flex-1 overflow-hidden flex flex-col space-y-4">
             {/* Search */}
             <div className="relative">
               <Input
-                placeholder="상품명으로 검색..."
+                placeholder={t('key743', '상품명으로 검색...')}
                 value={productSearchQuery}
                 onChange={(e) => setProductSearchQuery(e.target.value)}
                 className="w-full"
@@ -1009,7 +1009,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                 </div>
               ) : allProducts.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground">
-                  상품이 없습니다.
+                  {t('key744', '상품이 없습니다.')}
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
@@ -1035,7 +1035,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                               />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">
-                                이미지 없음
+                                {t('key320', '이미지 없음')}
                               </div>
                             )}
                           </div>
@@ -1065,7 +1065,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
               {isFetchingNextPage && (
                 <div className="flex flex-col items-center justify-center py-4 gap-2">
                   <Spinner className="h-5 w-5" />
-                  <p className="text-sm text-muted-foreground">다음 페이지를 불러오는 중...</p>
+                  <p className="text-sm text-muted-foreground">{t('key745', '다음 페이지를 불러오는 중...')}</p>
                 </div>
               )}
               {hasNextPage && !isFetchingNextPage && allProducts.length > 0 && (
@@ -1076,7 +1076,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
                     onClick={() => fetchNextPage()}
                     className="text-xs text-muted-foreground hover:text-foreground"
                   >
-                    더 많은 상품 보기
+                    {t('key746', '더 많은 상품 보기')}
                   </Button>
                 </div>
               )}
@@ -1085,7 +1085,7 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
             {/* Selected Product Info */}
             {selectedProduct && (
               <div className="text-sm text-muted-foreground">
-                선택된 상품: {selectedProduct.productName || 'N/A'}
+                {t('key747', '선택된 상품:')} {selectedProduct.productName || 'N/A'}
               </div>
             )}
           </div>
@@ -1094,12 +1094,12 @@ export default function AdminCommunityIdPage({ params }: { params: Promise<{ id:
               variant="outline"
               onClick={() => setProductDialogOpen(false)}
             >
-              취소
+              {t('key212', '취소')}
             </Button>
             <Button
               onClick={() => setProductDialogOpen(false)}
             >
-              확인 {selectedProduct ? '(1)' : '(0)'}
+              {t('key748', '확인')} {selectedProduct ? '(1)' : '(0)'}
             </Button>
           </DialogFooter>
         </DialogContent>

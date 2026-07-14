@@ -11,6 +11,7 @@ import { AnnouncementEntity } from "@/entities/announcements/announcements.entit
 import { EAnnouncementType } from "@/entities/announcements/announcements.entity"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+import { useTranslation } from 'react-i18next'
 
 interface Announcement {
   id: string
@@ -25,6 +26,7 @@ interface Announcement {
 type TabType = "general" | "recipe"
 
 export default function AnnouncementBoard() {
+  const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState<TabType>("recipe")
   const [announcements, setAnnouncements] = useState<Announcement[]>([])
   const [selectedAnnouncement, setSelectedAnnouncement] = useState<Announcement | null>(null)
@@ -161,9 +163,9 @@ export default function AnnouncementBoard() {
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-2">
             {/* <Volume2 className="h-6 w-6 text-muted-foreground" /> */}
-            <h1 className="text-2xl font-bold text-foreground">📢 공지사항</h1>
+            <h1 className="text-2xl font-bold text-foreground">{t('key213', '📢 공지사항')}</h1>
           </div>
-          <p className="text-muted-foreground">쭈왕몰의 새로운 소식과 이벤트를 확인하세요.</p>
+          <p className="text-muted-foreground">{t('key214', '쭈왕몰의 새로운 소식과 이벤트를 확인하세요.')}</p>
         </div>
 
         {/* Tabs */}
@@ -178,7 +180,7 @@ export default function AnnouncementBoard() {
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
-              일반 공지사항
+              {t('key215', '일반 공지사항')}
             </button>
             <button
               onClick={() => handleTabChange("recipe")}
@@ -189,7 +191,7 @@ export default function AnnouncementBoard() {
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
-              쭈왕 레시피 공지사항
+              {t('key216', '쭈왕 레시피 공지사항')}
             </button>
           </div>
         </div>
@@ -199,12 +201,12 @@ export default function AnnouncementBoard() {
           {/* Announcement List */}
           <Card className="lg:col-span-1">
             <CardContent className="p-4">
-              <h2 className="font-semibold text-foreground mb-4">전체 공지사항</h2>
+              <h2 className="font-semibold text-foreground mb-4">{t('key217', '전체 공지사항')}</h2>
               <div className="space-y-4">
                 {loading ? (
-                  <div className="text-center py-8 text-muted-foreground">로딩 중...</div>
+                  <div className="text-center py-8 text-muted-foreground">{t('key74', '로딩 중...')}</div>
                 ) : announcements.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">공지사항이 없습니다.</div>
+                  <div className="text-center py-8 text-muted-foreground">{t('key218', '공지사항이 없습니다.')}</div>
                 ) : (
                   announcements.map((announcement) => (
                     <button
@@ -247,14 +249,14 @@ export default function AnnouncementBoard() {
             <CardContent className="p-6">
               {!selectedAnnouncement ? (
                 <div className="text-center py-12 text-muted-foreground">
-                  {loading ? "로딩 중..." : "공지사항을 선택해주세요."}
+                  {loading ? t('key74', '로딩 중...') : t('key219', '공지사항을 선택해주세요.')}
                 </div>
               ) : (
                 <>
                   {/* Badge */}
                   <Badge className="bg-orange-500 hover:bg-orange-500 text-white mb-4">
                     <Volume2 className="h-3 w-3 mr-1" />
-                    공지
+                    {t('key220', '공지')}
                   </Badge>
 
                   {/* Title */}
@@ -265,11 +267,11 @@ export default function AnnouncementBoard() {
                   {/* Meta */}
                   <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-6 pb-6 border-b">
                     <div>
-                      <span className="text-muted-foreground">작성자</span>{" "}
+                      <span className="text-muted-foreground">{t('key221', '작성자')}</span>{" "}
                       <span className="text-foreground">{selectedAnnouncement.author}</span>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">작성일</span>{" "}
+                      <span className="text-muted-foreground">{t('key222', '작성일')}</span>{" "}
                       <span className="text-foreground">{selectedAnnouncement.date}</span>
                     </div>
                     <div className="flex items-center gap-1">
@@ -298,14 +300,14 @@ export default function AnnouncementBoard() {
                   <div className="flex justify-between items-center pt-4">
                     <Button onClick={() => router.push("/")} variant="outline" className="gap-2 bg-transparent">
                       <ChevronLeft className="h-4 w-4" />
-                      메인으로
+                      {t('key223', '메인으로')}
                     </Button>
                     <Button 
                       variant="outline"
                       onClick={handleNextAnnouncement}
                       disabled={announcements.findIndex((a) => a.id === selectedAnnouncement.id) === announcements.length - 1}
                     >
-                      다음 공지 보기
+                      {t('key224', '다음 공지 보기')}
                     </Button>
                   </div>
                 </>

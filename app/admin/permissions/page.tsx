@@ -38,6 +38,7 @@ import { User } from '@/entities/user.entity'
 import { ERoleName } from '@/entities/roles/role.enum'
 import { EPermissionName } from '@/entities/permissions/permission.entity'
 import { DialogDescription } from '@radix-ui/react-dialog'
+import { useTranslation } from 'react-i18next'
 
 type PermissionItem = {
   id: string
@@ -48,6 +49,7 @@ type PermissionItem = {
 // Removed useUserFilter - filtering is now done on server side
 
 export default function AdminPermissionsPage() {
+  const { t } = useTranslation()
   // State
   const { getAdminOnly, updateUserPermissions, addUser, getUserPermissions } = useUser();
   const [total, setTotal] = useState(0);
@@ -254,32 +256,30 @@ useEffect(() => {
       {/* Header (matches Figma AdminPermissions header row) */}
       <section className="flex items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-semibold">권한 관리</h2>
-          <p className="text-muted-foreground text-sm">
-            전체 {total}명의 관리자
-          </p>
+          <h2 className="text-xl font-semibold">{t('key369', '권한 관리')}</h2>
+          <p className="text-muted-foreground text-sm">{t('total2', '전체 {{total}}명의 관리자', { total })}</p>
         </div>
 
         <Dialog open={isAddAdminDialogOpen} onOpenChange={setIsAddAdminDialogOpen}>
           <DialogTrigger asChild>
             <Button size="lg" className="bg-black text-white hover:bg-black/90">
               <Plus className="mr-2 h-5 w-5" />
-              관리자 추가
+              {t('key370', '관리자 추가')}
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle>관리자 추가</DialogTitle>
+              <DialogTitle>{t('key370', '관리자 추가')}</DialogTitle>
               <DialogDescription className='
-              text-muted-foreground text-sm'>새로운 관리자 계정을 추가합니다</DialogDescription>
+              text-muted-foreground text-sm'>{t('key371', '새로운 관리자 계정을 추가합니다')}</DialogDescription>
             </DialogHeader>
 
             <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <Label htmlFor="name">이름 *</Label>
+                <Label htmlFor="name">{t('key372', '이름 *')}</Label>
                 <Input
                   id="name"
-                  placeholder="이름을 입력하세요"
+                  placeholder={t('key13', '이름을 입력하세요')}
                   value={newAdminForm.name}
                   onChange={(e) =>
                     setNewAdminForm((prev) => ({ ...prev, name: e.target.value }))
@@ -288,11 +288,11 @@ useEffect(() => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email">이메일</Label>
+                <Label htmlFor="email">{t('key80', '이메일')}</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="이메일을 입력하세요"
+                  placeholder={t('key17', '이메일을 입력하세요')}
                   value={newAdminForm.email}
                   onChange={(e) =>
                     setNewAdminForm((prev) => ({ ...prev, email: e.target.value }))
@@ -301,7 +301,7 @@ useEffect(() => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="role">역할</Label>
+                <Label htmlFor="role">{t('key373', '역할')}</Label>
                 <Select
                   value={newAdminForm.role}
                   onValueChange={(value) =>
@@ -309,7 +309,7 @@ useEffect(() => {
                   }
                 >
                   <SelectTrigger id="role" className="w-full">
-                    <SelectValue placeholder="역할을 선택하세요" />
+                    <SelectValue placeholder={t('key374', '역할을 선택하세요')} />
                   </SelectTrigger>
                   <SelectContent>
                     {Object.values(ERoleName)
@@ -336,10 +336,10 @@ useEffect(() => {
                 variant="outline"
                 onClick={() => setIsAddAdminDialogOpen(false)}
               >
-                취소
+                {t('key212', '취소')}
               </Button>
               <Button type="button" onClick={handleAddAdmin} className="bg-black text-white hover:bg-black/90">
-                추가
+                {t('key375', '추가')}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -352,17 +352,17 @@ useEffect(() => {
           {/* <CardTitle className="text-sm font-semibold">관리자 검색</CardTitle> */}
           <div className="flex flex-row items-center justify-between gap-2">
             <Input
-              placeholder="이름, 이메일로 검색"
+              placeholder={t('key376', '이름, 이메일로 검색')}
               className="flex-1"
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
             />
             <Select value={selectedRole} onValueChange={(value) => setSelectedRole(value as ERoleName | 'ALL')}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select role" />
+                <SelectValue placeholder={t('selectRole', 'Select role')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="ALL">All</SelectItem>
+                <SelectItem value="ALL">{t('all', 'All')}</SelectItem>
                 {Object.values(ERoleName).filter((role) => role !== ERoleName.USER).map((role) => {
                   const label = role
                     .replace(/_/g, ' ')
@@ -383,38 +383,38 @@ useEffect(() => {
       {/* Admin list table */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-semibold">관리자 목록</CardTitle>
+          <CardTitle className="text-sm font-semibold">{t('key377', '관리자 목록')}</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead className="w-10 text-center">ID</TableHead>
-                <TableHead>이름</TableHead>
-                <TableHead>이메일</TableHead>
-                <TableHead>역할</TableHead>
-                <TableHead>등록일</TableHead>
-                <TableHead>상태</TableHead>
-                <TableHead className="text-center">권한 설정</TableHead>
+                <TableHead>{t('key79', '이름')}</TableHead>
+                <TableHead>{t('key80', '이메일')}</TableHead>
+                <TableHead>{t('key373', '역할')}</TableHead>
+                <TableHead>{t('key378', '등록일')}</TableHead>
+                <TableHead>{t('key336', '상태')}</TableHead>
+                <TableHead className="text-center">{t('key379', '권한 설정')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {isError ? (
                 <TableRow>
                   <TableCell colSpan={7} className="text-center text-red-500">
-                    오류가 발생했습니다: {error instanceof Error ? error.message : '알 수 없는 오류'}
+                    {t('key339', '오류가 발생했습니다:')} {error instanceof Error ? error.message : t('key340', '알 수 없는 오류')}
                   </TableCell>
                 </TableRow>
               ) : isLoading ? (
                 <TableRow>
                   <TableCell colSpan={7} className="text-center text-muted-foreground">
-                    로딩 중...
+                    {t('key74', '로딩 중...')}
                   </TableCell>
                 </TableRow>
               ) : allUsers.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={7} className="text-center text-muted-foreground">
-                    데이터가 없습니다.
+                    {t('key341', '데이터가 없습니다.')}
                   </TableCell>
                 </TableRow>
               ) : (
@@ -451,28 +451,28 @@ useEffect(() => {
                       >
                         <DialogTrigger asChild>
                           <Button variant="outline" size="sm">
-                            권한 설정
+                            {t('key379', '권한 설정')}
                           </Button>
                         </DialogTrigger>
                         {selectedUser && selectedUser.id === user.id && (
                           <DialogContent className="max-w-md">
                             <DialogHeader>
-                              <DialogTitle>권한 설정 - {user.name}</DialogTitle>
+                              <DialogTitle>{t('name', '권한 설정 - {{name}}', { name: user.name })}</DialogTitle>
                               <DialogDescription className='
-                              text-muted-foreground text-sm'>관리자의 메뉴별 접근 권한을 설정합니다</DialogDescription>
+                              text-muted-foreground text-sm'>{t('key380', '관리자의 메뉴별 접근 권한을 설정합니다')}</DialogDescription>
                             </DialogHeader>
 
                             <div className="space-y-4 py-2">
                               {isLoadingPermissions ? (
                                 <div className="text-center text-muted-foreground py-4">
-                                  권한을 불러오는 중...
+                                  {t('key381', '권한을 불러오는 중...')}
                                 </div>
                               ) : (
                                 <>
                                   {/* Header Row */}
                                   <div className="flex items-center justify-between border-b border-gray-200 pb-2 pr-4">
-                                    <span className="text-sm font-medium">메뉴</span>
-                                    <span className="text-sm font-medium">접근 가능</span>
+                                    <span className="text-sm font-medium">{t('key382', '메뉴')}</span>
+                                    <span className="text-sm font-medium">{t('key383', '접근 가능')}</span>
                                   </div>
 
                                   {/* Permission Items */}
@@ -522,10 +522,10 @@ useEffect(() => {
                                   {/* Notes */}
                                   <div className="text-muted-foreground space-y-1 text-xs pt-2">
                                     <p>
-                                      * 권한 관리 메뉴는 총괄 관리자만 접근 가능합니다
+                                      {t('key384', '* 권한 관리 메뉴는 총괄 관리자만 접근 가능합니다')}
                                     </p>
                                     <p>
-                                      * 대시보드는 모든 관리자가 기본 접근할 수 있습니다
+                                      {t('key385', '* 대시보드는 모든 관리자가 기본 접근할 수 있습니다')}
                                     </p>
                                   </div>
                                 </>
@@ -538,7 +538,7 @@ useEffect(() => {
                                 variant="outline"
                                 onClick={() => setSelectedUserId(null)}
                               >
-                                취소
+                                {t('key212', '취소')}
                               </Button>
                               <Button
                                 type="button"
@@ -546,7 +546,7 @@ useEffect(() => {
                                 disabled={isLoadingPermissions}
                                 className="bg-black text-white hover:bg-black/90"
                               >
-                                저장
+                                {t('key289', '저장')}
                               </Button>
                             </DialogFooter>
                           </DialogContent>

@@ -16,6 +16,7 @@ import { useCategory } from "@/hooks/use-category/category.hook"
 import { ProductEntity } from "@/entities/products/product.entity"
 import { ProductCategoryEntity } from "@/entities/product-category/product-category.entity"
 import { createProductNavigationHandler } from "@/lib/utils"
+import { useTranslation, Trans } from 'react-i18next'
 
 interface DisplayProduct {
   id: string
@@ -120,6 +121,7 @@ function deriveUiSort(sortByParam: string | null, sortOrderParam: string | null)
 }
 
 export function MarketPageSection() {
+  const { t } = useTranslation()
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -219,7 +221,7 @@ export function MarketPageSection() {
     const nextQueryString = next.toString()
     const currentQueryString = searchParams.toString()
     if (nextQueryString !== currentQueryString) {
-      router.replace(`${pathname}?${nextQueryString}`, { scroll: false })
+      router.replace(t('pathnamenextquerystring', '{{pathname}}?{{nextQueryString}}', { pathname, nextQueryString }), { scroll: false })
     }
   }, [
     currentPage,
@@ -514,9 +516,9 @@ export function MarketPageSection() {
 
   // Storage types for filter
   const storageTypes = [
-    { id: "room", label: "상온", emoji: "", value: "room_temperature" },
-    { id: "refrigerated", label: "냉장", emoji: "", value: "refrigerated" },
-    { id: "frozen", label: "냉동", emoji: "", value: "frozen" },
+    { id: "room", label: t('key108', '상온'), emoji: "", value: "room_temperature" },
+    { id: "refrigerated", label: t('key109', '냉장'), emoji: "", value: "refrigerated" },
+    { id: "frozen", label: t('key110', '냉동'), emoji: "", value: "frozen" },
   ]
 
   const isLoading = isLoadingCategories || isLoadingBrands || isLoadingProducts
@@ -525,9 +527,9 @@ export function MarketPageSection() {
     <div className="text-black">
       {/* Categories */}
       <div className="mb-6">
-        <h3 className="text-base font-bold mb-3 whitespace-nowrap">카테고리</h3>
+        <h3 className="text-base font-bold mb-3 whitespace-nowrap">{t('key111', '카테고리')}</h3>
         {isLoadingCategories ? (
-          <div className="text-xs text-gray-500">로딩중...</div>
+          <div className="text-xs text-gray-500">{t('key112', '로딩중...')}</div>
         ) : (
           <div className="space-y-2">
             <div className="flex items-center gap-2">
@@ -541,7 +543,7 @@ export function MarketPageSection() {
                 className="shrink-0 border-gray-300 data-[state=checked]:bg-[#ff5833] data-[state=checked]:border-[#ff5833]"
               />
               <Label htmlFor="all-categories" className="cursor-pointer whitespace-nowrap">
-                <span className="text-xs">전체 보기</span>
+                <span className="text-xs">{t('key113', '전체 보기')}</span>
               </Label>
             </div>
             {categories.map((category) => (
@@ -563,7 +565,7 @@ export function MarketPageSection() {
 
       {/* Storage Type */}
       <div className="mb-6">
-        <h3 className="text-base font-bold mb-3 whitespace-nowrap">저장 타입</h3>
+        <h3 className="text-base font-bold mb-3 whitespace-nowrap">{t('key114', '저장 타입')}</h3>
         <div className="space-y-2">
           {storageTypes.map((storage) => (
             <div key={storage.id} className="flex items-center gap-2">
@@ -583,7 +585,7 @@ export function MarketPageSection() {
 
       {/* Price Range */}
       <div className="mb-6">
-        <h3 className="text-base font-bold mb-3 whitespace-nowrap">가격 범위</h3>
+        <h3 className="text-base font-bold mb-3 whitespace-nowrap">{t('key115', '가격 범위')}</h3>
         <Slider value={priceRange} onValueChange={setPriceRange} max={maxPrice} step={1000} className="mb-3" />
         <div className="flex justify-between text-xs text-gray-600">
           <span className="whitespace-nowrap">{priceRange[0].toLocaleString()}원</span>
@@ -623,7 +625,7 @@ export function MarketPageSection() {
               <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
               <Input
                 type="text"
-                placeholder="상품명 또는 브랜드를 검색해보세요"
+                placeholder={t('key116', '상품명 또는 브랜드를 검색해보세요')}
                 value={searchQuery}
                 onChange={(e) => {
                   setCurrentPage(1)
@@ -638,7 +640,7 @@ export function MarketPageSection() {
           <div className="flex items-center justify-between gap-2 mb-4 sm:mb-6">
             <span className="text-xs sm:text-sm text-gray-600 font-medium whitespace-nowrap truncate">
               총 {productsData?.pages?.[0]?.data?.totalDocs 
-                ? `${products.length} / ${productsData.pages[0].data.totalDocs}개`
+                ? t('lengthTotaldocs', '{{length}} / {{totalDocs}}개', { length: products.length, totalDocs: productsData.pages[0].data.totalDocs })
                 : `${products.length}개`}
             </span>
             <Select
@@ -652,10 +654,10 @@ export function MarketPageSection() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="latest">신상품순</SelectItem>
-                <SelectItem value="price-low">낮은가격순</SelectItem>
-                <SelectItem value="price-high">높은가격순</SelectItem>
-                <SelectItem value="rating">평점순</SelectItem>
+                <SelectItem value="latest">{t('key117', '신상품순')}</SelectItem>
+                <SelectItem value="price-low">{t('key118', '낮은가격순')}</SelectItem>
+                <SelectItem value="price-high">{t('key119', '높은가격순')}</SelectItem>
+                <SelectItem value="rating">{t('key120', '평점순')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -663,11 +665,11 @@ export function MarketPageSection() {
           {/* Products Grid */}
           {isLoading ? (
             <div className="flex justify-center items-center py-12">
-              <div className="text-gray-400 text-sm">상품을 불러오는 중...</div>
+              <div className="text-gray-400 text-sm">{t('key121', '상품을 불러오는 중...')}</div>
             </div>
           ) : products.length === 0 ? (
             <div className="flex justify-center items-center py-12">
-              <div className="text-gray-400 text-sm">상품이 없습니다</div>
+              <div className="text-gray-400 text-sm">{t('key122', '상품이 없습니다')}</div>
             </div>
           ) : (
             <>
@@ -683,24 +685,24 @@ export function MarketPageSection() {
                       <div className="absolute bottom-2 left-2 flex gap-1 z-10 flex-wrap pointer-events-none">
                         {product.isHot && (
                           <div className="bg-[#ff5833] text-white text-[10px] sm:text-xs font-bold px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded flex items-center gap-0.5 whitespace-nowrap">
-                            🔥 특가
+                            {t('key123', '🔥 특가')}
                           </div>
                         )}
                         {product.productBadges && (
                           <>
                             {product.productBadges.isHotDeal && (
                               <div className="bg-orange-100 text-orange-500 border border-orange-500 text-[10px] sm:text-xs font-bold px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded whitespace-nowrap">
-                                핫딜
+                                {t('key45', '핫딜')}
                               </div>
                             )}
                             {product.productBadges.isNewProduct && (
                               <div className="bg-blue-100 text-blue-500 border border-blue-500 text-[10px] sm:text-xs font-bold px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded whitespace-nowrap">
-                                신상품
+                                {t('key46', '신상품')}
                               </div>
                             )}
                             {product.productBadges.isBestSeller && (
                               <div className="bg-purple-100 text-purple-500 border border-purple-500 text-[10px] sm:text-xs font-bold px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded whitespace-nowrap">
-                                BEST
+                                {t('best', 'BEST')}
                               </div>
                             )}
                           </>
@@ -719,7 +721,7 @@ export function MarketPageSection() {
                             </>
                           )}
                           {product.reviews !== undefined && product.reviews > 0 && (
-                            <span className="text-[10px] sm:text-xs text-gray-500">({product.reviews})</span>
+                            <span className="text-[10px] sm:text-xs text-gray-500">{t('reviews', '({{reviews}})', { reviews: product.reviews })}</span>
                           )}
                         </div>
                       )}
@@ -729,9 +731,7 @@ export function MarketPageSection() {
                             <span className="text-[10px] sm:text-xs text-gray-400 line-through whitespace-nowrap">
                               {product.originalPrice.toLocaleString()}원
                             </span>
-                            <span className="text-[10px] sm:text-xs font-bold bg-[#ff5833] text-white px-1 sm:px-1.5 py-0.5 rounded whitespace-nowrap">
-                              {product.discount}%
-                            </span>
+                            <span className="text-[10px] sm:text-xs font-bold bg-[#ff5833] text-white px-1 sm:px-1.5 py-0.5 rounded whitespace-nowrap">{t('discount', '{{discount}}%', { discount: product.discount })}</span>
                           </>
                         ) : null}
                       </div>
@@ -760,13 +760,12 @@ export function MarketPageSection() {
                   className="rounded-full px-6 sm:px-8 py-4 sm:py-6 bg-white text-gray-900 text-xs sm:text-sm border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap touch-manipulation"
                 >
                   {isFetchingNextPage ? (
-                    <span>로딩 중...</span>
+                    <span>{t('key124', '로딩 중...')}</span>
                   ) : !hasNextPage ? (
-                    <span>모든 상품을 불러왔습니다</span>
+                    <span>{t('key125', '모든 상품을 불러왔습니다')}</span>
                   ) : (
-                    <>
-                      <span className="mr-1 sm:mr-2">+</span>
-                      더보기 ({loadedCountFromApi} / {totalFromApi || loadedCountFromApi})
+                    <><Trans i18nKey="spanClassnamemr1Smmr2spanLoadedcountfromapi"><span className="mr-1 sm:mr-2">+</span>
+                      더보기 ({{ loadedCountFromApi }} /</Trans>{totalFromApi || loadedCountFromApi})
                     </>
                   )}
                 </Button>

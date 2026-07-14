@@ -28,6 +28,8 @@ import {
 import { useOrder } from '@/hooks/use-order/order.hook'
 import { OrderGroup, EOrderSituation, Order } from '@/entities/orders/order.entity'
 import { UpdateOrderGroupDto } from '@/hooks/use-order/order.dto'
+import { useTranslation } from 'react-i18next'
+import i18next from 'i18next'
 
 // Helper function to format order status for display
 function getOrderStatusDisplay(situation: EOrderSituation | null | undefined): {
@@ -38,19 +40,19 @@ function getOrderStatusDisplay(situation: EOrderSituation | null | undefined): {
   
   switch (situation) {
     case EOrderSituation.ORDER_PAYMENT_PENDING:
-      return { label: '결제 대기', color: 'bg-orange-50 text-orange-600 border-orange-200' }
+      return { label: i18next.t('key55', '결제 대기'), color: 'bg-orange-50 text-orange-600 border-orange-200' }
     case EOrderSituation.ORDER_PAYMENT_COMPLETED:
-      return { label: '결제 완료', color: 'bg-green-50 text-green-600 border-green-200' }
+      return { label: i18next.t('key56', '결제 완료'), color: 'bg-green-50 text-green-600 border-green-200' }
     // case EOrderSituation.ORDER_PREPARE:
     //   return { label: '상품 준비중', color: 'bg-yellow-50 text-yellow-600 border-yellow-200' }
     case EOrderSituation.ORDER_BEING_SHIPPED:
-      return { label: '배송중', color: 'bg-blue-50 text-blue-600 border-blue-200' }
+      return { label: i18next.t('key57', '배송중'), color: 'bg-blue-50 text-blue-600 border-blue-200' }
     case EOrderSituation.ORDER_SHIPPED:
-      return { label: '배송 완료', color: 'bg-purple-50 text-purple-600 border-purple-200' }
+      return { label: i18next.t('key58', '배송 완료'), color: 'bg-purple-50 text-purple-600 border-purple-200' }
     case EOrderSituation.ORDER_CANCELLED:
-      return { label: '취소됨', color: 'bg-red-50 text-red-600 border-red-200' }
+      return { label: i18next.t('key684', '취소됨'), color: 'bg-red-50 text-red-600 border-red-200' }
     case EOrderSituation.ORDER_RETURNED:
-      return { label: '반품됨', color: 'bg-red-50 text-red-600 border-red-200' }
+      return { label: i18next.t('key685', '반품됨'), color: 'bg-red-50 text-red-600 border-red-200' }
     default:
       return { label: situation, color: 'bg-gray-50 text-gray-600 border-gray-200' }
   }
@@ -71,6 +73,7 @@ const courierOptions = [
 ]
 
 export default function AdminOrderIdPage({ params }: { params: Promise<{ id: string }> }) {
+  const { t } = useTranslation()
   const resolvedParams = use(params)
   const router = useRouter()
   const queryClient = useQueryClient()
@@ -187,8 +190,8 @@ export default function AdminOrderIdPage({ params }: { params: Promise<{ id: str
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">주문 그룹을 찾을 수 없습니다</h2>
-          <Button onClick={() => router.push('/admin/orders')}>목록으로</Button>
+          <h2 className="text-2xl font-bold mb-2">{t('key686', '주문 그룹을 찾을 수 없습니다')}</h2>
+          <Button onClick={() => router.push('/admin/orders')}>{t('key629', '목록으로')}</Button>
         </div>
       </div>
     )
@@ -219,13 +222,13 @@ export default function AdminOrderIdPage({ params }: { params: Promise<{ id: str
             className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>목록으로</span>
+            <span>{t('key629', '목록으로')}</span>
           </Link>
         </div>
         <div>
-          <h1 className="text-3xl font-bold mb-2">주문 그룹 상세</h1>
+          <h1 className="text-3xl font-bold mb-2">{t('key687', '주문 그룹 상세')}</h1>
           <p className="text-gray-600">
-            주문 그룹 정보를 확인하고 수정할 수 있습니다
+            {t('key688', '주문 그룹 정보를 확인하고 수정할 수 있습니다')}
           </p>
         </div>
       </div>
@@ -236,18 +239,18 @@ export default function AdminOrderIdPage({ params }: { params: Promise<{ id: str
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left Card - Ordering Information */}
           <div className="bg-white rounded-lg border p-6">
-            <h3 className="text-lg font-bold mb-4">주문 정보</h3>
+            <h3 className="text-lg font-bold mb-4">{t('key620', '주문 정보')}</h3>
             <div className="space-y-4">
               <div>
-                <div className="text-sm text-gray-600 mb-1">주문번호</div>
+                <div className="text-sm text-gray-600 mb-1">{t('key689', '주문번호')}</div>
                 <div className="font-medium">{orderGroupData.orderGroupNumber || 'N/A'}</div>
               </div>
               <div>
-                <div className="text-sm text-gray-600 mb-1">주문일시</div>
+                <div className="text-sm text-gray-600 mb-1">{t('key410', '주문일시')}</div>
                 <div className="font-medium">{createdAt}</div>
               </div>
               <div>
-                <div className="text-sm text-gray-600 mb-1">주문상태</div>
+                <div className="text-sm text-gray-600 mb-1">{t('key690', '주문상태')}</div>
                 <span className={`inline-block px-3 py-1 text-sm rounded border ${statusDisplay.color}`}>
                   {statusDisplay.label}
                 </span>
@@ -257,20 +260,20 @@ export default function AdminOrderIdPage({ params }: { params: Promise<{ id: str
 
           {/* Right Card - Orderer Information */}
           <div className="bg-white rounded-lg border p-6">
-            <h3 className="text-lg font-bold mb-4">주문자 정보</h3>
+            <h3 className="text-lg font-bold mb-4">{t('key184', '주문자 정보')}</h3>
             <div className="space-y-4">
               <div>
-                <div className="text-sm text-gray-600 mb-1">이름</div>
+                <div className="text-sm text-gray-600 mb-1">{t('key79', '이름')}</div>
                 <div className="font-medium">{user?.name || firstOrder?.ordererName || 'N/A'}</div>
               </div>
               <div>
-                <div className="text-sm text-gray-600 mb-1">연락처</div>
+                <div className="text-sm text-gray-600 mb-1">{t('key205', '연락처')}</div>
                 <div className="font-medium">
                   {user?.phoneNumber || firstOrder?.ordererMobilePhone || 'N/A'}
                 </div>
               </div>
               <div>
-                <div className="text-sm text-gray-600 mb-1">이메일 주소</div>
+                <div className="text-sm text-gray-600 mb-1">{t('key691', '이메일 주소')}</div>
                 <div className="font-medium">{user?.email || 'N/A'}</div>
               </div>
             </div>
@@ -280,14 +283,14 @@ export default function AdminOrderIdPage({ params }: { params: Promise<{ id: str
         {/* Recipient Information Card */}
         {firstOrder && (
           <div className="bg-white rounded-lg border p-6">
-            <h3 className="text-lg font-bold mb-4">수령인 정보</h3>
+            <h3 className="text-lg font-bold mb-4">{t('key423', '수령인 정보')}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <div className="text-sm text-gray-600 mb-1">이름</div>
+                <div className="text-sm text-gray-600 mb-1">{t('key79', '이름')}</div>
                 <div className="font-medium">{firstOrder.recipient || 'N/A'}</div>
               </div>
               <div>
-                <div className="text-sm text-gray-600 mb-1">연락처</div>
+                <div className="text-sm text-gray-600 mb-1">{t('key205', '연락처')}</div>
                 <div className="font-medium">
                   {firstOrder.recipientMobilePhone || firstOrder.recipientPhoneNumber || 'N/A'}
                 </div>
@@ -299,7 +302,7 @@ export default function AdminOrderIdPage({ params }: { params: Promise<{ id: str
         {/* Order Products Card */}
         {orders.length > 0 && (
           <div className="bg-white rounded-lg border p-6">
-            <h3 className="text-lg font-bold mb-4">주문 상품</h3>
+            <h3 className="text-lg font-bold mb-4">{t('key182', '주문 상품')}</h3>
             <div className="space-y-4">
               {orders.map((order, index) => (
                 <div key={order.id || index} className="border rounded-lg p-4">
@@ -325,12 +328,12 @@ export default function AdminOrderIdPage({ params }: { params: Promise<{ id: str
                       <div className="text-sm text-gray-600 space-y-1">
                         {order.productNameWithOptions && order.productNameWithOptions !== order.productName && (
                           <div>
-                            <span className="text-gray-500">Option: </span>
+                            <span className="text-gray-500">{'Option:'} </span>
                             {order.productNameWithOptions}
                           </div>
                         )}
                         <div>
-                          <span className="text-gray-500">주문 수량: </span>
+                          <span className="text-gray-500">{t('key692', '주문 수량:')} </span>
                           {order.quantity || 0}
                         </div>
                       </div>
@@ -349,18 +352,18 @@ export default function AdminOrderIdPage({ params }: { params: Promise<{ id: str
 
         {/* Payment Information Card */}
         <div className="bg-white rounded-lg border p-6">
-          <h3 className="text-lg font-bold mb-4">주문 정보</h3>
+          <h3 className="text-lg font-bold mb-4">{t('key620', '주문 정보')}</h3>
           <div className="space-y-3">
             <div className="flex justify-between items-center">
-              <div className="text-sm text-gray-600">총 주문 정보</div>
+              <div className="text-sm text-gray-600">{t('key693', '총 주문 정보')}</div>
               <div className="font-medium text-right">{formatCurrency(orderGroupData.originalAmount)}</div>
             </div>
             <div className="flex justify-between items-center">
-              <div className="text-sm text-gray-600">총 주문 수량</div>
+              <div className="text-sm text-gray-600">{t('key694', '총 주문 수량')}</div>
               <div className="font-medium text-right">{orders.length}</div>
             </div>
             <div className="flex justify-between items-center pt-3 border-t">
-              <div className="text-sm text-gray-600 font-medium">총 결제 금액</div>
+              <div className="text-sm text-gray-600 font-medium">{t('key195', '총 결제 금액')}</div>
               <div className="font-bold text-lg text-red-600 text-right">
                 {formatCurrency(orderGroupData.finalAmount)}
               </div>
@@ -382,7 +385,7 @@ export default function AdminOrderIdPage({ params }: { params: Promise<{ id: str
                       className="bg-black text-white hover:bg-gray-800 flex-1"
                     >
                       <Edit className="w-4 h-4 mr-2" />
-                      수정
+                      {t('key288', '수정')}
                     </Button>
                     {(!orderGroupData.courierCompany || !orderGroupData.invoiceNumber) && 
                      (orderGroupData.situation === EOrderSituation.ORDER_PAYMENT_COMPLETED || orderGroupData.situation === EOrderSituation.ORDER_BEING_SHIPPED) && (
@@ -392,7 +395,7 @@ export default function AdminOrderIdPage({ params }: { params: Promise<{ id: str
                         className="flex-1"
                       >
                         <FileText className="w-4 h-4 mr-2" />
-                        송장 입력
+                        {t('key695', '송장 입력')}
                       </Button>
                     )}
                   </div>
@@ -402,44 +405,44 @@ export default function AdminOrderIdPage({ params }: { params: Promise<{ id: str
                   {/* Edit Form */}
                   <div className="space-y-4 p-4 border rounded-lg bg-gray-50">
                     <div className="space-y-2">
-                      <Label htmlFor="edit-group-name">주문 그룹명</Label>
+                      <Label htmlFor="edit-group-name">{t('key696', '주문 그룹명')}</Label>
                       <Input
                         id="edit-group-name"
                         value={editFormData.orderGroupName || ''}
                         onChange={(e) => handleEditFormChange('orderGroupName', e.target.value)}
-                        placeholder="주문 그룹명을 입력하세요"
+                        placeholder={t('key697', '주문 그룹명을 입력하세요')}
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="edit-situation">상태</Label>
+                      <Label htmlFor="edit-situation">{t('key336', '상태')}</Label>
                       <Select
                         value={editFormData.situation || ''}
                         onValueChange={(value) => handleEditFormChange('situation', value as EOrderSituation)}
                       >
                         <SelectTrigger id="edit-situation">
-                          <SelectValue placeholder="상태를 선택하세요" />
+                          <SelectValue placeholder={t('key698', '상태를 선택하세요')} />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value={EOrderSituation.ORDER_PAYMENT_PENDING}>결제 대기</SelectItem>
-                          <SelectItem value={EOrderSituation.ORDER_PAYMENT_COMPLETED}>결제 완료</SelectItem>
+                          <SelectItem value={EOrderSituation.ORDER_PAYMENT_PENDING}>{t('key55', '결제 대기')}</SelectItem>
+                          <SelectItem value={EOrderSituation.ORDER_PAYMENT_COMPLETED}>{t('key56', '결제 완료')}</SelectItem>
                           {/* <SelectItem value={EOrderSituation.ORDER_IN_PREPARE}>상품 준비중</SelectItem> */}
-                          <SelectItem value={EOrderSituation.ORDER_BEING_SHIPPED}>배송중</SelectItem>
-                          <SelectItem value={EOrderSituation.ORDER_SHIPPED}>배송 완료</SelectItem>
-                          <SelectItem value={EOrderSituation.ORDER_CANCELLED}>취소됨</SelectItem>
-                          <SelectItem value={EOrderSituation.ORDER_RETURNED}>반품됨</SelectItem>
+                          <SelectItem value={EOrderSituation.ORDER_BEING_SHIPPED}>{t('key57', '배송중')}</SelectItem>
+                          <SelectItem value={EOrderSituation.ORDER_SHIPPED}>{t('key58', '배송 완료')}</SelectItem>
+                          <SelectItem value={EOrderSituation.ORDER_CANCELLED}>{t('key684', '취소됨')}</SelectItem>
+                          <SelectItem value={EOrderSituation.ORDER_RETURNED}>{t('key685', '반품됨')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="edit-courier">택배사</Label>
+                      <Label htmlFor="edit-courier">{t('key419', '택배사')}</Label>
                       <Select
                         value={editFormData.courierCompany || undefined}
                         onValueChange={(v) => handleEditFormChange('courierCompany', v)}
                       >
                         <SelectTrigger id="edit-courier" className="w-full">
-                          <SelectValue placeholder="택배사를 선택해주세요" />
+                          <SelectValue placeholder={t('key420', '택배사를 선택해주세요')} />
                         </SelectTrigger>
                         <SelectContent>
                           {courierOptions.map((courier) => (
@@ -452,35 +455,35 @@ export default function AdminOrderIdPage({ params }: { params: Promise<{ id: str
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="edit-invoice">송장번호</Label>
+                      <Label htmlFor="edit-invoice">{t('key421', '송장번호')}</Label>
                       <Input
                         id="edit-invoice"
                         value={editFormData.invoiceNumber || ''}
                         onChange={(e) => handleEditFormChange('invoiceNumber', e.target.value)}
-                        placeholder="송장번호를 입력하세요"
+                        placeholder={t('key699', '송장번호를 입력하세요')}
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="edit-delivery-fee">배송비</Label>
+                        <Label htmlFor="edit-delivery-fee">{t('key192', '배송비')}</Label>
                         <Input
                           id="edit-delivery-fee"
                           type="number"
                           value={editFormData.deliveryFee || ''}
                           onChange={(e) => handleEditFormChange('deliveryFee', e.target.value ? Number(e.target.value) : undefined)}
-                          placeholder="배송비를 입력하세요"
+                          placeholder={t('key700', '배송비를 입력하세요')}
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="edit-points">사용 포인트</Label>
+                        <Label htmlFor="edit-points">{t('key615', '사용 포인트')}</Label>
                         <Input
                           id="edit-points"
                           type="number"
                           value={editFormData.pointsUsed || ''}
                           onChange={(e) => handleEditFormChange('pointsUsed', e.target.value ? Number(e.target.value) : undefined)}
-                          placeholder="사용 포인트를 입력하세요"
+                          placeholder={t('key701', '사용 포인트를 입력하세요')}
                         />
                       </div>
                     </div>
@@ -493,7 +496,7 @@ export default function AdminOrderIdPage({ params }: { params: Promise<{ id: str
                       disabled={updateMutation.isPending}
                       className="flex-1"
                     >
-                      취소
+                      {t('key212', '취소')}
                     </Button>
                     <Button
                       onClick={handleSubmitEdit}
@@ -503,7 +506,7 @@ export default function AdminOrderIdPage({ params }: { params: Promise<{ id: str
                       {updateMutation.isPending ? (
                         <>
                           <Spinner className="w-4 h-4 mr-2" />
-                          저장 중...
+                          {t('key582', '저장 중...')}
                         </>
                       ) : (
                         '저장'
@@ -521,17 +524,17 @@ export default function AdminOrderIdPage({ params }: { params: Promise<{ id: str
       <Dialog open={invoiceDialogOpen} onOpenChange={setInvoiceDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>송장 정보 입력</DialogTitle>
+            <DialogTitle>{t('key702', '송장 정보 입력')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="dialog-courier">택배사 *</Label>
+              <Label htmlFor="dialog-courier">{t('key703', '택배사 *')}</Label>
               <Select
                 value={editFormData.courierCompany || undefined}
                 onValueChange={(v) => handleEditFormChange('courierCompany', v)}
               >
                 <SelectTrigger id="dialog-courier" className="w-full">
-                  <SelectValue placeholder="택배사를 선택해주세요" />
+                  <SelectValue placeholder={t('key420', '택배사를 선택해주세요')} />
                 </SelectTrigger>
                 <SelectContent>
                   {courierOptions.map((courier) => (
@@ -543,12 +546,12 @@ export default function AdminOrderIdPage({ params }: { params: Promise<{ id: str
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="dialog-invoice">송장번호 *</Label>
+              <Label htmlFor="dialog-invoice">{t('key704', '송장번호 *')}</Label>
               <Input
                 id="dialog-invoice"
                 value={editFormData.invoiceNumber || ''}
                 onChange={(e) => handleEditFormChange('invoiceNumber', e.target.value)}
-                placeholder="송장번호를 입력하세요"
+                placeholder={t('key699', '송장번호를 입력하세요')}
               />
             </div>
           </div>
@@ -557,7 +560,7 @@ export default function AdminOrderIdPage({ params }: { params: Promise<{ id: str
               variant="outline"
               onClick={handleCloseInvoiceDialog}
             >
-              취소
+              {t('key212', '취소')}
             </Button>
             <Button
               onClick={handleSubmitInvoice}
@@ -566,7 +569,7 @@ export default function AdminOrderIdPage({ params }: { params: Promise<{ id: str
               {updateMutation.isPending ? (
                 <>
                   <Spinner className="w-4 h-4 mr-2" />
-                  저장 중...
+                  {t('key582', '저장 중...')}
                 </>
               ) : (
                 '저장'

@@ -15,6 +15,7 @@ import { useBanner } from "@/hooks/use-banner/banner.hook"
 import { EBannerType } from "@/entities/banner/banner.entity"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useTranslation, Trans } from 'react-i18next'
 
 type Category = "all" | "RECIPE" | "REVIEWS" | "DAILY_LIFE"
 
@@ -104,6 +105,7 @@ const translateCategoryToKorean = (category: string) => {
 }
 
 export function ContentsSection() {
+  const { t } = useTranslation()
   const [activeCategory, setActiveCategory] = useState<Category>("all")
   const [searchField, setSearchField] = useState("title")
   const [searchTerm, setSearchTerm] = useState("")
@@ -273,7 +275,7 @@ export function ContentsSection() {
                   />
                 ) : (
                   <div className="text-center text-gray-400">
-                    <p className="text-lg font-semibold">Banner Pic</p>
+                    <p className="text-lg font-semibold">{t('bannerPic', 'Banner Pic')}</p>
                   </div>
                 )}
               </div>
@@ -300,10 +302,8 @@ export function ContentsSection() {
                 )}
 
                 {/* Points incentive - can be part of mainText or separate */}
-                <p className="text-orange-500 mb-6 flex items-center gap-1 text-sm md:text-base">
-                  <span className="text-lg">✨</span>
-                   레시피 승인 시 500 포인트 적립
-                </p>
+                <p className="text-orange-500 mb-6 flex items-center gap-1 text-sm md:text-base"><Trans i18nKey="spanClassnametextlgspan500"><span className="text-lg">✨</span>
+                   레시피 승인 시 500 포인트 적립</Trans></p>
 
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-3 w-[60%]">
@@ -311,7 +311,7 @@ export function ContentsSection() {
                       {bannerData.ctaButtonText}
                     </Button>
                   <Button onClick={() => router.push("/notice")} variant="outline" className="flex-1 border-gray-300 hover:bg-gray-50 rounded-xs">
-                    레시피 공지 보기
+                    {t('key129', '레시피 공지 보기')}
                   </Button>
                 </div>
               </div>
@@ -328,28 +328,28 @@ export function ContentsSection() {
                 onClick={() => handleCategoryChange("all")}
                 className={`shrink-0 ${activeCategory === "all" ? "bg-orange-500 text-white hover:bg-orange-600" : "hover:bg-gray-100 border border-[#2d2d2d]"}`}
               >
-                전체
+                {t('key15', '전체')}
               </Button>
               <Button
                 variant={activeCategory === "RECIPE" ? "default" : "ghost"}
                 onClick={() => handleCategoryChange("RECIPE")}
                 className={`shrink-0 ${activeCategory === "RECIPE" ? "bg-orange-500 text-white hover:bg-orange-600" : "hover:bg-gray-100 border border-[#2d2d2d]"}`}
               >
-                레시피
+                {t('key130', '레시피')}
               </Button>
               <Button
                 variant={activeCategory === "REVIEWS" ? "default" : "ghost"}
                 onClick={() => handleCategoryChange("REVIEWS")}
                 className={`shrink-0 ${activeCategory === "REVIEWS" ? "bg-orange-500 text-white hover:bg-orange-600" : "hover:bg-gray-100 border border-[#2d2d2d]"}`}
               >
-                후기
+                {t('key131', '후기')}
               </Button>
               <Button
                 variant={activeCategory === "DAILY_LIFE" ? "default" : "ghost"}
                 onClick={() => handleCategoryChange("DAILY_LIFE")}
                 className={`shrink-0 ${activeCategory === "DAILY_LIFE" ? "bg-orange-500 text-white hover:bg-orange-600" : "hover:bg-gray-100 border border-[#2d2d2d]"}`}
               >
-                일상
+                {t('key132', '일상')}
               </Button>
             </div>
 
@@ -360,15 +360,15 @@ export function ContentsSection() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="title">제목</SelectItem>
-                  <SelectItem value="author">작성자</SelectItem>
-                  <SelectItem value="content">내용</SelectItem>
+                  <SelectItem value="title">{t('key133', '제목')}</SelectItem>
+                  <SelectItem value="author">{t('key134', '작성자')}</SelectItem>
+                  <SelectItem value="content">{t('key135', '내용')}</SelectItem>
                 </SelectContent>
               </Select>
               <div className="relative flex-1 min-w-0">
                 <Input
                   type="text"
-                  placeholder="검색어를 입력하세요..."
+                  placeholder={t('key136', '검색어를 입력하세요...')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full bg-white pr-10"
@@ -389,7 +389,7 @@ export function ContentsSection() {
         {/* Error State */}
         {isError && (
           <div className="flex items-center justify-center py-12">
-            <p className="text-red-500">레시피를 불러오는 중 오류가 발생했습니다: {error?.message || "알 수 없는 오류"}</p>
+            <p className="text-red-500">{t('key137', '레시피를 불러오는 중 오류가 발생했습니다:')} {error?.message || t('key37', '알 수 없는 오류')}</p>
           </div>
         )}
 
@@ -398,7 +398,7 @@ export function ContentsSection() {
           <>
             {mappedRecipes.length === 0 ? (
               <div className="flex items-center justify-center py-12">
-                <p className="text-gray-500">검색 결과가 없습니다</p>
+                <p className="text-gray-500">{t('key25', '검색 결과가 없습니다')}</p>
               </div>
             ) : (
               <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 mx-auto w-[90%]">
@@ -429,7 +429,7 @@ export function ContentsSection() {
                         >
                           <path d="M20 7h-9M14 17H5M21 12h-8M9 7H4" />
                         </svg> */}
-                        🥄
+                        {t('key99', '🥄')}
                         {/* tranlate category to Korean */}
                         <span className="text-xs text-orange-500">{translateCategoryToKorean(item.category)}</span>
                       </div>
@@ -478,7 +478,7 @@ export function ContentsSection() {
               disabled={currentPage === 1}
             >
               <ChevronLeft className="h-4 w-4" />
-              이전
+              {t('key138', '이전')}
             </Button>
             {getPageNumbers().map((page, index) => (
               <Button
@@ -499,7 +499,7 @@ export function ContentsSection() {
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
             >
-              다음
+              {t('key139', '다음')}
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>

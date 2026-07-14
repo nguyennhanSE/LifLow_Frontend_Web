@@ -36,6 +36,7 @@ import { BulkUpdateMembershipItemDto } from '@/hooks/use-membership/membership.d
 import { GetUsersQueryDto } from '@/hooks/use-user/user.dto'
 import { toast } from '@/hooks/use-toast'
 import { PaginationButton } from '@/components/common/PaginationButton'
+import { useTranslation } from 'react-i18next'
 
 const gradeOptions = [MembershipLevel.LV1, MembershipLevel.LV2, MembershipLevel.LV3, MembershipLevel.LV4, MembershipLevel.LV5] as readonly MembershipLevel[]
 
@@ -44,6 +45,7 @@ function formatCurrency(value: number) {
 }
 
 export default function AdminMembersPage() {
+  const { t } = useTranslation()
   const { getUsers } = useUser();
   const { updateUserMembership, getMembership, bulkUpdateMembership, recalculateMembership } = useMembership();
   const { updateUser } = useUser();
@@ -107,7 +109,7 @@ export default function AdminMembersPage() {
       .sort((a, b) => a.minPrice - b.minPrice);
 
     if (items.length === 1) {
-      return [`${items[0].name}: ${formatCurrency(items[0].minPrice)}원 이상`];
+      return [t('nameVal', '{{name}}: {{val}}원 이상', { name: items[0].name, val: formatCurrency(items[0].minPrice) })];
     }
 
     const lines: string[] = [];
@@ -255,14 +257,14 @@ export default function AdminMembersPage() {
     onSuccess: () => {
       toast({
         title: '등급 자동 변경 완료',
-        description: '회원 등급이 최신 기준으로 자동 재산정되었습니다.',
+        description: t('key428', '회원 등급이 최신 기준으로 자동 재산정되었습니다.'),
       });
       queryClient.invalidateQueries({ queryKey: ['members'] });
       queryClient.invalidateQueries({ queryKey: ['memberships'] });
       refetch();
     },
     onError: (error) => {
-      const message = error instanceof Error ? error.message : '알 수 없는 오류';
+      const message = error instanceof Error ? error.message : t('key340', '알 수 없는 오류');
       toast({
         title: '등급 자동 변경 실패',
         description: message,
@@ -367,10 +369,8 @@ export default function AdminMembersPage() {
     <div className="space-y-6">
       <section className="flex items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-semibold">회원 관리</h2>
-          <p className="text-muted-foreground text-sm">
-            전체 {total}명의 회원
-          </p>
+          <h2 className="text-xl font-semibold">{t('key429', '회원 관리')}</h2>
+          <p className="text-muted-foreground text-sm">{t('total3', '전체 {{total}}명의 회원', { total })}</p>
         </div>
 
         <div className="flex items-center gap-3">
@@ -380,7 +380,7 @@ export default function AdminMembersPage() {
             onClick={() => setGradeSettingsDialogOpen(true)}
           >
             <Settings className="h-4 w-4 mr-2" />
-            등급 설정
+            {t('key430', '등급 설정')}
           </Button>
           
           <Button
@@ -389,20 +389,20 @@ export default function AdminMembersPage() {
             onClick={() => setRuleDialogOpen(true)}
           >
             <Monitor className="h-4 w-4 mr-2" />
-            {basePeriod || '3'}개월 실결제 기준 등급 자동 변경
+            {basePeriod || '3'}{t('key431', '개월 실결제 기준 등급 자동 변경')}
           </Button>
         </div>
 
         <Dialog open={ruleDialogOpen} onOpenChange={setRuleDialogOpen}>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle>{basePeriod || '3'}개월 실결제 기준 등급 자동 변경</DialogTitle>
+              <DialogTitle>{basePeriod || '3'}{t('key431', '개월 실결제 기준 등급 자동 변경')}</DialogTitle>
               <DialogDescription>
-                최근 {basePeriod || '3'}개월 실결제 금액을 기준으로 회원 등급을 자동으로 변경합니다
+                {t('key432', '최근')} {basePeriod || '3'}{t('key433', '개월 실결제 금액을 기준으로 회원 등급을 자동으로 변경합니다')}
               </DialogDescription>
             </DialogHeader>
             <div className="rounded-md bg-muted px-4 py-3 text-sm leading-relaxed">
-              <p className="font-medium mb-2">등급 기준</p>
+              <p className="font-medium mb-2">{t('key434', '등급 기준')}</p>
               {isMembershipsLoading ? (
                 <div className="flex justify-center py-6">
                   <Spinner className="h-5 w-5" />
@@ -410,19 +410,19 @@ export default function AdminMembersPage() {
               ) : membershipRuleLines.length > 0 ? (
                 <div className="space-y-1">
                   {membershipRuleLines.map((line) => (
-                    <p key={line}>- {line}</p>
+                    <p key={line}>{t('line', '- {{line}}', { line })}</p>
                   ))}
                 </div>
               ) : (
-                <p className="text-muted-foreground">등급 기준 정보를 불러오지 못했습니다.</p>
+                <p className="text-muted-foreground">{t('key435', '등급 기준 정보를 불러오지 못했습니다.')}</p>
               )}
             </div>
             <p className="text-sm text-muted-foreground">
-              이 작업은 모든 회원의 등급을 자동으로 재산정합니다. 계속하시겠습니까?
+              {t('key436', '이 작업은 모든 회원의 등급을 자동으로 재산정합니다. 계속하시겠습니까?')}
             </p>
             <DialogFooter className="gap-2">
               <Button type="button" variant="outline" onClick={() => setRuleDialogOpen(false)}>
-                취소
+                {t('key212', '취소')}
               </Button>
               <Button
                 type="button"
@@ -433,7 +433,7 @@ export default function AdminMembersPage() {
                 {recalculateMembershipMutation.isPending && (
                   <Spinner className="mr-2 h-4 w-4" />
                 )}
-                등급 자동 변경 실행
+                {t('key437', '등급 자동 변경 실행')}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -443,9 +443,9 @@ export default function AdminMembersPage() {
         <Dialog open={gradeSettingsDialogOpen} onOpenChange={setGradeSettingsDialogOpen}>
           <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>회원 등급 설정</DialogTitle>
+              <DialogTitle>{t('key438', '회원 등급 설정')}</DialogTitle>
               <DialogDescription>
-                등급 이름과 실결제 기준 금액을 설정합니다
+                {t('key439', '등급 이름과 실결제 기준 금액을 설정합니다')}
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
@@ -457,7 +457,7 @@ export default function AdminMembersPage() {
                 <>
                   {/* Base Period Section */}
                   <div className="space-y-3">
-                    <Label className="text-sm font-medium">기준 기간 (개월)</Label>
+                    <Label className="text-sm font-medium">{t('key440', '기준 기간 (개월)')}</Label>
                     <Input
                       type="text"
                       value={basePeriod}
@@ -469,13 +469,13 @@ export default function AdminMembersPage() {
                       className="bg-gray-100"
                     />
                     <p className="text-sm text-muted-foreground">
-                      최근 {basePeriod || '3'}개월 실결제 금액을 기준으로 등급을 산정합니다
+                      {t('key432', '최근')} {basePeriod || '3'}{t('key441', '개월 실결제 금액을 기준으로 등급을 산정합니다')}
                     </p>
                   </div>
 
                   {/* Membership Levels Section */}
                   <div className="space-y-3">
-                    <Label className="text-sm font-medium">등급별 설정</Label>
+                    <Label className="text-sm font-medium">{t('key442', '등급별 설정')}</Label>
                     {membershipsData && membershipsData.length > 0 ? (
                       <div className="space-y-3">
                         {membershipsData.map((membership) => {
@@ -512,7 +512,7 @@ export default function AdminMembersPage() {
                               
                               <div className="space-y-2">
                                 <Label className="text-sm text-muted-foreground">
-                                  등급명
+                                  {t('key443', '등급명')}
                                 </Label>
                                 <Input
                                   value={settings.nickName}
@@ -525,7 +525,7 @@ export default function AdminMembersPage() {
 
                               <div className="space-y-2">
                                 <Label className="text-sm text-muted-foreground">
-                                  최소 금액 (원)
+                                  {t('key444', '최소 금액 (원)')}
                                 </Label>
                                 <Input
                                   type="text"
@@ -544,13 +544,13 @@ export default function AdminMembersPage() {
                       </div>
                     ) : (
                       <div className="text-center py-8 text-muted-foreground">
-                        등급 정보가 없습니다
+                        {t('key445', '등급 정보가 없습니다')}
                       </div>
                     )}
                   </div>
                   
                   <p className="text-sm text-muted-foreground text-center pt-2">
-                    아래 등급은 제외 기준 (최근 {basePeriod || '3'}개월 기준 자동 설정)
+                    {t('key446', '아래 등급은 제외 기준 (최근')} {basePeriod || '3'}{t('key447', '개월 기준 자동 설정)')}
                   </p>
                 </>
               )}
@@ -575,7 +575,7 @@ export default function AdminMembersPage() {
                   setGradeSettingsDialogOpen(false);
                 }}
               >
-                취소
+                {t('key212', '취소')}
               </Button>
               <Button 
                 type="button"
@@ -586,7 +586,7 @@ export default function AdminMembersPage() {
                 {bulkUpdateMembershipMutation.isPending && (
                   <Spinner className="mr-2 h-4 w-4" />
                 )}
-                저장
+                {t('key289', '저장')}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -597,7 +597,7 @@ export default function AdminMembersPage() {
         <CardContent>
           <div className="flex flex-row items-center justify-between gap-2">
             <Input
-              placeholder="이름, 아이디, 이메일, 전화번호로 검색"
+              placeholder={t('key448', '이름, 아이디, 이메일, 전화번호로 검색')}
               className="flex-1"
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
@@ -605,10 +605,10 @@ export default function AdminMembersPage() {
             {/* Filters by membership.name / membership.membershipName (e.g. "LV1. 씨앗") */}
             <Select value={selectedNickname} onValueChange={(value) => setSelectedNickname(value)}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="닉네임 선택" />
+                <SelectValue placeholder={t('key449', '닉네임 선택')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="ALL">전체</SelectItem>
+                <SelectItem value="ALL">{t('key325', '전체')}</SelectItem>
                 {membershipNicknameOptions.map((nick) => (
                   <SelectItem key={nick} value={nick}>
                     {nick}
@@ -623,13 +623,13 @@ export default function AdminMembersPage() {
               onValueChange={(value) => setSelectedStatus(value as 'ALL' | 'normal' | 'inactive' | 'stop')}
             >
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="상태 선택" />
+                <SelectValue placeholder={t('key450', '상태 선택')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="ALL">전체</SelectItem>
-                <SelectItem value="normal">정상</SelectItem>
-                <SelectItem value="inactive">휴면</SelectItem>
-                <SelectItem value="stop">중지</SelectItem>
+                <SelectItem value="ALL">{t('key325', '전체')}</SelectItem>
+                <SelectItem value="normal">{t('key451', '정상')}</SelectItem>
+                <SelectItem value="inactive">{t('key452', '휴면')}</SelectItem>
+                <SelectItem value="stop">{t('key453', '중지')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -644,37 +644,37 @@ export default function AdminMembersPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-16 text-center">회원번호</TableHead>
+                <TableHead className="w-16 text-center">{t('key454', '회원번호')}</TableHead>
                 <TableHead className="w-30 text-center">ID</TableHead>
-                <TableHead>이름</TableHead>
-                <TableHead>이메일</TableHead>
-                <TableHead>연락처</TableHead>
-                <TableHead>등급</TableHead>
-                <TableHead>포인트</TableHead>
-                <TableHead>가입일</TableHead>
-                <TableHead>주문수</TableHead>
-                <TableHead>총 구매액</TableHead>
-                <TableHead>상태</TableHead>
-                <TableHead className="text-center">관리</TableHead>
+                <TableHead>{t('key79', '이름')}</TableHead>
+                <TableHead>{t('key80', '이메일')}</TableHead>
+                <TableHead>{t('key205', '연락처')}</TableHead>
+                <TableHead>{t('key230', '등급')}</TableHead>
+                <TableHead>{t('key68', '포인트')}</TableHead>
+                <TableHead>{t('key292', '가입일')}</TableHead>
+                <TableHead>{t('key455', '주문수')}</TableHead>
+                <TableHead>{t('key456', '총 구매액')}</TableHead>
+                <TableHead>{t('key336', '상태')}</TableHead>
+                <TableHead className="text-center">{t('key338', '관리')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {isError ? (
                 <TableRow>
                   <TableCell colSpan={12} className="text-center text-red-500">
-                    오류가 발생했습니다: {error instanceof Error ? error.message : '알 수 없는 오류'}
+                    {t('key339', '오류가 발생했습니다:')} {error instanceof Error ? error.message : t('key340', '알 수 없는 오류')}
                   </TableCell>
                 </TableRow>
               ) : isLoading ? (
                 <TableRow>
                   <TableCell colSpan={12} className="text-center text-muted-foreground">
-                    로딩 중...
+                    {t('key74', '로딩 중...')}
                   </TableCell>
                 </TableRow>
               ) : allMembers.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={12} className="text-center text-muted-foreground">
-                    데이터가 없습니다.
+                    {t('key341', '데이터가 없습니다.')}
                   </TableCell>
                 </TableRow>
               ) : (
@@ -726,24 +726,24 @@ export default function AdminMembersPage() {
                       >
                         <DialogTrigger asChild>
                           <Button variant="outline" size="sm">
-                            상세 보기
+                            {t('key457', '상세 보기')}
                           </Button>
                         </DialogTrigger>
                         {selectedMember && selectedMember.id === member.id && (
                           <DialogContent className="max-w-2xl">
                             <DialogHeader>
-                              <DialogTitle>회원 상세 정보</DialogTitle>
+                              <DialogTitle>{t('key458', '회원 상세 정보')}</DialogTitle>
                               <DialogDescription>
-                                회원 정보를 조회하고 등급, 상태, 포인트를 관리할 수 있습니다
+                                {t('key459', '회원 정보를 조회하고 등급, 상태, 포인트를 관리할 수 있습니다')}
                               </DialogDescription>
                             </DialogHeader>
                             <div className="space-y-6 py-4">
                               {/* 기본 정보 */}
                               <div className="space-y-3">
-                                <h3 className="font-semibold text-sm">기본 정보</h3>
+                                <h3 className="font-semibold text-sm">{t('key7', '기본 정보')}</h3>
                                 <div className="grid grid-cols-2 gap-3 text-sm">
                                   <div>
-                                    <span className="text-muted-foreground">회원번호</span>
+                                    <span className="text-muted-foreground">{t('key454', '회원번호')}</span>
                                     <p className="font-medium">{Array.isArray(selectedMember.membershipLevel) ? selectedMember.membershipLevel.length : 1}</p>
                                   </div>
                                   <div>
@@ -751,19 +751,19 @@ export default function AdminMembersPage() {
                                     <p className="font-medium">{selectedMember.id}</p>
                                   </div>
                                   <div>
-                                    <span className="text-muted-foreground">이름</span>
+                                    <span className="text-muted-foreground">{t('key79', '이름')}</span>
                                     <p className="font-medium">{selectedMember.name}</p>
                                   </div>
                                   <div>
-                                    <span className="text-muted-foreground">가입일</span>
+                                    <span className="text-muted-foreground">{t('key292', '가입일')}</span>
                                     <p className="font-medium">{new Date(selectedMember.registrationDate).toLocaleDateString('ko-KR')}</p>
                                   </div>
                                   <div>
-                                    <span className="text-muted-foreground">이메일</span>
+                                    <span className="text-muted-foreground">{t('key80', '이메일')}</span>
                                     <p className="font-medium">{selectedMember.email}</p>
                                   </div>
                                   <div>
-                                    <span className="text-muted-foreground">전화번호</span>
+                                    <span className="text-muted-foreground">{t('key185', '전화번호')}</span>
                                     <p className="font-medium">{selectedMember.phoneNumber}</p>
                                   </div>
                                 </div>
@@ -771,10 +771,10 @@ export default function AdminMembersPage() {
 
                               {/* 회원 등급 및 상태 */}
                               <div className="space-y-3">
-                                <h3 className="font-semibold text-sm">멤버십 등급 및 상태</h3>
+                                <h3 className="font-semibold text-sm">{t('key460', '멤버십 등급 및 상태')}</h3>
                                 <div className="grid grid-cols-2 gap-4">
                                   <div className="space-y-2">
-                                    <Label>멤버십 등급</Label>
+                                    <Label>{t('key461', '멤버십 등급')}</Label>
                                     <Select
                                       value={selectedMembershipLevel}
                                       onValueChange={(value) => {
@@ -784,7 +784,7 @@ export default function AdminMembersPage() {
                                       }}
                                     >
                                       <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Select membership level" />
+                                        <SelectValue placeholder={t('selectMembershipLevel', 'Select membership level')} />
                                       </SelectTrigger>
                                       <SelectContent>
                                         {gradeOptions.map((grade) => (
@@ -796,13 +796,13 @@ export default function AdminMembersPage() {
                                     </Select>
                                   </div>
                                   <div className="space-y-2">
-                                    <Label>멤버십 상태</Label>
+                                    <Label>{t('key462', '멤버십 상태')}</Label>
                                     <Select
                                       value={selectedMembershipStatus}
                                       onValueChange={(value) => setSelectedMembershipStatus(value)}
                                     >
                                       <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Select membership status" />
+                                        <SelectValue placeholder={t('selectMembershipStatus', 'Select membership status')} />
                                       </SelectTrigger>
                                       <SelectContent>
                                         {Object.entries(EMembershipStatus).map(([key, value]) => (
@@ -818,10 +818,10 @@ export default function AdminMembersPage() {
 
                               {/* 포인트 관리 */}
                               <div className="space-y-3">
-                                <h3 className="font-semibold text-sm">포인트 관리</h3>
+                                <h3 className="font-semibold text-sm">{t('key463', '포인트 관리')}</h3>
                                 <div className="flex items-center justify-between bg-gray-200 p-5 rounded-md">
                                   <div>
-                                    <span className="text-muted-foreground text-sm block mb-1">현재 보유 포인트</span>
+                                    <span className="text-muted-foreground text-sm block mb-1">{t('key464', '현재 보유 포인트')}</span>
                                     <p className="text-lg font-semibold">{formatCurrency(selectedAvailablePoints)}P</p>
                                   </div>
                                   <div className="flex gap-2">
@@ -830,7 +830,7 @@ export default function AdminMembersPage() {
                                       size="sm"
                                       onClick={handleIncreasePoints}
                                     >
-                                      + 지급
+                                      {t('key465', '+ 지급')}
                                     </Button>
                                     <Button 
                                       variant="outline" 
@@ -838,7 +838,7 @@ export default function AdminMembersPage() {
                                       onClick={handleDecreasePoints}
                                       disabled={selectedAvailablePoints <= 0}
                                     >
-                                      - 차감
+                                      {t('key466', '- 차감')}
                                     </Button>
                                   </div>
                                 </div>
@@ -846,14 +846,14 @@ export default function AdminMembersPage() {
 
                               {/* 구매 이력 */}
                               <div className="space-y-3">
-                                <h3 className="font-semibold text-sm">구매 이력</h3>
+                                <h3 className="font-semibold text-sm">{t('key467', '구매 이력')}</h3>
                                 <div className="grid grid-cols-2 gap-4 text-sm">
                                   <div>
-                                    <span className="text-muted-foreground">주문 건수</span>
+                                    <span className="text-muted-foreground">{t('key468', '주문 건수')}</span>
                                     <p className="font-medium">{(selectedMember as any).orderNumber || 0} 건</p>
                                   </div>
                                   <div>
-                                    <span className="text-muted-foreground">총 구매액</span>
+                                    <span className="text-muted-foreground">{t('key456', '총 구매액')}</span>
                                     <p className="font-medium">{formatCurrency((selectedMember as any).totalPurchaseAmount || 0)} 원</p>
                                   </div>
                                 </div>
@@ -868,7 +868,7 @@ export default function AdminMembersPage() {
                                 {updateMembershipMutation.isPending && (
                                   <Spinner className="mr-2" />
                                 )}
-                                저장
+                                {t('key289', '저장')}
                               </Button>
                             </DialogFooter>
                           </DialogContent>

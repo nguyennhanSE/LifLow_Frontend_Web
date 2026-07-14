@@ -13,6 +13,10 @@ const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://liflow.co.kr"
+const SITE_TITLE = "Liflow - 주왕몰 | 프리미엄 한식 쇼핑몰"
+const SITE_DESCRIPTION =
+  "주왕몰 - 엄선된 한국 식자재와 전통 조미료를 만나보세요. 주왕산가든에서 운영하는 프리미엄 한식 쇼핑몰 Liflow에서 신선한 배송과 품질 보증으로 특별한 한 끼를 완성하세요."
+const COMPANY_NAME = "농업회사법인 라이플로우(주)"
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -25,11 +29,10 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Liflow - 주왕몰 | 프리미엄 한식 쇼핑몰",
+    default: SITE_TITLE,
     template: "%s | Liflow",
   },
-  description:
-    "주왕몰 - 엄선된 한국 식자재와 전통 조미료를 만나보세요. 주왕산가든에서 운영하는 프리미엄 한식 쇼핑몰 Liflow에서 신선한 배송과 품질 보증으로 특별한 한 끼를 완성하세요.",
+  description: SITE_DESCRIPTION,
   keywords: [
     "주왕몰",
     "juwangmall",
@@ -45,9 +48,9 @@ export const metadata: Metadata = {
     "Liflow",
     "liflow",
   ],
-  authors: [{ name: "농업회사법인 라이플로우(주)" }],
-  creator: "농업회사법인 라이플로우(주)",
-  publisher: "농업회사법인 라이플로우(주)",
+  authors: [{ name: COMPANY_NAME }],
+  creator: COMPANY_NAME,
+  publisher: COMPANY_NAME,
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -71,23 +74,21 @@ export const metadata: Metadata = {
     locale: "ko_KR",
     url: SITE_URL,
     siteName: "Liflow",
-    title: "Liflow - 주왕몰 | 프리미엄 한식 쇼핑몰",
-    description:
-      "주왕몰 - 엄선된 한국 식자재와 전통 조미료를 만나보세요. 주왕산가든에서 운영하는 프리미엄 한식 쇼핑몰 Liflow에서 신선한 배송과 품질 보증으로 특별한 한 끼를 완성하세요.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Liflow - 주왕몰 | 프리미엄 한식 쇼핑몰",
+        alt: SITE_TITLE,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Liflow - 주왕몰 | 프리미엄 한식 쇼핑몰",
-    description:
-      "주왕몰 - 엄선된 한국 식자재와 전통 조미료를 만나보세요. 주왕산가든에서 운영하는 프리미엄 한식 쇼핑몰 Liflow에서 신선한 배송과 품질 보증으로 특별한 한 끼를 완성하세요.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     images: ["/og-image.png"],
   },
   robots: {

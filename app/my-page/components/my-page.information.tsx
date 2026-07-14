@@ -21,6 +21,7 @@ import { useAuthHook } from "@/hooks/use-auth/auth.hook"
 import { User as UserEntity } from "@/entities/user.entity"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { emitUserProfileUpdated } from "@/lib/user-profile-sync"
+import { useTranslation } from 'react-i18next'
 
 function getCookie(name: string): string | null {
   if (typeof document === "undefined") return null
@@ -31,6 +32,7 @@ function getCookie(name: string): string | null {
 }
 
 export default function MyPageInformation() {
+  const { t } = useTranslation()
   const router = useRouter()
   const { getMyInformation, updateMyInformation, updatePassword, cancelMembership, updateMyAvatar } = useUser()
   const { handleLogout } = useAuthHook()
@@ -129,8 +131,8 @@ export default function MyPageInformation() {
       const message =
         typeof error?.message === "string" && error.message.trim()
           ? error.message
-          : "비밀번호 변경에 실패했습니다."
-      toast.error("비밀번호 변경 실패", { description: message })
+          : t('key281', '비밀번호 변경에 실패했습니다.')
+      toast.error(t('key282', '비밀번호 변경 실패'), { description: message })
     } finally {
       setIsUpdatingPassword(false)
     }
@@ -179,8 +181,8 @@ export default function MyPageInformation() {
       const message =
         typeof error?.message === "string" && error.message.trim()
           ? error.message
-          : "회원 탈퇴에 실패했습니다."
-      toast.error("회원 탈퇴 실패", { description: message })
+          : t('key283', '회원 탈퇴에 실패했습니다.')
+      toast.error(t('key284', '회원 탈퇴 실패'), { description: message })
     } finally {
       setIsCancellingMembership(false)
     }
@@ -204,7 +206,7 @@ export default function MyPageInformation() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-lg">로딩 중...</div>
+        <div className="text-lg">{t('key74', '로딩 중...')}</div>
       </div>
     )
   }
@@ -212,7 +214,7 @@ export default function MyPageInformation() {
   if (!userData) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-lg text-red-500">회원 정보를 불러오는데 실패했습니다</div>
+        <div className="text-lg text-red-500">{t('key285', '회원 정보를 불러오는데 실패했습니다')}</div>
       </div>
     )
   }
@@ -227,7 +229,7 @@ export default function MyPageInformation() {
               ref={avatarInputRef}
               type="file"
               accept="image/*"
-              title="프로필 사진 파일 선택"
+              title={t('key286', '프로필 사진 파일 선택')}
               className="hidden"
               onChange={handleAvatarFileChange}
               aria-hidden
@@ -246,7 +248,7 @@ export default function MyPageInformation() {
               </Avatar>
             <button
               type="button"
-              aria-label="Change profile photo"
+              aria-label={t('changeProfilePhoto', 'Change profile photo')}
               disabled={isUploadingAvatar}
               onClick={handleAvatarButtonClick}
               className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -262,11 +264,11 @@ export default function MyPageInformation() {
                 <span className="text-[#ff5833] font-semibold">
                   {userData.membership?.name || "GENERAL"}
                 </span>
-                <span> 등급</span>
+                <span> {t('key230', '등급')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                <span>가입일:</span>
+                <span>{t('key287', '가입일:')}</span>
                 <span>{formatDate(userData.registrationDate)}</span>
               </div>
             </div>
@@ -277,7 +279,7 @@ export default function MyPageInformation() {
       {/* Basic Information */}
       <div className="bg-white rounded-lg p-8 border border-gray-200">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-semibold">기본 정보</h2>
+          <h2 className="text-lg font-semibold">{t('key7', '기본 정보')}</h2>
           {!isEditing ? (
             <button 
               type="button" 
@@ -285,7 +287,7 @@ export default function MyPageInformation() {
               className="flex items-center gap-2 text-sm hover:text-[#ff5833] transition-colors"
             >
               <Edit className="w-4 h-4" />
-              수정
+              {t('key288', '수정')}
             </button>
           ) : (
             <div className="flex items-center gap-2">
@@ -295,7 +297,7 @@ export default function MyPageInformation() {
                 className="flex items-center gap-2 text-sm text-green-600 hover:text-green-700 transition-colors"
               >
                 <Save className="w-4 h-4" />
-                저장
+                {t('key289', '저장')}
               </button>
               <button
                 type="button"
@@ -303,7 +305,7 @@ export default function MyPageInformation() {
                 className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-700 transition-colors"
               >
                 <X className="w-4 h-4" />
-                취소
+                {t('key212', '취소')}
               </button>
             </div>
           )}
@@ -314,7 +316,7 @@ export default function MyPageInformation() {
           <div>
             <label className="flex items-center gap-2 text-sm text-[#717182] mb-2">
               <User className="w-4 h-4" />
-              이름
+              {t('key79', '이름')}
             </label>
             {isEditing ? (
               <Input
@@ -331,7 +333,7 @@ export default function MyPageInformation() {
           <div>
             <label className="flex items-center gap-2 text-sm text-[#717182] mb-2">
               <Phone className="w-4 h-4" />
-              전화번호
+              {t('key185', '전화번호')}
             </label>
             {isEditing ? (
               <Input
@@ -350,7 +352,7 @@ export default function MyPageInformation() {
           <div>
             <label className="flex items-center gap-2 text-sm text-[#717182] mb-2">
               <Mail className="w-4 h-4" />
-              이메일
+              {t('key80', '이메일')}
             </label>
             {isEditing ? (
               <Input
@@ -368,13 +370,13 @@ export default function MyPageInformation() {
           <div>
             <label className="flex items-center gap-2 text-sm text-[#717182] mb-2">
               <Shield className="w-4 h-4" />
-              회원 등급
+              {t('key290', '회원 등급')}
             </label>
             <div className="w-full px-4 py-3 bg-[#f5f5f5] rounded-md text-[#ff5833] font-semibold">
               {userData.membership?.name || "GENERAL"}
             </div>
             <p className="text-sm text-[#717182] mt-2">
-              * 회원 등급은 구매 이력에 따라 자동으로 조정됩니다
+              {t('key291', '* 회원 등급은 구매 이력에 따라 자동으로 조정됩니다')}
             </p>
           </div>
 
@@ -382,7 +384,7 @@ export default function MyPageInformation() {
           <div>
             <label className="flex items-center gap-2 text-sm text-[#717182] mb-2">
               <Calendar className="w-4 h-4" />
-              가입일
+              {t('key292', '가입일')}
             </label>
             <div className="w-full px-4 py-3 bg-[#f5f5f5] rounded-md">
               {formatDate(userData.registrationDate)}
@@ -393,22 +395,22 @@ export default function MyPageInformation() {
 
       {/* My Activities */}
       <div className="bg-white rounded-lg p-8 border border-gray-200">
-        <h2 className="text-lg font-semibold mb-6">나의 활동</h2>
+        <h2 className="text-lg font-semibold mb-6">{t('key293', '나의 활동')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-[#f5f5f5] rounded-lg p-6 text-center">
-            <p className="text-sm text-[#717182] mb-2">총 구매 금액</p>
+            <p className="text-sm text-[#717182] mb-2">{t('key294', '총 구매 금액')}</p>
             <p className="text-3xl font-bold text-[#ff5833]">
               ₩{formatNumber(userData.totalPurchaseAmount || 0)}
             </p>
           </div>
           <div className="bg-[#f5f5f5] rounded-lg p-6 text-center">
-            <p className="text-sm text-[#717182] mb-2">보유 포인트</p>
+            <p className="text-sm text-[#717182] mb-2">{t('key231', '보유 포인트')}</p>
             <p className="text-3xl font-bold text-[#ff5833]">
               {formatNumber(userData.availablePoints)}P
             </p>
           </div>
           <div className="bg-[#f5f5f5] rounded-lg p-6 text-center">
-            <p className="text-sm text-[#717182] mb-2">회원 등급</p>
+            <p className="text-sm text-[#717182] mb-2">{t('key290', '회원 등급')}</p>
             <p className="text-3xl font-bold text-[#ff5833]">
               {userData.membership?.name || "GENERAL"}
             </p>
@@ -418,45 +420,45 @@ export default function MyPageInformation() {
 
       {/* Change Password */}
       <div className="bg-white rounded-lg p-8 border border-gray-200">
-        <h2 className="text-lg font-semibold mb-4">비밀번호 변경</h2>
-        <p className="text-sm text-[#717182] mb-4">보안을 위해 주기적으로 비밀번호를 변경해 주세요.</p>
+        <h2 className="text-lg font-semibold mb-4">{t('key295', '비밀번호 변경')}</h2>
+        <p className="text-sm text-[#717182] mb-4">{t('key296', '보안을 위해 주기적으로 비밀번호를 변경해 주세요.')}</p>
         <button
           type="button"
           onClick={handleOpenPasswordDialog}
           className="text-sm font-medium hover:text-[#ff5833] transition-colors underline"
         >
-          비밀번호 변경하기
+          {t('key297', '비밀번호 변경하기')}
         </button>
       </div>
 
       <Dialog open={isPasswordDialogOpen} onOpenChange={setIsPasswordDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>비밀번호 변경</DialogTitle>
-            <DialogDescription>현재 비밀번호와 새 비밀번호를 입력해주세요.</DialogDescription>
+            <DialogTitle>{t('key295', '비밀번호 변경')}</DialogTitle>
+            <DialogDescription>{t('key298', '현재 비밀번호와 새 비밀번호를 입력해주세요.')}</DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-2">
             <div className="space-y-2">
-              <Label htmlFor="oldPassword">현재 비밀번호</Label>
+              <Label htmlFor="oldPassword">{t('key299', '현재 비밀번호')}</Label>
               <Input
                 id="oldPassword"
                 type="password"
                 value={oldPassword}
                 onChange={(e) => setOldPassword(e.target.value)}
-                placeholder="현재 비밀번호"
+                placeholder={t('key299', '현재 비밀번호')}
                 autoComplete="current-password"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="newPassword">새 비밀번호</Label>
+              <Label htmlFor="newPassword">{t('key300', '새 비밀번호')}</Label>
               <Input
                 id="newPassword"
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="새 비밀번호"
+                placeholder={t('key300', '새 비밀번호')}
                 autoComplete="new-password"
               />
             </div>
@@ -469,7 +471,7 @@ export default function MyPageInformation() {
               onClick={() => setIsPasswordDialogOpen(false)}
               disabled={isUpdatingPassword}
             >
-              취소
+              {t('key212', '취소')}
             </Button>
             <Button
               type="button"
@@ -477,7 +479,7 @@ export default function MyPageInformation() {
               onClick={handleSubmitPasswordChange}
               disabled={isUpdatingPassword}
             >
-              {isUpdatingPassword ? "변경 중..." : "변경"}
+              {isUpdatingPassword ? t('key301', '변경 중...') : "변경"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -485,19 +487,18 @@ export default function MyPageInformation() {
 
       {/* Account Deletion */}
       <div className="bg-white rounded-lg p-8 border border-gray-200">
-        <h2 className="text-lg font-semibold text-[#ff5c5c] mb-4">회원 탈퇴</h2>
+        <h2 className="text-lg font-semibold text-[#ff5c5c] mb-4">{t('key302', '회원 탈퇴')}</h2>
         <p className="text-sm text-[#717182] mb-6">
-          회원 탈퇴 시 모든 정보가 삭제되며 복구할 수 없습니다.
+          {t('key303', '회원 탈퇴 시 모든 정보가 삭제되며 복구할 수 없습니다.')}
         </p>
         <Button
           className="bg-[#ff5c5c] hover:bg-[#ff5c5c]/90 text-white"
           onClick={handleCancelMembership}
           disabled={isCancellingMembership}
         >
-          {isCancellingMembership ? "처리 중..." : "회원 탈퇴"}
+          {isCancellingMembership ? t('key197', '처리 중...') : "회원 탈퇴"}
         </Button>
       </div>
     </div>
   )
 }
-

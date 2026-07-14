@@ -10,6 +10,7 @@ import {
   PaginationEllipsis,
 } from '@/components/ui/pagination'
 import { cn } from '@/lib/utils'
+import { useTranslation } from 'react-i18next'
 
 export interface PaginationButtonProps {
   page: number
@@ -30,6 +31,7 @@ export function PaginationButton({
   onPageChange,
   className,
 }: PaginationButtonProps) {
+  const { t } = useTranslation()
   if (totalPages <= 1) return null
 
   const start = Math.max(1, page - Math.floor(MAX_VISIBLE_PAGES / 2))
@@ -53,7 +55,7 @@ export function PaginationButton({
       <p className="text-sm text-muted-foreground">
         {total === 0
           ? '0건'
-          : `${from}-${to} / ${total.toLocaleString()}건`}
+          : t('fromtoVal', '{{from}}-{{to}} / {{val}}건', { from, to, val: total.toLocaleString() })}
       </p>
       <Pagination>
         <PaginationContent>

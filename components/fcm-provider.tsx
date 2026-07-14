@@ -2,8 +2,10 @@
 
 import { useEffect, useRef } from 'react'
 import { toast } from 'sonner'
+import { useTranslation } from 'react-i18next'
 
 export function FCMProvider() {
+  const { t } = useTranslation()
   const initialized = useRef(false)
 
   useEffect(() => {
@@ -34,7 +36,7 @@ export function FCMProvider() {
             toast(title ?? '알림', {
               description: body,
               action: data?.link
-                ? { label: '보기', onClick: () => window.location.assign(data.link!) }
+                ? { label: t('key9', '보기'), onClick: () => window.location.assign(data.link!) }
                 : undefined,
             })
           })

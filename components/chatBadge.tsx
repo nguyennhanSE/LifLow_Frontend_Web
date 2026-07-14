@@ -11,6 +11,7 @@ import { Spinner } from '@/components/ui/spinner'
 import type { MessageEntity, RoomEntity } from '@/hooks/use-chat/chat.dto'
 import { useChat } from '@/hooks/use-chat/chat.hook'
 import { useChatSocket } from '@/hooks/use-chat/chatSocket.hook'
+import { useTranslation } from 'react-i18next'
 
 const ROOM_PAGE_LIMIT = 10
 const MESSAGE_PAGE_LIMIT = 10
@@ -128,6 +129,7 @@ function getRoomPartnerOnline(room: RoomEntity, userId: string, onlineUsers: Rec
 }
 
 export function ChatBadge() {
+  const { t } = useTranslation()
   const router = useRouter()
   const { getRooms } = useChat()
   const [open, setOpen] = useState(false)
@@ -362,7 +364,7 @@ export function ChatBadge() {
                 size="icon"
                 className="h-9 w-9 rounded-full hover:bg-slate-100"
                 onClick={() => setSelectedRoomId(null)}
-                aria-label="채팅방 목록으로 돌아가기"
+                aria-label={t('key10', '채팅방 목록으로 돌아가기')}
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
@@ -381,7 +383,7 @@ export function ChatBadge() {
                   {socketStatus === 'connecting'
                     ? 'Connecting...'
                     : selectedPartnerOnline
-                      ? 'Active now'
+                      ? t('activeNow', 'Active now')
                       : 'Offline'}
                 </p>
               </div>
@@ -396,15 +398,15 @@ export function ChatBadge() {
               {socketStatus === 'connecting' && selectedMessages.length === 0 ? (
                 <div className="flex h-full items-center justify-center gap-2 text-sm text-slate-500">
                   <Spinner className="h-4 w-4" />
-                  채팅방 입장 중
+                  {t('key11', '채팅방 입장 중')}
                 </div>
               ) : selectedMessages.length === 0 ? (
                 <div className="flex h-full flex-col items-center justify-center text-center">
                   <div className="flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 text-slate-400">
                     <MessageCircle className="h-8 w-8" />
                   </div>
-                  <p className="mt-4 text-sm font-semibold text-slate-950">아직 메시지가 없습니다</p>
-                  <p className="mt-1 text-xs text-slate-500">첫 메시지를 보내 대화를 시작하세요.</p>
+                  <p className="mt-4 text-sm font-semibold text-slate-950">{t('key12', '아직 메시지가 없습니다')}</p>
+                  <p className="mt-1 text-xs text-slate-500">{t('key13', '첫 메시지를 보내 대화를 시작하세요.')}</p>
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -415,7 +417,7 @@ export function ChatBadge() {
                   )}
                   {selectedMessages.map((message, index) => {
                     const isMine = message.senderId === userId
-                    const key = message.id ?? `${message.roomId}-${message.createdAt ?? index}-${index}`
+                    const key = message.id ?? t('roomidvalindex', '{{roomId}}-{{val}}-{{index}}', { roomId: message.roomId, val: message.createdAt ?? index, index })
 
                     return (
                       <div key={key} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
@@ -441,7 +443,7 @@ export function ChatBadge() {
               <input
                 value={draftMessage}
                 onChange={(event) => setDraftMessage(event.target.value)}
-                placeholder="Aa"
+                placeholder={t('aa', 'Aa')}
                 className="h-10 min-w-0 flex-1 rounded-full bg-slate-100 px-4 text-sm text-slate-900 outline-none placeholder:text-slate-400"
               />
               <Button
@@ -449,7 +451,7 @@ export function ChatBadge() {
                 size="icon"
                 className="h-10 w-10 rounded-full bg-[#0084ff] text-white hover:bg-[#0075e6]"
                 disabled={!draftMessage.trim() || socketStatus === 'connecting'}
-                aria-label="메시지 보내기"
+                aria-label={t('key14', '메시지 보내기')}
               >
                 <Send className="h-4 w-4" />
               </Button>
@@ -459,8 +461,8 @@ export function ChatBadge() {
           <>
             <div className="flex items-center justify-between px-4 pb-2 pt-4">
               <div>
-                <p className="text-xl font-bold tracking-tight text-slate-950">Chats</p>
-                <p className="text-xs text-slate-500">전체 {roomCount.toLocaleString()}개</p>
+                <p className="text-xl font-bold tracking-tight text-slate-950">{t('chats', 'Chats')}</p>
+                <p className="text-xs text-slate-500">{t('key15', '전체')} {roomCount.toLocaleString()}개</p>
               </div>
               <Button
                 type="button"
@@ -469,7 +471,7 @@ export function ChatBadge() {
                 className="h-9 w-9 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200"
                 onClick={() => roomsQuery.refetch()}
                 disabled={!userId || roomsQuery.isFetching}
-                aria-label="채팅방 새로고침"
+                aria-label={t('key16', '채팅방 새로고침')}
               >
                 {roomsQuery.isFetching ? (
                   <Spinner className="h-4 w-4" />
@@ -486,7 +488,7 @@ export function ChatBadge() {
                   <input
                     value={searchQuery}
                     onChange={(event) => setSearchQuery(event.target.value)}
-                    placeholder="Search Messenger"
+                    placeholder={t('searchMessenger', 'Search Messenger')}
                     className="min-w-0 flex-1 bg-transparent text-sm text-slate-700 outline-none placeholder:text-slate-500"
                   />
                 </div>
@@ -499,8 +501,8 @@ export function ChatBadge() {
                   <MessageCircle className="h-7 w-7" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-slate-950">로그인이 필요합니다</p>
-                  <p className="mt-1 text-xs text-slate-500">로그인 후 채팅방을 확인할 수 있습니다.</p>
+                  <p className="text-sm font-semibold text-slate-950">{t('key17', '로그인이 필요합니다')}</p>
+                  <p className="mt-1 text-xs text-slate-500">{t('key18', '로그인 후 채팅방을 확인할 수 있습니다.')}</p>
                 </div>
                 <Button
                   type="button"
@@ -511,19 +513,19 @@ export function ChatBadge() {
                     router.push('/sign-in')
                   }}
                 >
-                  로그인
+                  {t('key19', '로그인')}
                 </Button>
               </div>
             ) : roomsQuery.isLoading ? (
               <div className="flex items-center justify-center gap-2 px-4 py-10 text-sm text-slate-500">
                 <Spinner className="h-4 w-4" />
-                채팅방 조회 중
+                {t('key20', '채팅방 조회 중')}
               </div>
             ) : roomsQuery.isError ? (
               <div className="space-y-3 px-6 py-8 text-center">
-                <p className="text-sm font-semibold text-red-500">채팅방을 불러오지 못했습니다.</p>
+                <p className="text-sm font-semibold text-red-500">{t('key21', '채팅방을 불러오지 못했습니다.')}</p>
                 <Button type="button" variant="outline" size="sm" className="rounded-full" onClick={() => roomsQuery.refetch()}>
-                  다시 시도
+                  {t('key22', '다시 시도')}
                 </Button>
               </div>
             ) : roomCount === 0 ? (
@@ -531,16 +533,16 @@ export function ChatBadge() {
                 <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-400">
                   <MessageCircle className="h-7 w-7" />
                 </div>
-                <p className="mt-4 text-sm font-semibold text-slate-950">채팅방이 없습니다</p>
-                <p className="mt-1 text-xs text-slate-500">새로운 상담이 생성되면 여기에 표시됩니다.</p>
+                <p className="mt-4 text-sm font-semibold text-slate-950">{t('key23', '채팅방이 없습니다')}</p>
+                <p className="mt-1 text-xs text-slate-500">{t('key24', '새로운 상담이 생성되면 여기에 표시됩니다.')}</p>
               </div>
             ) : filteredRooms.length === 0 ? (
               <div className="px-6 py-10 text-center">
                 <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-400">
                   <Search className="h-7 w-7" />
                 </div>
-                <p className="mt-4 text-sm font-semibold text-slate-950">검색 결과가 없습니다</p>
-                <p className="mt-1 text-xs text-slate-500">다른 검색어를 입력해보세요.</p>
+                <p className="mt-4 text-sm font-semibold text-slate-950">{t('key25', '검색 결과가 없습니다')}</p>
+                <p className="mt-1 text-xs text-slate-500">{t('key26', '다른 검색어를 입력해보세요.')}</p>
               </div>
             ) : (
               <div
@@ -576,8 +578,8 @@ export function ChatBadge() {
                           {date && <span className="shrink-0 text-[11px] text-slate-400">{date}</span>}
                         </div>
                         <p className="mt-0.5 truncate text-xs text-slate-500">
-                          {isPartnerOnline ? 'Active now · ' : ''}
-                          {latestMessage?.content || '아직 메시지가 없습니다.'}
+                          {isPartnerOnline ? t('activeNow2', 'Active now · ') : ''}
+                          {latestMessage?.content || t('key27', '아직 메시지가 없습니다.')}
                         </p>
                       </div>
                     </button>
@@ -586,7 +588,7 @@ export function ChatBadge() {
                 {roomsQuery.isFetchingNextPage && (
                   <div className="flex items-center justify-center gap-2 px-4 py-3 text-xs text-slate-500">
                     <Spinner className="h-3.5 w-3.5" />
-                    채팅방 더 불러오는 중
+                    {t('key28', '채팅방 더 불러오는 중')}
                   </div>
                 )}
               </div>

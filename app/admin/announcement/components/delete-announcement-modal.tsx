@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
+import { useTranslation } from 'react-i18next'
 
 interface DeleteAnnouncementModalProps {
   open: boolean
@@ -20,6 +21,7 @@ export function DeleteAnnouncementModal({
   onOpenChange,
   onConfirm,
 }: DeleteAnnouncementModalProps) {
+  const { t } = useTranslation()
   const handleConfirm = () => {
     onConfirm()
     onOpenChange(false)
@@ -29,11 +31,11 @@ export function DeleteAnnouncementModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>공지사항 삭제</DialogTitle>
+          <DialogTitle>{t('key786', '공지사항 삭제')}</DialogTitle>
         </DialogHeader>
         <div className="py-4">
           <p className="text-sm text-foreground">
-            정말 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.
+            {t('key787', '정말 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')}
           </p>
         </div>
         <DialogFooter>
@@ -42,14 +44,14 @@ export function DeleteAnnouncementModal({
             variant="outline"
             onClick={() => onOpenChange(false)}
           >
-            취소
+            {t('key212', '취소')}
           </Button>
           <Button
             type="button"
             className="bg-orange-500 hover:bg-orange-600"
             onClick={handleConfirm}
           >
-            삭제
+            {t('key741', '삭제')}
           </Button>
         </DialogFooter>
       </DialogContent>

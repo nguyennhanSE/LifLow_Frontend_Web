@@ -18,8 +18,10 @@ import { useProductReview } from "@/hooks/use-product-review/product-review.hook
 import { useProductInquiry } from "@/hooks/use-product-inquiry/product-inquiry.hook"
 import { usePolicy } from "@/hooks/use-policy/policy.hook"
 import { PolicyEntity } from "@/entities/policy/policy.entity"
+import { useTranslation } from 'react-i18next'
 
 export default function ProductDetailPage() {
+  const { t } = useTranslation()
   const params = useParams()
   const router = useRouter()
   const productId = params?.id as string
@@ -191,8 +193,8 @@ export default function ProductDetailPage() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">Product not found</h2>
-          <p className="text-muted-foreground">The product you're looking for doesn't exist.</p>
+          <h2 className="text-2xl font-bold mb-2">{t('productNotFound', 'Product not found')}</h2>
+          <p className="text-muted-foreground">{t('theProductYoureLookingForDoesntExist', 'The product you\'re looking for doesn\'t exist.')}</p>
         </div>
       </div>
     )
@@ -210,7 +212,7 @@ export default function ProductDetailPage() {
                 {!mainImageLoaded && <div className="absolute inset-0 bg-muted animate-pulse rounded-lg" />}
                 <Image
                   src={productImages[selectedImage] || "/placeholder.svg"}
-                  alt={product.productName || "Product main image"}
+                  alt={product.productName || t('productMainImage', 'Product main image')}
                   width={600}
                   height={600}
                   onLoadingComplete={() => setMainImageLoaded(true)}
@@ -230,14 +232,14 @@ export default function ProductDetailPage() {
                       setMainImageLoaded(false)
                       setSelectedImage(index)
                     }}
-                    aria-label={`Select image ${index + 1}`}
+                    aria-label={t('selectImageVal', 'Select image {{val}}', { val: index + 1 })}
                     className={`rounded-md border-2 transition-colors ${
                       selectedImage === index ? "border-primary" : "border-border"
                     }`}
                   >
                     <ImageWithLoader
                       src={thumb || "/placeholder.svg"}
-                      alt={`Thumbnail ${index + 1}`}
+                      alt={t('thumbnailVal', 'Thumbnail {{val}}', { val: index + 1 })}
                       width={80}
                       height={80}
                       className="rounded object-cover"
@@ -280,7 +282,7 @@ export default function ProductDetailPage() {
 
               {(
                 <div className="text-sm text-muted-foreground flex justify-between">
-                  <span>배송비:</span>
+                  <span>{t('key88', '배송비:')}</span>
                   <span>{product.deliveryFeeInput || 0}원</span>
                 </div>
               )}
@@ -313,14 +315,14 @@ export default function ProductDetailPage() {
 
             {/* Quantity Selector */}
             <div className="flex items-center gap-4 py-4 border-t border-b">
-              <span className="text-sm font-medium">수량:</span>
+              <span className="text-sm font-medium">{t('key89', '수량:')}</span>
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
                   size="icon"
                   onClick={() => handleQuantityChange(-1)}
                   disabled={quantity <= minQuantity}
-                  aria-label="Decrease quantity"
+                  aria-label={t('decreaseQuantity', 'Decrease quantity')}
                 >
                   -
                 </Button>
@@ -336,7 +338,7 @@ export default function ProductDetailPage() {
                   min={minQuantity}
                   max={maxQuantity}
                   className="w-16 text-center border rounded-md px-2 py-1"
-                  aria-label="Product quantity"
+                  aria-label={t('productQuantity', 'Product quantity')}
                   placeholder={minQuantity.toString()}
                 />
                 <Button
@@ -344,7 +346,7 @@ export default function ProductDetailPage() {
                   size="icon"
                   onClick={() => handleQuantityChange(1)}
                   disabled={quantity >= maxQuantity}
-                  aria-label="Increase quantity"
+                  aria-label={t('increaseQuantity', 'Increase quantity')}
                 >
                   +
                 </Button>
@@ -353,20 +355,20 @@ export default function ProductDetailPage() {
 
             {/* Total Price */}
             <div className="text-2xl font-bold">
-              총 상품금액: {totalPrice.toLocaleString("ko-KR")}원
+              {t('key90', '총 상품금액:')} {totalPrice.toLocaleString("ko-KR")}원
             </div>
 
             {/* Action Buttons */}
             <div className="flex gap-2">
               {(product?.saleStatus === 'N' || product?.origin === 0) ? (
                 <Button variant="outline" className="flex-1 cursor-not-allowed" disabled>
-                  Sold Out
+                  {t('soldOut', 'Sold Out')}
                 </Button>
               ) : (
                 <>
                   <Button variant="outline" className="flex-1" onClick={() => addItemToCart({ productId, quantity })}>
                     <ShoppingCart className="mr-2 h-4 w-4" />
-                    장바구니
+                    {t('key82', '장바구니')}
                   </Button>
                   <Button
                     className="flex-1 bg-[#FF6B4A] hover:bg-[#FF5A39] text-white"
@@ -397,7 +399,7 @@ export default function ProductDetailPage() {
                       router.push("/orders/create")
                     }}
                   >
-                    구매하기
+                    {t('key91', '구매하기')}
                   </Button>
                 </>
               )}
@@ -413,9 +415,9 @@ export default function ProductDetailPage() {
         {/* Tabs Section */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="details">상품 상세</TabsTrigger>
-            <TabsTrigger value="reviews">상품 리뷰 ({typeof reviewsCount === 'number' ? reviewsCount : 0})</TabsTrigger>
-            <TabsTrigger value="inquiry">상품 문의 ({typeof inquiriesCount === 'number' ? inquiriesCount : 0})</TabsTrigger>
+            <TabsTrigger value="details">{t('key92', '상품 상세')}</TabsTrigger>
+            <TabsTrigger value="reviews">{t('key93', '상품 리뷰 (')}{typeof reviewsCount === 'number' ? reviewsCount : 0})</TabsTrigger>
+            <TabsTrigger value="inquiry">{t('key94', '상품 문의 (')}{typeof inquiriesCount === 'number' ? inquiriesCount : 0})</TabsTrigger>
           </TabsList>
 
           <TabsContent value="details" className="mt-6">
@@ -425,14 +427,14 @@ export default function ProductDetailPage() {
                   <ImageWithLoader
                     key={index}
                     src={img || "/placeholder.svg"}
-                    alt={`Product detail ${index + 1}`}
+                    alt={t('productDetailVal', 'Product detail {{val}}', { val: index + 1 })}
                     width={800}
                     height={600}
                     className="w-full rounded-lg object-cover"
                   />
                 ))
               ) : (
-                <p className="text-center text-muted-foreground">제품 이미지가 없습니다</p>
+                <p className="text-center text-muted-foreground">{t('key95', '제품 이미지가 없습니다')}</p>
               )}
             </div>
           </TabsContent>
@@ -451,7 +453,7 @@ export default function ProductDetailPage() {
           <div className="space-y-4">
             <Collapsible>
               <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg border border-border bg-card p-4 text-left hover:bg-accent">
-                <span className="font-medium">상품 결제 안내</span>
+                <span className="font-medium">{t('key96', '상품 결제 안내')}</span>
                 <ChevronDown className="h-5 w-5 transition-transform duration-200 data-[state=open]:rotate-180" />
               </CollapsibleTrigger>
               <CollapsibleContent className="border-x border-b border-border p-4">
@@ -459,7 +461,7 @@ export default function ProductDetailPage() {
                   {(policyData?.paymentInformation ?? product.productPaymentGuide) ? (
                     policyData?.paymentInformation ?? product.productPaymentGuide
                   ) : (
-                    <p className="text-muted-foreground">결제 안내 정보가 없습니다</p>
+                    <p className="text-muted-foreground">{t('key97', '결제 안내 정보가 없습니다')}</p>
                   )}
                 </div>
               </CollapsibleContent>
@@ -467,27 +469,27 @@ export default function ProductDetailPage() {
 
             <Collapsible>
               <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg border border-border bg-card p-4 text-left hover:bg-accent">
-                <span className="font-medium">배송 안내</span>
+                <span className="font-medium">{t('key98', '배송 안내')}</span>
                 <ChevronDown className="h-5 w-5 transition-transform duration-200 data-[state=open]:rotate-180" />
               </CollapsibleTrigger>
               <CollapsibleContent className="border-x border-b border-border p-4">
                 <div className="space-y-2 text-sm text-muted-foreground">
                   {product.deliveryMethod && (
                     <p>
-                      <span className="font-medium text-foreground">배송 방법: </span>
+                      <span className="font-medium text-foreground">{t('key99', '배송 방법:')} </span>
                       {product.deliveryMethod}
                     </p>
                   )}
                   {product.deliveryInfo && (
                     <p>
-                      <span className="font-medium text-foreground">배송 정보: </span>
+                      <span className="font-medium text-foreground">{t('key100', '배송 정보:')} </span>
                       {product.deliveryInfo}
                     </p>
                   )}
                   {(policyData?.deliveryInformation ?? product.productDeliveryGuide) ? (
                     <div className="whitespace-pre-line mt-2">{policyData?.deliveryInformation ?? product.productDeliveryGuide}</div>
                   ) : (
-                    <p className="text-muted-foreground mt-2">배송 안내 정보가 없습니다</p>
+                    <p className="text-muted-foreground mt-2">{t('key101', '배송 안내 정보가 없습니다')}</p>
                   )}
                 </div>
               </CollapsibleContent>
@@ -495,7 +497,7 @@ export default function ProductDetailPage() {
 
             <Collapsible>
               <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg border border-border bg-card p-4 text-left hover:bg-accent">
-                <span className="font-medium">교환/반품 안내</span>
+                <span className="font-medium">{t('key102', '교환/반품 안내')}</span>
                 <ChevronDown className="h-5 w-5 transition-transform duration-200 data-[state=open]:rotate-180" />
               </CollapsibleTrigger>
               <CollapsibleContent className="border-x border-b border-border p-4">
@@ -503,7 +505,7 @@ export default function ProductDetailPage() {
                   {(policyData?.exchangeInformation ?? product.exchangeReturnGuide) ? (
                     policyData?.exchangeInformation ?? product.exchangeReturnGuide
                   ) : (
-                    <p className="text-muted-foreground">교환/반품 안내 정보가 없습니다</p>
+                    <p className="text-muted-foreground">{t('key103', '교환/반품 안내 정보가 없습니다')}</p>
                   )}
                 </div>
               </CollapsibleContent>
@@ -511,7 +513,7 @@ export default function ProductDetailPage() {
 
             <Collapsible>
               <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg border border-border bg-card p-4 text-left hover:bg-accent">
-                <span className="font-medium">서비스 문의/안내</span>
+                <span className="font-medium">{t('key104', '서비스 문의/안내')}</span>
                 <ChevronDown className="h-5 w-5 transition-transform duration-200 data-[state=open]:rotate-180" />
               </CollapsibleTrigger>
               <CollapsibleContent className="border-x border-b border-border p-4">
@@ -519,7 +521,7 @@ export default function ProductDetailPage() {
                   {product.serviceInquiryGuide ? (
                     product.serviceInquiryGuide
                   ) : (
-                    <p className="text-muted-foreground">서비스 문의 안내 정보가 없습니다</p>
+                    <p className="text-muted-foreground">{t('key105', '서비스 문의 안내 정보가 없습니다')}</p>
                   )}
                 </div>
               </CollapsibleContent>

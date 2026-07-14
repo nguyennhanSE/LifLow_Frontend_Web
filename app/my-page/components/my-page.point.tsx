@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Gift, TrendingDown, TrendingUp, Loader2 } from "lucide-react"
 import { useUser } from "@/hooks/use-user/user.hook"
+import { useTranslation } from 'react-i18next'
 
 interface PointTransaction {
   id: string
@@ -51,6 +52,7 @@ function formatDateYMD(dateStr: string): string {
 }
 
 export default function MyPagePoint() {
+  const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState<"points" | "coupons">("points")
   const [availablePoints, setAvailablePoints] = useState<number>(0)
   const [transactions, setTransactions] = useState<PointTransaction[]>([])
@@ -93,7 +95,7 @@ export default function MyPagePoint() {
 
   return (
     <div>
-      <h2 className="text-2xl font-semibold mb-8">포인트 & 쿠폰</h2>
+      <h2 className="text-2xl font-semibold mb-8">{t('key226', '포인트 & 쿠폰')}</h2>
 
       {/* Tabs */}
       <div className="flex gap-2 mb-8">
@@ -103,7 +105,7 @@ export default function MyPagePoint() {
             activeTab === "points" ? "bg-gray-100 text-black" : "bg-white text-gray-500 hover:bg-gray-50"
           }`}
         >
-          포인트 내역
+          {t('key240', '포인트 내역')}
         </button>
         <button
           onClick={() => setActiveTab("coupons")}
@@ -111,7 +113,7 @@ export default function MyPagePoint() {
             activeTab === "coupons" ? "bg-gray-100 text-black" : "bg-white text-gray-500 hover:bg-gray-50"
           }`}
         >
-          쿠폰 내역
+          {t('key241', '쿠폰 내역')}
         </button>
       </div>
 
@@ -121,7 +123,7 @@ export default function MyPagePoint() {
           <div className="border border-gray-200 rounded-lg p-8 mb-8">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm mb-2">보유 포인트</p>
+                <p className="text-gray-500 text-sm mb-2">{t('key231', '보유 포인트')}</p>
                 <p className="text-4xl font-bold text-[#ff5833]">{availablePoints.toLocaleString()}P</p>
               </div>
               <div className="w-16 h-16 rounded-full bg-[#ffe2e2] flex items-center justify-center">
@@ -132,10 +134,10 @@ export default function MyPagePoint() {
 
           {/* Transaction History */}
           <div className="border border-gray-200 rounded-lg p-6">
-            <h3 className="text-xl font-semibold mb-6">포인트 적립/사용 내역</h3>
+            <h3 className="text-xl font-semibold mb-6">{t('key242', '포인트 적립/사용 내역')}</h3>
 
             {transactions.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">거래 내역이 없습니다</div>
+              <div className="text-center py-8 text-gray-500">{t('key243', '거래 내역이 없습니다')}</div>
             ) : (
               <div className="space-y-4">
                 {transactions.map((transaction) => {
@@ -198,12 +200,12 @@ export default function MyPagePoint() {
         <div className="space-y-6">
           {/* Available Coupons */}
           <div className="border border-gray-200 rounded-lg p-6">
-            <h3 className="text-xl font-semibold mb-2">사용 가능한 쿠폰 ({availableCoupons.length}장)</h3>
+            <h3 className="text-xl font-semibold mb-2">{t('length', '사용 가능한 쿠폰 ({{length}}장)', { length: availableCoupons.length })}</h3>
             <p className="text-sm text-gray-500 mb-6">
-              적용 조건: 주문 금액이 최소 주문금액 이상일 때만 사용 가능합니다. 퍼센트 쿠폰의 경우 계산된 할인금액이 최대 할인금액을 초과하면 최대 할인금액으로 적용됩니다.
+              {t('key244', '적용 조건: 주문 금액이 최소 주문금액 이상일 때만 사용 가능합니다. 퍼센트 쿠폰의 경우 계산된 할인금액이 최대 할인금액을 초과하면 최대 할인금액으로 적용됩니다.')}
             </p>
             {availableCoupons.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">사용 가능한 쿠폰이 없습니다</div>
+              <div className="text-center py-8 text-gray-500">{t('key245', '사용 가능한 쿠폰이 없습니다')}</div>
             ) : (
               <div className="space-y-4">
                 {availableCoupons.map((item, index) => {
@@ -212,7 +214,7 @@ export default function MyPagePoint() {
                   const leftLabel = isFreeShipping
                     ? "무료 배송"
                     : isPercent
-                      ? `${item.discountRate}%`
+                      ? t('discountrate', '{{discountRate}}%', { discountRate: item.discountRate })
                       : `${(item.discountAmount ?? 0).toLocaleString()}원`
                   const start = item.startDate ?? item.issuedAt
                   const end = item.endDate ?? item.expiredAt
@@ -224,39 +226,39 @@ export default function MyPagePoint() {
                       {/* Left: discount strip */}
                       <div className="w-[18%] min-w-[100px] flex flex-col items-center justify-center bg-[#ff6b5a] text-white py-6 px-2">
                         <span className="text-2xl font-bold leading-tight">{leftLabel}</span>
-                        <span className="text-sm mt-0.5">할인</span>
+                        <span className="text-sm mt-0.5">{t('key246', '할인')}</span>
                       </div>
                       {/* Right: details */}
                       <div className="flex-1 relative py-4 pl-5 pr-4">
                         <span className="absolute top-3 right-3 rounded-md bg-[#ff6b5a] px-2.5 py-1 text-xs font-medium text-white">
-                          사용가능
+                          {t('key247', '사용가능')}
                         </span>
                         <h4 className="text-base font-bold text-black mb-1 pr-20">
-                          {item.couponName ?? (isFreeShipping ? "무료 배송" : isPercent ? `${item.discountRate}% 할인` : `${(item.discountAmount ?? 0).toLocaleString()}원 할인`)}
+                          {item.couponName ?? (isFreeShipping ? "무료 배송" : isPercent ? t('discountrate2', '{{discountRate}}% 할인', { discountRate: item.discountRate }) : `${(item.discountAmount ?? 0).toLocaleString()}원 할인`)}
                         </h4>
                         {item.couponCode != null && item.couponCode !== "" && (
                           <p className="text-sm text-gray-700 mb-0.5">
-                            코드: <span className="font-semibold">{item.couponCode}</span>
+                            {t('key248', '코드:')} <span className="font-semibold">{item.couponCode}</span>
                           </p>
                         )}
                         {item.maxDiscountAmount != null && item.maxDiscountAmount > 0 && (
                           <p className="text-sm text-gray-600 mb-0.5">
-                            최대 할인금액: {item.maxDiscountAmount.toLocaleString()}원
+                            {t('key249', '최대 할인금액:')} {item.maxDiscountAmount.toLocaleString()}원
                           </p>
                         )}
                         <p className="text-sm text-gray-600 mb-0.5">
-                          최소 주문금액: {(item.minPurchaseAmount ?? 0).toLocaleString()}원
+                          {t('key250', '최소 주문금액:')} {(item.minPurchaseAmount ?? 0).toLocaleString()}원
                         </p>
                         {start && (
                           <p className="text-sm text-gray-600 mb-0.5">
-                            유효기간: {formatDateYMD(start)}
-                            {end ? ` ~ ${formatDateYMD(end)}` : ""}
+                            {t('key251', '유효기간:')} {formatDateYMD(start)}
+                            {end ? t('val', '~ {{val}}', { val: formatDateYMD(end) }) : ""}
                           </p>
                         )}
                         <p className="text-sm text-gray-600">
-                          발급일: {formatDateYMD(item.issuedAt)}
+                          {t('key252', '발급일:')} {formatDateYMD(item.issuedAt)}
                         </p>
-                        <p className="text-sm text-gray-500 mt-1">보유: {item.quantity ?? 1}장</p>
+                        <p className="text-sm text-gray-500 mt-1">{t('key253', '보유:')} {item.quantity ?? 1}장</p>
                       </div>
                     </div>
                   )
@@ -267,9 +269,9 @@ export default function MyPagePoint() {
 
           {/* Used Coupons */}
           <div className="border border-gray-200 rounded-lg p-6">
-            <h3 className="text-xl font-semibold mb-6">사용한 쿠폰 ({usedCoupons.length})</h3>
+            <h3 className="text-xl font-semibold mb-6">{t('length2', '사용한 쿠폰 ({{length}})', { length: usedCoupons.length })}</h3>
             {usedCoupons.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">사용한 쿠폰이 없습니다</div>
+              <div className="text-center py-8 text-gray-500">{t('key254', '사용한 쿠폰이 없습니다')}</div>
             ) : (
               <div className="space-y-4">
                 {usedCoupons.map((item, index) => {
@@ -278,7 +280,7 @@ export default function MyPagePoint() {
                   const leftLabel = isFreeShipping
                     ? "무료 배송"
                     : isPercent
-                      ? `${item.discountRate}%`
+                      ? t('discountrate', '{{discountRate}}%', { discountRate: item.discountRate })
                       : `${(item.discountAmount ?? 0).toLocaleString()}원`
                   const start = item.startDate ?? item.issuedAt
                   const end = item.endDate ?? item.expiredAt
@@ -289,40 +291,40 @@ export default function MyPagePoint() {
                     >
                       <div className="w-[28%] min-w-[100px] flex flex-col items-center justify-center bg-gray-400 text-white py-6 px-2">
                         <span className="text-2xl font-bold leading-tight">{leftLabel}</span>
-                        <span className="text-sm mt-0.5">할인</span>
+                        <span className="text-sm mt-0.5">{t('key246', '할인')}</span>
                       </div>
                       <div className="flex-1 relative py-4 pl-5 pr-4">
                         <span className="absolute top-3 right-3 rounded-md bg-gray-500 px-2.5 py-1 text-xs font-medium text-white">
-                          사용완료
+                          {t('key255', '사용완료')}
                         </span>
                         <h4 className="text-base font-bold text-gray-800 mb-1 pr-20">
-                          {item.couponName ?? (isFreeShipping ? "무료 배송" : isPercent ? `${item.discountRate}% 할인` : `${(item.discountAmount ?? 0).toLocaleString()}원 할인`)}
+                          {item.couponName ?? (isFreeShipping ? "무료 배송" : isPercent ? t('discountrate2', '{{discountRate}}% 할인', { discountRate: item.discountRate }) : `${(item.discountAmount ?? 0).toLocaleString()}원 할인`)}
                         </h4>
                         {item.couponCode != null && item.couponCode !== "" && (
                           <p className="text-sm text-gray-600 mb-0.5">
-                            코드: <span className="font-semibold">{item.couponCode}</span>
+                            {t('key248', '코드:')} <span className="font-semibold">{item.couponCode}</span>
                           </p>
                         )}
                         {item.maxDiscountAmount != null && item.maxDiscountAmount > 0 && (
                           <p className="text-sm text-gray-600 mb-0.5">
-                            최대 할인금액: {item.maxDiscountAmount.toLocaleString()}원
+                            {t('key249', '최대 할인금액:')} {item.maxDiscountAmount.toLocaleString()}원
                           </p>
                         )}
                         <p className="text-sm text-gray-600 mb-0.5">
-                          최소 주문금액: {(item.minPurchaseAmount ?? 0).toLocaleString()}원
+                          {t('key250', '최소 주문금액:')} {(item.minPurchaseAmount ?? 0).toLocaleString()}원
                         </p>
                         {start && (
                           <p className="text-sm text-gray-600 mb-0.5">
-                            유효기간: {formatDateYMD(start)}
-                            {end ? ` ~ ${formatDateYMD(end)}` : ""}
+                            {t('key251', '유효기간:')} {formatDateYMD(start)}
+                            {end ? t('val', '~ {{val}}', { val: formatDateYMD(end) }) : ""}
                           </p>
                         )}
                         <p className="text-sm text-gray-600">
-                          사용일: {item.usedAt ? formatDateYMD(item.usedAt) : "정보 없음"}
+                          {t('key256', '사용일:')} {item.usedAt ? formatDateYMD(item.usedAt) : "정보 없음"}
                         </p>
                         {item.discountAppliedAmount != null && (
                           <p className="text-sm text-gray-600 font-medium mt-0.5">
-                            할인 금액: {item.discountAppliedAmount.toLocaleString()}원
+                            {t('key257', '할인 금액:')} {item.discountAppliedAmount.toLocaleString()}원
                           </p>
                         )}
                       </div>

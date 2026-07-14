@@ -10,6 +10,7 @@ import { useInfiniteQuery } from "@tanstack/react-query"
 import { useProduct } from "@/hooks/use-product/product.hook"
 import { ProductEntity } from "@/entities/products/product.entity"
 import { createProductNavigationHandler } from "@/lib/utils"
+import { useTranslation } from 'react-i18next'
 
 interface SpecialOfferDisplay {
   id: string
@@ -88,6 +89,7 @@ function mapProductToDisplay(product: ProductEntity): SpecialOfferDisplay {
 }
 
 export function SpecialOffersSection() {
+  const { t } = useTranslation()
   const router = useRouter()
   const { getSpecialOffers } = useProduct()
   const scrollContainerRef = useRef<HTMLDivElement>(null)
@@ -181,9 +183,9 @@ export function SpecialOffersSection() {
     const secs = seconds % 60
 
     if (days > 0) {
-      return `${days}일 ${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")} 남음`
+      return t('daysValval2val3', '{{days}}일 {{val}}:{{val2}}:{{val3}} 남음', { days, val: hours.toString().padStart(2, "0"), val2: minutes.toString().padStart(2, "0"), val3: secs.toString().padStart(2, "0") })
     }
-    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")} 남음`
+    return t('valval2val3', '{{val}}:{{val2}}:{{val3}} 남음', { val: hours.toString().padStart(2, "0"), val2: minutes.toString().padStart(2, "0"), val3: secs.toString().padStart(2, "0") })
   }
 
   // Handle horizontal scroll to fetch next page
@@ -228,16 +230,16 @@ export function SpecialOffersSection() {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <Flame className="w-6 h-6 text-[#FF5833]" />
-              <h2 className="text-2xl font-bold">이번주 특가</h2>
+              <h2 className="text-2xl font-bold">{t('key40', '이번주 특가')}</h2>
             </div>
-            <p className="text-sm text-gray-600">지금 가장 인기있는 특가 상품을 만나보세요</p>
+            <p className="text-sm text-gray-600">{t('key41', '지금 가장 인기있는 특가 상품을 만나보세요')}</p>
           </div>
           <Button 
             variant="outline" 
             className="border-gray-300 text-black hover:bg-gray-50"
             onClick={() => router.push('/special')}
           >
-            전체보기
+            {t('key42', '전체보기')}
           </Button>
         </div>
 
@@ -248,11 +250,11 @@ export function SpecialOffersSection() {
             </div>
           ) : isError ? (
             <div className="flex justify-center items-center py-12 text-red-400">
-              특가 상품을 불러오는데 실패했습니다
+              {t('key43', '특가 상품을 불러오는데 실패했습니다')}
             </div>
           ) : specialOffers.length === 0 ? (
             <div className="flex justify-center items-center py-12 text-gray-400">
-              특가 상품이 없습니다
+              {t('key38', '특가 상품이 없습니다')}
             </div>
           ) : (
             <>
@@ -279,19 +281,19 @@ export function SpecialOffersSection() {
                       {/* Storage Type and Special Badge */}
                       <div className="absolute bottom-3 left-3 flex gap-2 z-10 flex-wrap">
                         <Badge className="bg-[#FF5833] text-white text-xs border-0">
-                          🔥 이번주 특가
+                          {t('key44', '🔥 이번주 특가')}
                         </Badge>
                         {/* Product Badges (Hot Deal, New, Best) */}
                         {offer.productBadges && (
                           <>
                             {offer.productBadges.isHotDeal && (
-                              <Badge className="bg-orange-100 text-orange-500 border border-orange-500">핫딜</Badge>
+                              <Badge className="bg-orange-100 text-orange-500 border border-orange-500">{t('key45', '핫딜')}</Badge>
                             )}
                             {offer.productBadges.isNewProduct && (
-                              <Badge className="bg-blue-100 text-blue-500 border border-blue-500">신상품</Badge>
+                              <Badge className="bg-blue-100 text-blue-500 border border-blue-500">{t('key46', '신상품')}</Badge>
                             )}
                             {offer.productBadges.isBestSeller && (
-                              <Badge className="bg-purple-100 text-purple-500 border border-purple-500">BEST</Badge>
+                              <Badge className="bg-purple-100 text-purple-500 border border-purple-500">{t('best', 'BEST')}</Badge>
                             )}
                           </>
                         )}
@@ -313,7 +315,7 @@ export function SpecialOffersSection() {
                             </>
                           )}
                           {offer.reviews !== undefined && offer.reviews > 0 && (
-                            <span className="text-xs text-gray-500">({offer.reviews})</span>
+                            <span className="text-xs text-gray-500">{t('reviews', '({{reviews}})', { reviews: offer.reviews })}</span>
                           )}
                         </div>
                       )}
@@ -324,7 +326,7 @@ export function SpecialOffersSection() {
                       )}
                       <div className="flex items-center gap-2">
                         {offer.discount > 0 && (
-                          <Badge className="bg-[#FF5833] text-white text-xs border-0">{offer.discount}%</Badge>
+                          <Badge className="bg-[#FF5833] text-white text-xs border-0">{t('discount', '{{discount}}%', { discount: offer.discount })}</Badge>
                         )}
                         <span className="text-xl font-bold text-[#FF5833]">{offer.discountedPrice.toLocaleString()}원</span>
                       </div>

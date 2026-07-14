@@ -23,8 +23,10 @@ import RecipeModal from '@/components/common/admin/RecipeModal'
 import { User } from '@/entities/user.entity'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useTranslation } from 'react-i18next'
 
 export default function AdminCommunityPage() {
+  const { t } = useTranslation()
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
@@ -165,15 +167,15 @@ export default function AdminCommunityPage() {
       {/* Header */}
       <section className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold text-foreground">레시피 관리</h1>
+          <h1 className="text-xl font-semibold text-foreground">{t('key486', '레시피 관리')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            사용자가 업로드한 레시피를 관리합니다 (삭제/비활성화 가능)
+            {t('key487', '사용자가 업로드한 레시피를 관리합니다 (삭제/비활성화 가능)')}
           </p>
         </div>
         <Button size="lg" className="bg-black text-white hover:bg-black/90" asChild>
           <Link href="/admin/community/create">
             <Plus className="mr-2 h-5 w-5" />
-            레시피 추가
+            {t('key488', '레시피 추가')}
           </Link>
         </Button>
       </section>
@@ -191,7 +193,7 @@ export default function AdminCommunityPage() {
               <FileText className="h-5 w-5" />
             </div>
             <div className="flex-1">
-              <p className="mb-1 text-xs text-muted-foreground">전체</p>
+              <p className="mb-1 text-xs text-muted-foreground">{t('key325', '전체')}</p>
               <p className="text-2xl font-semibold text-foreground">
                 {isLoadingDashboard ? (
                   <Spinner className="h-5 w-5" />
@@ -214,7 +216,7 @@ export default function AdminCommunityPage() {
               <Clock className="h-5 w-5" />
             </div>
             <div className="flex-1">
-              <p className="mb-1 text-xs text-muted-foreground">승인 대기</p>
+              <p className="mb-1 text-xs text-muted-foreground">{t('key489', '승인 대기')}</p>
               <p className="text-2xl font-semibold text-foreground">
                 {isLoadingDashboard ? (
                   <Spinner className="h-5 w-5" />
@@ -237,7 +239,7 @@ export default function AdminCommunityPage() {
               <Check className="h-5 w-5" />
             </div>
             <div className="flex-1">
-              <p className="mb-1 text-xs text-muted-foreground">승인 완료</p>
+              <p className="mb-1 text-xs text-muted-foreground">{t('key490', '승인 완료')}</p>
               <p className="text-2xl font-semibold text-foreground">
                 {isLoadingDashboard ? (
                   <Spinner className="h-5 w-5" />
@@ -260,7 +262,7 @@ export default function AdminCommunityPage() {
               <X className="h-5 w-5" />
             </div>
             <div className="flex-1">
-              <p className="mb-1 text-xs text-muted-foreground">반려 완료</p>
+              <p className="mb-1 text-xs text-muted-foreground">{t('key491', '반려 완료')}</p>
               <p className="text-2xl font-semibold text-foreground">
                 {isLoadingDashboard ? (
                   <Spinner className="h-5 w-5" />
@@ -275,16 +277,16 @@ export default function AdminCommunityPage() {
 
       {/* Search and Filter */}
       <section className="bg-card border-border rounded-lg border p-6">
-        <h2 className="mb-4 text-base font-semibold text-foreground">검색 및 필터</h2>
+        <h2 className="mb-4 text-base font-semibold text-foreground">{t('key360', '검색 및 필터')}</h2>
 
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
           {/* Search */}
           <div className="space-y-2 lg:col-span-5">
-            <Label className="text-sm font-medium">검색</Label>
+            <Label className="text-sm font-medium">{t('key402', '검색')}</Label>
             <div className="relative">
               <Search className="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
               <Input
-                placeholder="제목, 작성자, 내용으로 검색"
+                placeholder={t('key492', '제목, 작성자, 내용으로 검색')}
                 className="pl-9"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -294,13 +296,13 @@ export default function AdminCommunityPage() {
 
           {/* Category */}
           <div className="space-y-2 lg:col-span-3">
-            <Label className="text-sm font-medium">카테고리</Label>
+            <Label className="text-sm font-medium">{t('key332', '카테고리')}</Label>
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="전체" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="entire">전체</SelectItem>
+                <SelectItem value="entire">{t('key325', '전체')}</SelectItem>
                 {allCategories.map((category,index) => (
                   <SelectItem key={index} value={category}>{category === ERecipeCategory.RECIPE ? '레시피' : category === ERecipeCategory.REVIEWS ? '리뷰' : category === ERecipeCategory.DAILY_LIFE ? '일상' : 'N/A'}</SelectItem>
                 ))}
@@ -310,15 +312,15 @@ export default function AdminCommunityPage() {
 
           {/* Sort */}
           <div className="space-y-2 lg:col-span-4">
-            <Label className="text-sm font-medium">정렬</Label>
+            <Label className="text-sm font-medium">{t('key493', '정렬')}</Label>
             <Select value={selectedSort} onValueChange={setSelectedSort}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="최신순" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="latest">최신순</SelectItem>
-                <SelectItem value="views">조회수순</SelectItem>
-                <SelectItem value="alphabetical">제목순</SelectItem>
+                <SelectItem value="latest">{t('key494', '최신순')}</SelectItem>
+                <SelectItem value="views">{t('key495', '조회수순')}</SelectItem>
+                <SelectItem value="alphabetical">{t('key496', '제목순')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -335,7 +337,7 @@ export default function AdminCommunityPage() {
               setSelectedSort('latest')
             }}
           >
-            초기화
+            {t('key366', '초기화')}
           </Button>
         </div>
       </section>
@@ -407,7 +409,7 @@ export default function AdminCommunityPage() {
                   : 'border-transparent text-muted-foreground hover:text-foreground'
               }`}
             >
-              전체 ({isLoadingDashboard ? '...' : dashboardData?.fullRecipeCount || 0})
+              {t('key497', '전체 (')}{isLoadingDashboard ? '...' : dashboardData?.fullRecipeCount || 0})
             </button>
             <button
               onClick={() => setActiveTab('pending')}
@@ -417,7 +419,7 @@ export default function AdminCommunityPage() {
                   : 'border-transparent text-muted-foreground hover:text-foreground'
               }`}
             >
-              승인 대기 ({isLoadingDashboard ? '...' : dashboardData?.pendingRecipeCount || 0})
+              {t('key498', '승인 대기 (')}{isLoadingDashboard ? '...' : dashboardData?.pendingRecipeCount || 0})
             </button>
             <button
               onClick={() => setActiveTab('approved')}
@@ -427,7 +429,7 @@ export default function AdminCommunityPage() {
                   : 'border-transparent text-muted-foreground hover:text-foreground'
               }`}
             >
-              승인됨 ({isLoadingDashboard ? '...' : dashboardData?.activeRecipeCount || 0})
+              {t('key499', '승인됨 (')}{isLoadingDashboard ? '...' : dashboardData?.activeRecipeCount || 0})
             </button>
             <button
               onClick={() => setActiveTab('rejected')}
@@ -437,7 +439,7 @@ export default function AdminCommunityPage() {
                   : 'border-transparent text-muted-foreground hover:text-foreground'
               }`}
             >
-              거부됨 ({isLoadingDashboard ? '...' : dashboardData?.rejectedRecipeCount || 0})
+              {t('key500', '거부됨 (')}{isLoadingDashboard ? '...' : dashboardData?.rejectedRecipeCount || 0})
             </button>
           </div>
         </div>
@@ -447,22 +449,22 @@ export default function AdminCommunityPage() {
           <table className="w-full">
             <thead className="bg-gray-100">
               <tr className="text-xs font-medium text-muted-foreground">
-                <th className="w-24 p-4 text-left">썸네일</th>
-                <th className="p-4 text-left">제목</th>
-                <th className="p-4 text-left">작성자</th>
-                <th className="p-4 text-left">카테고리</th>
-                <th className="p-4 text-left">작성일</th>
-                <th className="p-4 text-left">조회수</th>
-                <th className="p-4 text-center">상태</th>
-                <th className="p-4 text-center">노출</th>
-                <th className="p-4 text-left">관리</th>
+                <th className="w-24 p-4 text-left">{t('key501', '썸네일')}</th>
+                <th className="p-4 text-left">{t('key502', '제목')}</th>
+                <th className="p-4 text-left">{t('key221', '작성자')}</th>
+                <th className="p-4 text-left">{t('key332', '카테고리')}</th>
+                <th className="p-4 text-left">{t('key222', '작성일')}</th>
+                <th className="p-4 text-left">{t('key503', '조회수')}</th>
+                <th className="p-4 text-center">{t('key336', '상태')}</th>
+                <th className="p-4 text-center">{t('key504', '노출')}</th>
+                <th className="p-4 text-left">{t('key338', '관리')}</th>
               </tr>
             </thead>
             <tbody className="text-sm">
               {isErrorRecipes ? (
                 <tr>
                   <td colSpan={9} className="p-4 text-center text-red-500">
-                    오류가 발생했습니다: {recipesError instanceof Error ? recipesError.message : '알 수 없는 오류'}
+                    {t('key339', '오류가 발생했습니다:')} {recipesError instanceof Error ? recipesError.message : t('key340', '알 수 없는 오류')}
                   </td>
                 </tr>
               ) : isLoadingRecipes ? (
@@ -470,14 +472,14 @@ export default function AdminCommunityPage() {
                   <td colSpan={9} className="p-4 text-center text-muted-foreground">
                     <div className="flex items-center justify-center gap-2">
                       <Spinner className="h-4 w-4" />
-                      <span>로딩 중...</span>
+                      <span>{t('key74', '로딩 중...')}</span>
                     </div>
                   </td>
                 </tr>
               ) : allRecipes.length === 0 ? (
                 <tr>
                   <td colSpan={9} className="p-4 text-center text-muted-foreground">
-                    데이터가 없습니다.
+                    {t('key341', '데이터가 없습니다.')}
                   </td>
                 </tr>
               ) : (
@@ -636,7 +638,7 @@ export default function AdminCommunityPage() {
 
         {/* Table Footer with Pagination */}
         <div className="border-border flex items-center justify-between border-t px-6 py-4">
-          <p className="text-sm text-muted-foreground">전체 {pagination?.total ?? allRecipes.length}개의 레시피</p>
+          <p className="text-sm text-muted-foreground">{t('key325', '전체')} {pagination?.total ?? allRecipes.length}{t('key505', '개의 레시피')}</p>
           {pagination && (
             <PaginationButton
               page={pagination.page}
